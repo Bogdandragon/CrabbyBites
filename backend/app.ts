@@ -5,9 +5,6 @@ import constants from "./constants";
 
 import usersRouter from "./routes/users.route";
 import cors from "cors";
-import * as schedule from "node-schedule";
-import moment from 'moment';
-import User from './models/users.model';
 
 const app = express();
 const PORT = process.env.PORT || 5000;

@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
+import Button from './components/Button/Button';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           .catch(error => alert(error.message));
         }
       }>Click me!</button>
+      <Button />
     </div>
   );
 }
