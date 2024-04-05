@@ -1,5 +1,6 @@
 import { Router } from "express";
 import User from "../models/users.model";
+import Recipe from "../models/recipes.model";
 import bcrypt from "bcrypt";
 import validators from "../common/validators";
 
@@ -23,5 +24,6 @@ router.post("/login", async (req, res) => {
 	}
 	return res.send(user);
 });
+
 
 export default router;
