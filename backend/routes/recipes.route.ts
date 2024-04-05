@@ -10,7 +10,7 @@ const router = Router();
 const retportThreshold = 2;
 const pending = "PENDING";
 
-router.get("/all-recipes", adminMiddleware, async (req, res) => {
+router.get("/review", adminMiddleware, async (req, res) => {
 	
 	// check if user is logged in
 	// check if user is admin
@@ -20,6 +20,10 @@ router.get("/all-recipes", adminMiddleware, async (req, res) => {
 
 	for (let i = 0; i < recipes.length; i++) {
 		let user = await User.findById(recipes[i].userId);
+		if (!user) {
+			res.status(404).send("User not found");
+			return;
+		}
 		if (user?.type == "ADMIN" || recipes[i].status != pending || recipes[i].reportNo < retportThreshold) {
 			recipes.splice(i, 1);
 		}
