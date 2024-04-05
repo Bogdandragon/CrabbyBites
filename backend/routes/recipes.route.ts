@@ -7,6 +7,9 @@ import adminMiddleware from "../middlewares/adminMiddleware";
 
 const router = Router();
 
+const retportThreshold = 2;
+const pending = "PENDING";
+
 router.get("/all-recipes", adminMiddleware, async (req, res) => {
 	
 	// check if user is logged in
@@ -17,7 +20,7 @@ router.get("/all-recipes", adminMiddleware, async (req, res) => {
 
 	for (let i = 0; i < recipes.length; i++) {
 		let user = await User.findById(recipes[i].userId);
-		if (user?.type == "ADMIN") {
+		if (user?.type == "ADMIN" || recipes[i].status != pending || recipes[i].reportNo < retportThreshold) {
 			recipes.splice(i, 1);
 		}
 	}
