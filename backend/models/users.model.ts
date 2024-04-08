@@ -3,12 +3,23 @@ import bcrypt from "bcrypt";
 
 type USER_TYPE = 'ADMIN' | 'USER';
 
+type MEASUREMENT = 'g' | 'kg' | 'ml' | 'l' | 'tsp' | 'tbsp' | 'cup' | 'pint' | 'quart' | 'gallon' | 'oz' | 'lb' | 'mg' | 'mcg' | 'unit';
+
 interface IUser{
     _id : mongoose.Types.ObjectId,
-    name: string,
+    email: string,
     username: string,
     password: string,
-    type: USER_TYPE
+    type: USER_TYPE,
+    favoriteRecipes: mongoose.Types.ObjectId[],
+    todoRecipes: mongoose.Types.ObjectId[],
+    ingredients: {
+        name: string,
+        quantity: number,
+        measurement: MEASUREMENT,
+        ingredientId: mongoose.Types.ObjectId | null
+    }[],
+    reportNo: number
 }
 
 interface IUserMethods {
@@ -21,14 +32,16 @@ interface IUserStatics extends Model<IUser, {}, IUserMethods> {
 }
 
 const userSchema = new mongoose.Schema<IUser, IUserStatics, IUserMethods>({
-    name: {
+    email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     username: {
         type: String,
         minlength: 8,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -39,6 +52,30 @@ const userSchema = new mongoose.Schema<IUser, IUserStatics, IUserMethods>({
         type: String,
         enum: ['ADMIN', 'USER'],
         required: true
+    },
+    favoriteRecipes: {
+        type: [mongoose.Types.ObjectId],
+        default: []
+    },
+    todoRecipes: {
+        type: [mongoose.Types.ObjectId],
+        default: []
+    },
+    ingredients: {
+        type: [{
+            name: String,
+            quantity: Number,
+            measurement: {
+                type: String,
+                enum: ['g', 'kg', 'ml', 'l', 'tsp', 'tbsp', 'cup', 'pint', 'quart', 'gallon', 'oz', 'lb', 'mg', 'mcg', 'unit']
+            },
+            ingredientId: mongoose.Types.ObjectId
+        }],
+        default: []
+    },
+    reportNo: {
+        type: Number,
+        default: 0
     }
 });
 
