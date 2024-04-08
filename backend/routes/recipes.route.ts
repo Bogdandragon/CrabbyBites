@@ -7,7 +7,7 @@ import adminMiddleware from "../middlewares/adminMiddleware";
 
 const router = Router();
 
-const retportThreshold = 2;
+const reportThreshold = 2;
 const pending = "PENDING";
 
 router.get("/review", adminMiddleware, async (req, res) => {
@@ -17,6 +17,7 @@ router.get("/review", adminMiddleware, async (req, res) => {
 	// return all recipes not made by admin
 
 	let recipes = await Recipe.find();
+	let recipesToSend = [];
 
 	for (let i = 0; i < recipes.length; i++) {
 		let user = await User.findById(recipes[i].userId);
@@ -24,11 +25,12 @@ router.get("/review", adminMiddleware, async (req, res) => {
 			res.status(404).send("User not found");
 			return;
 		}
-		if (user?.type == "ADMIN" || recipes[i].status != pending || recipes[i].reportNo < retportThreshold) {
-			recipes.splice(i, 1);
+		if (recipes[i].status != pending || recipes[i].reportNo < reportThreshold) {
+			continue;
 		}
+		recipesToSend.push(recipes[i]);
 	}
-	res.send(recipes);
+	res.send(recipesToSend);
 });
 
 
