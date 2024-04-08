@@ -3,7 +3,7 @@ import "./Button.css";
 
 function Button() {
     useEffect(() => {
-        alert("Button component loaded");
+        // alert("Button component loaded");
     }, []);
 
     return (
