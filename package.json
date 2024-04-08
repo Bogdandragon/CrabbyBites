@@ -1,0 +1,22 @@
+{
+  "name": "crabbybites",
+  "version": "1.0.0",
+  "description": "A recipe finder application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bogdandragon/CrabbyBites.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bogdandragon/CrabbyBites/issues"
+  },
+  "homepage": "https://github.com/Bogdandragon/CrabbyBites#readme",
+  "dependencies": {
+    "mongodb": "^6.5.0"
+  }
+}
