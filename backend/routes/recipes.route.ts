@@ -10,9 +10,10 @@ const router = Router();
 const reportThreshold = 2;
 const pending = "PENDING";
 
-router.get("/review", async (req, res) => {
+router.get("/review", adminMiddleware, async (req, res) => {
+	// send recipes with status "PENDING" or reportNo >= reportThreshold
+	const recipes = await Recipe.find({ $or: [{ status: pending }, { reportNo: { $gte: reportThreshold } }] });
 	
-	let recipes = await Recipe.find({ status: pending, reportNo: { $gte: reportThreshold } });
 	res.send(recipes);
 });
 
