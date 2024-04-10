@@ -5,7 +5,7 @@ import axios from 'axios';
 import { ChakraProvider } from '@chakra-ui/react'
 import Navbar from './components/Navbar/Navbar';
 import Page from './components/Page/Page';
-import LoginPage from './components/LoginPage/LoginPage';
+import RegisterPage from './components/RegisterPage/RegisterPage';
 import theme from './components/Theme/Theme';
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
 			}
 			}>Click me!</button>
 		</Page> */}
-		<LoginPage/>
+		<RegisterPage/>
       </div>
     </ChakraProvider>
   );

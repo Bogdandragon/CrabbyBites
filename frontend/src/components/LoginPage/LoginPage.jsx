@@ -1,8 +1,8 @@
 import Page from "../Page/Page";
 import { useFormik } from 'formik';
-import { Container, Input, FormControl, FormLabel, FormErrorMessage, FormHelperText, Button } from '@chakra-ui/react';
-import { Image, SimpleGrid, Box, Checkbox, Card } from '@chakra-ui/react'
-import { Row, Col, CardBody } from 'react-bootstrap';
+import { Input, FormControl, FormLabel, Button } from '@chakra-ui/react';
+import { SimpleGrid, Box, Checkbox, Card, Center } from '@chakra-ui/react'
+import { CardBody } from 'react-bootstrap';
 import SubmitButton from '../Buttons/SubmitButton'
 import './LoginPage.css'
 
@@ -27,17 +27,16 @@ function LoginPage() {
                     w='100%' h='100%' className="hide-on-mobile"/>
 
                 <Box h='100%' py='10vh' px='5vw' textAlign='left' className="column-width">
-                    <Card py='10vh' px='10vw' >
+                    <Card py='10vh' px='10vw'>
                         <CardBody colorScheme='white'>
-                            <h2>Login</h2>
-                            <h6>Log into your account in seconds</h6>
-                            <FormControl onSubmit={formikLogin.handleSubmit}>
-                                <FormLabel>Username</FormLabel>
+                            <Center><h2 className='title-font'>Login</h2></Center>
+                            <Center><h6>Log into your account in seconds</h6></Center>
+                            <FormControl py='5vh' onSubmit={formikLogin.handleSubmit}>
+                                <FormLabel>Username or email</FormLabel>
                                 <Input id='username' name='username' type='text' onChange={formikLogin.handleChange} value={formikLogin.values.username}/>
                                 <FormLabel>Password</FormLabel>
-                                <Input id='password' name='password' type='password' onChange={formikLogin.handleChange} value={formikLogin.values.username}/>
-                                
-                                <SimpleGrid columns={2}>
+                                <Input id='password' name='password' type='password' onChange={formikLogin.handleChange} value={formikLogin.values.password}/>
+                                <SimpleGrid py='5vh' columns={2}>
                                     <Box>
                                         <Checkbox colorScheme='greenBrand' defaultChecked size='md'>Keep me logged in</Checkbox>
                                     </Box>
@@ -46,7 +45,7 @@ function LoginPage() {
                                     </Box>
                                 </SimpleGrid>
 
-                                <SubmitButton text="Login" onClick={formikLogin.handleSubmit} />
+                                <Center><SubmitButton text="Login" onClick={formikLogin.handleSubmit}/></Center>
                             </FormControl>
                         </CardBody>
                     </Card>
