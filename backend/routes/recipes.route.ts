@@ -8,13 +8,12 @@ import adminMiddleware from "../middlewares/adminMiddleware";
 const router = Router();
 
 const reportThreshold = 2;
-const pending = "PENDING";
 
 router.get("/review", adminMiddleware, async (req, res) => {
 	// send recipes with status "PENDING" or reportNo >= reportThreshold
-	const recipes = await Recipe.find({ $or: [{ status: pending }, { reportNo: { $gte: reportThreshold } }] });
+	const recipes = await Recipe.find({ $or: [{ status: "PENDING" }, { reportNo: { $gte: reportThreshold } }] });
 	
-	res.send(recipes);
+	return res.send(recipes);
 });
 
 
