@@ -1,0 +1,97 @@
+
+// this should not appear
+{
+    "_id": {
+        "$oid": "6615380e631a214e599acfe2"
+    },
+
+    "name": "Wrong",
+    "time": 30,
+    "difficulty": "EASY",
+    "portions": 4,
+    "picture": "https://www.google.com",
+    "category": "Dessert",
+    "description": "Test",
+    "ingredients": [
+        {
+            "name": "Test",
+            "quantity": 1,
+            "measurement": "Test"
+        }
+    ],
+    "instructions": [
+        "Test"
+    ],
+    "status": "APPROVED",
+    "rejectionReason": "",
+    "rating": 0,
+    "reportNo": 0,
+    "userId": {
+        "$oid": "6609753f120f5be65edec777"
+    }
+
+}
+
+// this should appear
+{
+    "_id": {
+        "$oid": "66153b1e631a214e599acfe8"
+    },
+
+    "name": "PENDING",
+    "time": 30,
+    "difficulty": "EASY",
+    "portions": 4,
+    "picture": "https://www.google.com",
+    "category": "Dessert",
+    "description": "Test",
+    "ingredients": [
+        {
+            "name": "Test",
+            "quantity": 1,
+            "measurement": "Test"
+        }
+    ],
+    "instructions": [
+        "Test"
+    ],
+    "status": "PENDING",
+    "rejectionReason": "",
+    "rating": 0,
+    "reportNo": 0,
+    "userId": {
+        "$oid": "6609753f120f5be65edec777"
+    }
+
+}
+
+{
+    "_id": {
+        "$oid": "66153b03631a214e599acfe7"
+    },
+    "name": "REPORTED",
+    "time": 30,
+    "difficulty": "EASY",
+    "portions": 4,
+    "picture": "https://www.google.com",
+    "category": "Dessert",
+    "description": "Test",
+    "ingredients": [
+        {
+            "name": "Test",
+            "quantity": 1,
+            "measurement": "Test"
+        }
+    ],
+    "instructions": [
+        "Test"
+    ],
+    "status": "APPROVED",
+    "rejectionReason": "",
+    "rating": 0,
+    "reportNo": 5,
+    "userId": {
+        "$oid": "6609753f120f5be65edec777"
+    }
+
+}
