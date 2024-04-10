@@ -5,12 +5,14 @@ import axios from 'axios';
 import { ChakraProvider } from '@chakra-ui/react'
 import Navbar from './components/Navbar/Navbar';
 import Page from './components/Page/Page';
+import LoginPage from './components/LoginPage/LoginPage';
+import theme from './components/Theme/Theme';
 
 function App() {
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <div className="App">
-		<Page>
+		{/* <Page>
 			<h2>Test App</h2>
 			<button onClick={
 			async () => {
@@ -19,7 +21,8 @@ function App() {
 				.catch(error => alert(error.message));
 			}
 			}>Click me!</button>
-		</Page>
+		</Page> */}
+		<LoginPage/>
       </div>
     </ChakraProvider>
   );

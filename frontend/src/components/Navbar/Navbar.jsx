@@ -4,7 +4,7 @@ import { HamburgerIcon } from '@chakra-ui/icons';
 
 function Navbar() {
     return (
-        <Flex height={"80px"} w={"100vw"} justifyContent="space-between" alignItems="center" className='px-md-5 px-2'>
+        <Flex height={"10vh"} w={"100vw"} justifyContent="space-between" alignItems="center" className='px-md-5 px-2'>
             <Image
                 src="crab.png"
                 alt="Logo"
