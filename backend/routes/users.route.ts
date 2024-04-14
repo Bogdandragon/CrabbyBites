@@ -1,6 +1,7 @@
 import { Router } from "express";
 import User from "../models/users.model";
 import validators from "../common/validators";
+import adminMiddleware from "../middlewares/adminMiddleware";
 import jwt from "jsonwebtoken";
 import constants from "../constants";
 
@@ -50,6 +51,23 @@ router.post('/register', async function (req: any, res: any, next: any) {
 	} catch (e) {
 		return res.status(400).send("S-a produs o eroare! " + e);
 	}
+});
+
+router.get("/view", adminMiddleware, async (req, res) => {
+	// send all users created in the system
+	const users = await User.find();
+	
+	return res.send(users);
+});
+
+router.delete("/remove/:id", adminMiddleware , async (req, res) => {
+	// remove user identified by "id" from database
+	const { id } = req.params;
+	const user = await User.findByIdAndDelete(id);
+	if (!user) {
+		return res.status(404).send("User not found");
+	}
+	return res.status(200).send("User deleted successfully");
 });
 
 export default router;

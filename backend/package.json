@@ -43,6 +43,6 @@
   "devDependencies": {
     "@types/express": "^4.17.17",
     "@types/node": "^18.15.11",
-    "typescript": "^5.0.4"
+    "typescript": "^5.4.4"
   }
 }
