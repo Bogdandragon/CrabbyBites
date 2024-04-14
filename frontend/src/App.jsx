@@ -19,6 +19,7 @@ function App() {
 				.catch(error => alert(error.message));
 			}
 			}>Click me!</button>
+
 		</Page>
       </div>
     </ChakraProvider>
