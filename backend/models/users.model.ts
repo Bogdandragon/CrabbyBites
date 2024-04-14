@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema<IUser, IUserStatics, IUserMethods>({
     },
     username: {
         type: String,
-        minlength: 8,
+        minlength: 6,
         required: true,
         unique: true
     },
