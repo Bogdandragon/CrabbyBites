@@ -1,3 +1,4 @@
+// password = "anaaremere"
 {
     "_id": {
         "$oid": "6617e1f96f28964fac7c08a2"
@@ -5,7 +6,7 @@
 
     "email": "didi@didirescu.com",
     "username": "didi",
-    "password": "a84uj4ikmvk",
+    "password": "$2y$10$eLcqL1FOtE/D8ffp3pPzzu2HlBLP3lkrkpQ8NaNGUJY1yaTjTUB6K",
     "type": "USER",
     "favoriteRecipes": [
         {
@@ -25,6 +26,7 @@
 }
 
 
+// password = "testulescu"
 {
     "_id": {
         "$oid": "6617e5cf6f28964fac7c08a3"
@@ -32,7 +34,7 @@
 
     "email": "test@test.com",
     "username": "TEST",
-    "password": "&8jd8MJigewuh$#DWDfweiifwe%k",
+    "password": "$2y$10$EtrxRbeXAbMR3JtrIO3IDum1AcN0CCdCBqeWhBrXYEjMXkqBzkhrS",
     "type": "USER",
     "favoriteRecipes": [],
     "todoRecipes": [

@@ -32,7 +32,7 @@ router.get("/view", adminMiddleware, async (req, res) => {
 	return res.send(users);
 });
 
-router.delete("/remove/:id",adminMiddleware , async (req, res) => {
+router.delete("/remove/:id", adminMiddleware , async (req, res) => {
 	// remove user identified by "id" from database
 	const { id } = req.params;
 	const user = await User.findByIdAndDelete(id);

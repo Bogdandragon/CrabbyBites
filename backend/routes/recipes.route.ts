@@ -4,6 +4,7 @@ import Recipe from "../models/recipe.model";
 import bcrypt from "bcrypt";
 import validators from "../common/validators";
 import adminMiddleware from "../middlewares/adminMiddleware";
+import userMiddleware from "../middlewares/userMiddleware";
 
 const router = Router();
 
