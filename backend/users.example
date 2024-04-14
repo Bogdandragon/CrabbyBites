@@ -1,0 +1,50 @@
+// password = "anaaremere"
+{
+    "_id": {
+        "$oid": "6617e1f96f28964fac7c08a2"
+    },
+
+    "email": "didi@didirescu.com",
+    "username": "didi",
+    "password": "$2y$10$eLcqL1FOtE/D8ffp3pPzzu2HlBLP3lkrkpQ8NaNGUJY1yaTjTUB6K",
+    "type": "USER",
+    "favoriteRecipes": [
+        {
+            "$oid": "6615380e631a214e599acfe2"
+        }
+    ],
+    "todoRecipes": [],
+    "ingredients": [
+        {
+            "name": "deadbeef",
+            "quantity": 10,
+            "measurement": "MULT"
+        }
+    ],
+    "reportNo": 0
+
+}
+
+
+// password = "testulescu"
+{
+    "_id": {
+        "$oid": "6617e5cf6f28964fac7c08a3"
+    },
+
+    "email": "test@test.com",
+    "username": "TEST",
+    "password": "$2y$10$EtrxRbeXAbMR3JtrIO3IDum1AcN0CCdCBqeWhBrXYEjMXkqBzkhrS",
+    "type": "USER",
+    "favoriteRecipes": [],
+    "todoRecipes": [
+        {
+            "$oid": "6615380e631a214e599acfe2"
+        }
+    ],
+    "ingredients": [],
+    "reportNo": 2
+
+}
+
+

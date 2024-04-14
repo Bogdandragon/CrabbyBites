@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import constants from "./constants";
 
 import usersRouter from "./routes/users.route";
+import recipesRouter from "./routes/recipes.route";
 import cors from "cors";
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 app.use('/api/auth', usersRouter);
+app.use('/api/recipes', recipesRouter);
 
 server.listen(PORT, () => {
   console.log(`listening on *:${PORT}`);

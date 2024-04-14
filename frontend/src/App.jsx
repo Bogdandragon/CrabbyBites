@@ -12,17 +12,17 @@ function App() {
   return (
     <ChakraProvider theme={theme}>
       <div className="App">
-		{/* <Page>
-			<h2>Test App</h2>
-			<button onClick={
-			async () => {
-				axios.get('http://localhost:5000/api/auth/test')
-				.then(response => alert(response.data))
-				.catch(error => alert(error.message));
-			}
-			}>Click me!</button>
-		</Page> */}
-		<RegisterPage/>
+        {/* <Page>
+          <h2>Test App</h2>
+          <button onClick={
+          async () => {
+            axios.get('http://localhost:5000/api/auth/test')
+            .then(response => alert(response.data))
+            .catch(error => alert(error.message));
+          }
+          }>Click me!</button>
+        </Page> */}
+        <RegisterPage/>
       </div>
     </ChakraProvider>
   );
