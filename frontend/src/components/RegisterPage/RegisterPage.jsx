@@ -41,7 +41,7 @@ function LoginPage() {
                                 <FormLabel>Confirm password</FormLabel>
                                 <Input id='confirmPassword' name='confirmPassword' type='password' onChange={formikLogin.handleChange} value={formikLogin.values.confirmPassword}/>
                                 
-                                <Checkbox py='5vh'colorScheme='greenBrand' defaultChecked size='md'>I agree to the terms and privacy policy</Checkbox>
+                                <Checkbox py='5vh' colorScheme='greenBrand' defaultChecked size='md'>I agree to the terms and privacy policy</Checkbox>
                       
                                 <Center><SubmitButton text="Create an account" onClick={formikLogin.handleSubmit}/></Center>
 
