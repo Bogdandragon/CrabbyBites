@@ -3,10 +3,10 @@ import { extendTheme } from "@chakra-ui/react"
 const theme = extendTheme({
     colors: {
       greenBrand: {
-		500: "#b4d1a0",		// background solid button
-		600: "#8ca771",		// hover solid button
-		700: "#738862",		// click solid button
-      },
+				500: "#8ca771",		// background solid button
+				600: "#738862",		// hover solid button
+				700: "#616d48",		// click solid button
+			},
     },
   })
 
