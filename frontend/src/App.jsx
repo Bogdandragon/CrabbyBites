@@ -1,7 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
-import Button from './components/Button/Button';
 
 import { ChakraProvider } from '@chakra-ui/react'
 import Navbar from './components/Navbar/Navbar';
@@ -20,7 +19,7 @@ function App() {
 				.catch(error => alert(error.message));
 			}
 			}>Click me!</button>
-			<Button />
+
 		</Page>
       </div>
     </ChakraProvider>
