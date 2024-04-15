@@ -1,0 +1,7 @@
+@media only screen and (max-width: 768px) {
+    .column {
+        width: 100%;
+        background-color: #E3F2DD;
+        background-position: "center";
+    }
+}
