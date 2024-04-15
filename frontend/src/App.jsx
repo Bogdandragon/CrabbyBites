@@ -9,6 +9,7 @@ import RegisterPage from './components/RegisterPage/RegisterPage';
 import LoginPage from './components/LoginPage/LoginPage';
 import HomePage from './components/HomePage/HomePage';
 import theme from './components/Theme/Theme';
+import HomePage from './components/HomePage/HomePage';
 
 function App() {
   return (
