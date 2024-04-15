@@ -1,21 +1,32 @@
 import Page from "../Page/Page";
 import { useFormik } from 'formik';
-import { Container, Input, FormControl, FormLabel, FormErrorMessage, FormHelperText, Button } from '@chakra-ui/react';
-import { Image, SimpleGrid, Box, Checkbox, Card, Center } from '@chakra-ui/react'
-import { Row, Col, CardBody } from 'react-bootstrap';
-import SubmitButton from '../Buttons/SubmitButton'
-import './RegisterPage.css'
+import { Input, FormControl, FormLabel, Button, FormErrorMessage } from '@chakra-ui/react';
+import { SimpleGrid, Box, Checkbox, Card, Center } from '@chakra-ui/react'
+import { CardBody } from 'react-bootstrap';
+import SubmitButton from '../Buttons/SubmitButton';
+import './RegisterPage.css';
+import * as Yup from 'yup';
 
-function LoginPage() {
+function RegisterPage() {
     const formikLogin = useFormik({
         initialValues: {
+          email: '',
           username: '',
-          password: ''
+          password: '',
+          confirmPassword: '',
+          terms: false
         },
         onSubmit: (values) => {
           alert(JSON.stringify(values, null, 2))
         },
-    })
+        validationSchema: Yup.object().shape({
+            email: Yup.string().email('Invalid email').required('Email required'),
+            username: Yup.string().min(6, "Minimum length is 6 characters").required('Username required'),
+            password: Yup.string().min(8, "Minimum length is 8 characters").required('Password required'),
+            confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Confirm password required'),
+            terms: Yup.boolean().oneOf([true], 'You must accept the terms and privacy policy')
+        })
+    });
 
     return (
         <Page>
@@ -32,21 +43,44 @@ function LoginPage() {
                             <Center><h2 className='title-font'>Register</h2></Center>
                             <Center><h6>Create your account in seconds</h6></Center>
                             <FormControl py='5vh' onSubmit={formikLogin.handleSubmit}>
-                                <FormLabel>Email address</FormLabel>
-                                <Input id='email' name='email' type='email' onChange={formikLogin.handleChange} value={formikLogin.values.email}/>
-                                <FormLabel>Username</FormLabel>
-                                <Input id='username' name='username' type='text' onChange={formikLogin.handleChange} value={formikLogin.values.username}/>
-                                <FormLabel>Create password</FormLabel>
-                                <Input id='password' name='password' type='password' onChange={formikLogin.handleChange} value={formikLogin.values.password}/>
-                                <FormLabel>Confirm password</FormLabel>
-                                <Input id='confirmPassword' name='confirmPassword' type='password' onChange={formikLogin.handleChange} value={formikLogin.values.confirmPassword}/>
-                                
-                                <Checkbox py='5vh' colorScheme='greenBrand' defaultChecked size='md'>I agree to the terms and privacy policy</Checkbox>
-                      
+                                <FormControl isInvalid={formikLogin.errors.email && formikLogin.touched.email} onChange={formikLogin.handleChange}>
+                                    <FormLabel>Email address</FormLabel>
+                                    <Input id='email' name='email' type='email' value={formikLogin.values.email}/>
+                                    <FormErrorMessage>
+                                        {formikLogin.errors.email}
+                                    </FormErrorMessage>
+                                </FormControl>
+                                <FormControl isInvalid={formikLogin.errors.username && formikLogin.touched.username} onChange={formikLogin.handleChange} >
+                                    <FormLabel>Username</FormLabel>
+                                    <Input id='username' name='username' type='text' value={formikLogin.values.username}/>
+                                    <FormErrorMessage>
+                                        {formikLogin.errors.username}
+                                    </FormErrorMessage>
+                                </FormControl>
+                                <FormControl isInvalid={formikLogin.errors.password && formikLogin.touched.password} onChange={formikLogin.handleChange} >
+                                    <FormLabel>Create password</FormLabel>
+                                    <Input id='password' name='password' type='password' onChange={formikLogin.handleChange} value={formikLogin.values.password}/>
+                                    <FormErrorMessage>
+                                        {formikLogin.errors.password}
+                                    </FormErrorMessage>
+                                </FormControl>
+                                <FormControl isInvalid={formikLogin.errors.confirmPassword && formikLogin.touched.confirmPassword} onChange={formikLogin.handleChange} >
+                                    <FormLabel>Confirm password</FormLabel>
+                                    <Input id='confirmPassword' name='confirmPassword' type='password' onChange={formikLogin.handleChange} value={formikLogin.values.confirmPassword}/>
+                                    <FormErrorMessage>
+                                        {formikLogin.errors.confirmPassword}
+                                    </FormErrorMessage>
+                                </FormControl>
+                                <FormControl py='5vh' isInvalid={formikLogin.errors.terms && formikLogin.touched.terms} onChange={formikLogin.handleChange} >
+                                    <Checkbox id='terms' name='terms' colorScheme='greenBrand' size='md'>I agree to the terms and privacy policy</Checkbox>
+                                    <FormErrorMessage>
+                                        {formikLogin.errors.terms}
+                                    </FormErrorMessage>
+                                </FormControl>
                                 <Center><SubmitButton text="Create an account" onClick={formikLogin.handleSubmit}/></Center>
 
                                 <Center pt='5vh'>
-                                    Already a member? 
+                                    Already a member? &nbsp;
                                     <Button colorScheme='greenBrand' variant='link'>Login</Button>
                                 </Center>
                             </FormControl>
@@ -58,4 +92,4 @@ function LoginPage() {
     );
 }
 
-export default LoginPage;
+export default RegisterPage;
