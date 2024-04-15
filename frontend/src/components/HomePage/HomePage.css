@@ -1,0 +1,9 @@
+.food-images {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border-radius: 25px;
+    margin: 0 auto;
+    width: 50%;
+  }
+
