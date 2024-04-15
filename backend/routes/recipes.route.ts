@@ -5,6 +5,8 @@ import bcrypt from "bcrypt";
 import validators from "../common/validators";
 import adminMiddleware from "../middlewares/adminMiddleware";
 import userMiddleware from "../middlewares/userMiddleware";
+import Review from "../models/review.model";
+import Report from "../models/report.model";
 
 const router = Router();
 
@@ -25,12 +27,24 @@ router.delete("/remove/:id", userMiddleware, async (req: any, res) => {
 		return res.status(404).send("Recipe not found");
 	}
 	
-	const userId = req.user._id;
-	if (!recipe.userId.equals(userId)) {
+	if (!recipe.userId.equals(req.user._id)) {
 		return res.status(400).send("Unauthorized action");
 	}
 
-	await Recipe.findByIdAndDelete(id);
+	// update user report no
+	const updatedReports = req.user.reportNo - recipe.reportNo;
+	await req.user.updateOne({ reportNo: updatedReports });
+	// delete reviews, reports and appearances in favorites and todo lists
+	await Review.deleteMany({ recipeId: id});
+	await Report.deleteMany({ reportedEntityId: id});
+	await User.updateMany({}, {
+		$pull: {
+			favoriteRecipes: id,
+			todoRecipes: id
+		}
+	});
+
+	recipe.deleteOne();
 	return res.status(200).send("Recipe deleted successfully");
 });
 
