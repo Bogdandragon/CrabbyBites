@@ -32,8 +32,7 @@ router.delete("/remove/:id", userMiddleware, async (req: any, res) => {
 	}
 
 	// update user report no
-	const updatedReports = req.user.reportNo - recipe.reportNo;
-	await req.user.updateOne({ reportNo: updatedReports });
+	await req.user.updateOne({ $inc: {reportNo: -recipe.reportNo} });
 	// delete reviews, reports and appearances in favorites and todo lists
 	await Review.deleteMany({ recipeId: id});
 	await Report.deleteMany({ reportedEntityId: id});
