@@ -5,6 +5,7 @@ import { SimpleGrid, Box, Checkbox, Card, Center } from '@chakra-ui/react'
 import '@fontsource/dm-serif-display';
 import { Flex, Image, Heading, Menu, MenuButton, MenuList, MenuItem, IconButton } from '@chakra-ui/react';
 import { Show, Hide } from '@chakra-ui/react'
+import { Spacer } from '@chakra-ui/react'
 import SubmitButton from "../Buttons/SubmitButton";
 import './HomePage.css'
 
@@ -17,9 +18,7 @@ function HomePage() {
                         bgSize='cover'
                         bgRepeat='no-repeat'
                         w='100%' h='100%'>
-                
-                <SimpleGrid columns={2}>
-            
+                <Flex>  
                     <Center bg='#E3F2DD' h='60vh' w='33vw' ml='8vw' mt='15vh' color='black' borderRadius='25' className="column">
                         <Stack>
                             <Text fontSize='3vw' fontWeight='semibold' fontFamily= 'dm-serif-display'>WELCOME TO CRABBY BITES!</Text>
@@ -27,9 +26,9 @@ function HomePage() {
                             <Center><SubmitButton text="Let's Get Started!"/></Center>   
                         </Stack>
                     </Center>
-
+                    
                     <Show breakpoint='(min-width: 769px)'>
-                        <Box className="hide-on-mobile" display='flex' alignItems='baseline' ml='-10vh' mt='5vh'>
+                        <Box className="hide-on-mobile" display='flex' alignItems='baseline' mr='10vh' mt='5vh'>
                                 <Image src="salad.jpeg"
                                 borderRadius="20"
                                 border='1px'
@@ -46,7 +45,8 @@ function HomePage() {
                                 />    
                         </Box>
                     </Show>
-                </SimpleGrid>
+                
+                </Flex>
             </Box>
         </SimpleGrid>
         </Page>
