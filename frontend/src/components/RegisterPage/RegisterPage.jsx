@@ -1,26 +1,48 @@
 import Page from "../Page/Page";
 import { useFormik } from 'formik';
 import { Input, FormControl, FormLabel, Button, FormErrorMessage } from '@chakra-ui/react';
-import { SimpleGrid, Box, Checkbox, Card, Center } from '@chakra-ui/react'
+import { SimpleGrid, Box, Checkbox, Card, Center, useToast } from '@chakra-ui/react'
 import { CardBody } from 'react-bootstrap';
 import SubmitButton from '../Buttons/SubmitButton';
 import './RegisterPage.css';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 function RegisterPage() {
     const navigate = useNavigate();
-  
+    const toast = useToast();
+
     const formikLogin = useFormik({
         initialValues: {
-          email: '',
-          username: '',
-          password: '',
-          confirmPassword: '',
-          terms: false
+            email: '',
+            username: '',
+            password: '',
+            confirmPassword: '',
+            terms: false
         },
         onSubmit: (values) => {
-          alert(JSON.stringify(values, null, 2))
+            delete values.terms;
+            axios.post('http://localhost:5000/api/auth/register', values)
+                .then(response => {
+                    toast({
+                        title: 'Account created successfully.',
+                        description: 'Welcome to Crabby Bites!',
+                        status: 'success',
+                        duration: 5000,
+                        isClosable: true,
+                    });
+                    navigate('/login');
+                })
+                .catch(error => {
+                    toast({
+                        title: 'An error occurred.',
+                        description: error.response.data,
+                        status: 'error',
+                        duration: 5000,
+                        isClosable: true,
+                    });
+                });
         },
         validationSchema: Yup.object().shape({
             email: Yup.string().email('Invalid email').required('Email required'),
@@ -38,7 +60,7 @@ function RegisterPage() {
                     bgPosition='center'
                     bgSize='cover'
                     bgRepeat='no-repeat'
-                    w='100%' h='100%' className="hide-on-mobile"/>
+                    w='100%' h='100%' className="hide-on-mobile" />
 
                 <Box h='100%' px='5vw' textAlign='left' className="column-width pt-md-5 py-3">
                     <Card py='5vh' px='10vw'>
@@ -48,28 +70,28 @@ function RegisterPage() {
                             <FormControl py='5vh' onSubmit={formikLogin.handleSubmit}>
                                 <FormControl isInvalid={formikLogin.errors.email && formikLogin.touched.email} onChange={formikLogin.handleChange}>
                                     <FormLabel>Email address</FormLabel>
-                                    <Input id='email' name='email' type='email' value={formikLogin.values.email}/>
+                                    <Input id='email' name='email' type='email' value={formikLogin.values.email} />
                                     <FormErrorMessage>
                                         {formikLogin.errors.email}
                                     </FormErrorMessage>
                                 </FormControl>
                                 <FormControl isInvalid={formikLogin.errors.username && formikLogin.touched.username} onChange={formikLogin.handleChange} >
                                     <FormLabel>Username</FormLabel>
-                                    <Input id='username' name='username' type='text' value={formikLogin.values.username}/>
+                                    <Input id='username' name='username' type='text' value={formikLogin.values.username} />
                                     <FormErrorMessage>
                                         {formikLogin.errors.username}
                                     </FormErrorMessage>
                                 </FormControl>
                                 <FormControl isInvalid={formikLogin.errors.password && formikLogin.touched.password} onChange={formikLogin.handleChange} >
                                     <FormLabel>Create password</FormLabel>
-                                    <Input id='password' name='password' type='password' onChange={formikLogin.handleChange} value={formikLogin.values.password}/>
+                                    <Input id='password' name='password' type='password' onChange={formikLogin.handleChange} value={formikLogin.values.password} />
                                     <FormErrorMessage>
                                         {formikLogin.errors.password}
                                     </FormErrorMessage>
                                 </FormControl>
                                 <FormControl isInvalid={formikLogin.errors.confirmPassword && formikLogin.touched.confirmPassword} onChange={formikLogin.handleChange} >
                                     <FormLabel>Confirm password</FormLabel>
-                                    <Input id='confirmPassword' name='confirmPassword' type='password' onChange={formikLogin.handleChange} value={formikLogin.values.confirmPassword}/>
+                                    <Input id='confirmPassword' name='confirmPassword' type='password' onChange={formikLogin.handleChange} value={formikLogin.values.confirmPassword} />
                                     <FormErrorMessage>
                                         {formikLogin.errors.confirmPassword}
                                     </FormErrorMessage>
@@ -80,11 +102,11 @@ function RegisterPage() {
                                         {formikLogin.errors.terms}
                                     </FormErrorMessage>
                                 </FormControl>
-                                <Center><SubmitButton text="Create an account" onClick={formikLogin.handleSubmit}/></Center>
+                                <Center><SubmitButton text="Create an account" onClick={formikLogin.handleSubmit} /></Center>
 
                                 <Center pt='5vh'>
                                     Already a member? &nbsp;
-                                    <Button colorScheme='greenBrand' variant='link'>Login</Button>
+                                    <Button colorScheme='greenBrand' variant='link' onClick={() => navigate("/login")}>Login</Button>
                                 </Center>
                             </FormControl>
                         </CardBody>
