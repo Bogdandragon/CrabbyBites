@@ -64,7 +64,7 @@ router.get("/view", adminMiddleware, async (req, res) => {
 });
 
 
-router.delete("/remove/:id", async (req, res) => {
+router.delete("/remove/:id", adminMiddleware, async (req, res) => {
 	// remove user identified by "id" from database
 	const { id } = req.params;
 	const user = await User.findById(id);
