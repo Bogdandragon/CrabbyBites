@@ -5,8 +5,8 @@
     },
 
     "email": "didi@didirescu.com",
-    "username": "didi",
-    "password": "$2y$10$eLcqL1FOtE/D8ffp3pPzzu2HlBLP3lkrkpQ8NaNGUJY1yaTjTUB6K",
+    "username": "didinescu",
+    "password": "$2b$10$DJUTnomTdrixD5OmOlljrOkhcr7iRfIK1kZS5k.3SBNPeAICzKLpO",
     "type": "USER",
     "favoriteRecipes": [
         {
@@ -33,8 +33,8 @@
     },
 
     "email": "test@test.com",
-    "username": "TEST",
-    "password": "$2y$10$EtrxRbeXAbMR3JtrIO3IDum1AcN0CCdCBqeWhBrXYEjMXkqBzkhrS",
+    "username": "TESTulescu",
+    "password": "$2b$10$fBM8c4u0c9XCrnQ3sVhdoeXzIFBsQevJlClsAjEuQ1g7FkdnlGARG",
     "type": "USER",
     "favoriteRecipes": [],
     "todoRecipes": [
