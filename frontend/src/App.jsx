@@ -6,7 +6,9 @@ import { ChakraProvider } from '@chakra-ui/react'
 import Navbar from './components/Navbar/Navbar';
 import Page from './components/Page/Page';
 import RegisterPage from './components/RegisterPage/RegisterPage';
+import LoginPage from './components/LoginPage/LoginPage';
 import theme from './components/Theme/Theme';
+import HomePage from './components/HomePage/HomePage';
 
 function App() {
   return (
@@ -22,7 +24,7 @@ function App() {
           }
           }>Click me!</button>
         </Page> */}
-        <RegisterPage/>
+        <HomePage/>
       </div>
     </ChakraProvider>
   );
