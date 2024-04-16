@@ -4,9 +4,12 @@ import { Container, Input, FormControl, FormLabel, FormErrorMessage, FormHelperT
 import { Image, SimpleGrid, Box, Checkbox, Card, Center } from '@chakra-ui/react'
 import { Row, Col, CardBody } from 'react-bootstrap';
 import SubmitButton from '../Buttons/SubmitButton'
-import './RegisterPage.css'
+import './RegisterPage.css';
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
+    const navigate = useNavigate();
+
     const formikLogin = useFormik({
         initialValues: {
           username: '',
@@ -15,7 +18,7 @@ function LoginPage() {
         onSubmit: (values) => {
           alert(JSON.stringify(values, null, 2))
         },
-    })
+    });
 
     return (
         <Page>

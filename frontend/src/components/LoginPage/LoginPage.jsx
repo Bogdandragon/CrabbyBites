@@ -1,19 +1,44 @@
 import Page from "../Page/Page";
 import { useFormik } from 'formik';
 import { Input, FormControl, FormLabel, Button } from '@chakra-ui/react';
-import { SimpleGrid, Box, Checkbox, Card, Center } from '@chakra-ui/react'
+import { SimpleGrid, Box, Checkbox, Card, Center, useToast } from '@chakra-ui/react'
 import { CardBody } from 'react-bootstrap';
 import SubmitButton from '../Buttons/SubmitButton'
-import './LoginPage.css'
+import './LoginPage.css';
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 function LoginPage() {
+    const navigate = useNavigate();
+    const toast = useToast();
+
     const formikLogin = useFormik({
         initialValues: {
           username: '',
           password: ''
         },
         onSubmit: (values) => {
-          alert(JSON.stringify(values, null, 2))
+          axios.post('http://localhost:5000/api/auth/login', values)
+          .then(response => {
+            window.localStorage.setItem('token', response.data);
+            toast({
+                title: 'Login successful.',
+                description: 'Welcome back!',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+            });
+            navigate('/');
+          })
+          .catch(error => {
+            toast({
+                title: 'An error occurred.',
+                description: error.response.data,
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+            });
+          });
         },
     })
 

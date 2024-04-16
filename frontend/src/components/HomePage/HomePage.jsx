@@ -7,11 +7,14 @@ import { Flex, Image, Heading, Menu, MenuButton, MenuList, MenuItem, IconButton 
 import { Show, Hide } from '@chakra-ui/react'
 import { Spacer } from '@chakra-ui/react'
 import SubmitButton from "../Buttons/SubmitButton";
-import './HomePage.css'
+import './HomePage.css';
+import { useNavigate } from 'react-router-dom';
 
 function HomePage() {
+    const navigate = useNavigate();
+
     return (
-        <Page>
+        <Page navigate={navigate}>
         <Box w='100vw' h='90vh'>
             <Box bgImage={'cookingBackground.jpeg'}
                 bgPosition='center'
@@ -21,7 +24,7 @@ function HomePage() {
                 w='100%' h='100%'>
                 <Flex px="5vw">
                     <Center pt="15vh" minW="50%">
-                        <Center bg='#E3F2DD' minH='60vh' w='33vw' py="2vh" color='black' borderRadius='25' className="column">
+                        <Center bg='#E3F2DD' minH='60vh' py="2vh" color='black' borderRadius='25' className="column">
                             <Stack>
                                 <Text fontSize='5vh' fontWeight='semibold' fontFamily='dm-serif-display' mb="0">WELCOME TO</Text>
                                 <Text fontSize='5vh' fontWeight='semibold' fontFamily='dm-serif-display' mb="3vh">CRABBY BITES!</Text>
