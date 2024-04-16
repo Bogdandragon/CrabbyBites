@@ -32,9 +32,20 @@ const register = joi.object({
     })
 });
 
+const status = joi.object({
+    id: joi.string().required().messages({
+        'string.empty': 'Id is required'
+    }),
+    status: joi.string().required().valid('APPROVED', 'REJECTED').messages({
+        'string.empty': 'Status is required',
+        'any.only': 'Status must be either APPROVED or REJECTED'
+    })
+});
+
 const validators = {
     login,
-    register
+    register,
+    status
 }
 
 export default validators;

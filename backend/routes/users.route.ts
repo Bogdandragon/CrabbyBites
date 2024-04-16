@@ -21,14 +21,14 @@ router.post("/login", async (req, res) => {
 		let user = await User.findOne({ username: username });
 
 		if (!user || !user.comparePassword(password))
-			return res.status(404).send("Username sau parolă greșite!");
+			return res.status(404).send("Username and password do not match!");
 
 		const payload = {id: user._id};
 		const token = jwt.sign(payload, constants.JWT_SECRET);
 
 		return res.send(token);
 	} catch (e) {
-		return res.status(400).send("S-a produs o eroare! " + e);
+		return res.status(400).send("Error: " + e);
 	}
 });
 
@@ -41,15 +41,15 @@ router.post('/register', async function (req: any, res: any, next: any) {
 		let user = await User.findOne({ username: username });
 
 		if(user != null)
-			return res.status(400).send("Utilizatorul deja există!");
+			return res.status(400).send("User already exists!");
 
 		user = new User({ email, username, password, type: "USER" });
 
 		await user.save();
 
-		return res.send("Înregistrat cu succes!");
+		return res.send("Registered successfully!");
 	} catch (e) {
-		return res.status(400).send("S-a produs o eroare! " + e);
+		return res.status(400).send("Error: " + e);
 	}
 });
 

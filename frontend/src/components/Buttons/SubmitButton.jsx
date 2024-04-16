@@ -1,10 +1,10 @@
 import "./Buttons.css";
 import { Button, Stack } from '@chakra-ui/react';
 
-function SubmitButton({text, onClick}) {
+function SubmitButton({text, onClick, size='md'}) {
     return (
         <Stack direction='row' align='center'>
-            <Button type="Submit" colorScheme='greenBrand' variant='solid' size='md' onClick={onClick}>
+            <Button type="Submit" colorScheme='greenBrand' variant='solid' size={size} onClick={onClick}>
                 {text}
             </Button>
         </Stack>
