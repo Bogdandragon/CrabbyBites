@@ -12,43 +12,49 @@ import './HomePage.css'
 function HomePage() {
     return (
         <Page>
-        <SimpleGrid columns={1} spacing={0} w='100vw' h='90vh'>
+        <Box w='100vw' h='90vh'>
             <Box bgImage={'cookingBackground.jpeg'}
-                        bgPosition='center'
-                        bgSize='cover'
-                        bgRepeat='no-repeat'
-                        w='100%' h='100%'>
-                <Flex>  
-                    <Center bg='#E3F2DD' h='60vh' w='33vw' ml='8vw' mt='15vh' color='black' borderRadius='25' className="column">
-                        <Stack>
-                            <Text fontSize='3vw' fontWeight='semibold' fontFamily= 'dm-serif-display'>WELCOME TO CRABBY BITES!</Text>
-                            <Text fontSize='1.5vw' fontWeight='semibold' fontFamily= 'dm-serif-display'>Welcome to our cooking recipes social platform, where culinary enthusiasts come together to share, discover and create delicious dishes from around the world.</Text>
-                            <Center><SubmitButton text="Let's Get Started!"/></Center>   
-                        </Stack>
+                bgPosition='center'
+                bgSize='cover'
+                bgRepeat='no-repeat'
+                bgClip={'border-box'}
+                w='100%' h='100%'>
+                <Flex px="5vw">
+                    <Center pt="15vh" minW="50%">
+                        <Center bg='#E3F2DD' minH='60vh' w='33vw' py="2vh" color='black' borderRadius='25' className="column">
+                            <Stack>
+                                <Text fontSize='5vh' fontWeight='semibold' fontFamily='dm-serif-display' mb="0">WELCOME TO</Text>
+                                <Text fontSize='5vh' fontWeight='semibold' fontFamily='dm-serif-display' mb="3vh">CRABBY BITES!</Text>
+                                <Text fontSize='2.5vh' fontWeight='semibold' fontFamily='dm-serif-display' mb="4vh" mx="2vw">Welcome to our cooking recipes social platform, where culinary enthusiasts come together to share, discover and create delicious dishes from around the world.</Text>
+                                <Center><SubmitButton text="Let's Get Started!" size="lg"/></Center>   
+                            </Stack>
+                        </Center>
                     </Center>
                     
-                    <Show breakpoint='(min-width: 769px)'>
-                        <Box className="hide-on-mobile" display='flex' alignItems='baseline' mr='10vh' mt='5vh'>
+                    <Show breakpoint='(min-width: 769px)' w="50%">
+                        <Flex alignItems='baseline' pt="5vh">
                                 <Image src="salad.jpeg"
-                                borderRadius="20"
-                                border='1px'
-                                boxShadow='xl'
-                                width="23vw" 
-                                height="70vh"
-                                transform='translate(35%, 15%)'
+                                    borderRadius="20"
+                                    border='1px'
+                                    boxShadow='xl'
+                                    width="23vw" 
+                                    height="70vh"
+                                    transform='translate(35%, 15%)'
+                                    objectFit={'cover'}
                                 />
                                 <Image src="food.jpeg"
-                                border='1px'
-                                borderRadius="20"
-                                width="21vw"
-                                height="70vh"  
+                                    border='1px'
+                                    borderRadius="20"
+                                    width="21vw"
+                                    height="70vh"
+                                    objectFit={'cover'}
                                 />    
-                        </Box>
+                        </Flex>
                     </Show>
                 
                 </Flex>
             </Box>
-        </SimpleGrid>
+        </Box>
         </Page>
     );
 
