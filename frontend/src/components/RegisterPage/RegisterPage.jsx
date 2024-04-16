@@ -6,8 +6,11 @@ import { CardBody } from 'react-bootstrap';
 import SubmitButton from '../Buttons/SubmitButton';
 import './RegisterPage.css';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 
 function RegisterPage() {
+    const navigate = useNavigate();
+  
     const formikLogin = useFormik({
         initialValues: {
           email: '',

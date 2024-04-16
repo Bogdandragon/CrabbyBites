@@ -4,6 +4,8 @@ type DIFFICULTY = 'EASY' | 'MEDIUM' | 'HARD'
 
 type STATUS = 'PENDING' | 'APPROVED' | 'REJECTED'
 
+type MEASUREMENT = 'g' | 'kg' | 'ml' | 'l' | 'tsp' | 'tbsp' | 'cup' | 'pint' | 'quart' | 'gallon' | 'oz' | 'lb' | 'mg' | 'mcg' | 'unit';
+
 interface IRecipe{
     _id : mongoose.Types.ObjectId,
     name: string,
@@ -16,7 +18,8 @@ interface IRecipe{
     ingredients: {
         name: string,
         quantity: number,
-        measurement: string
+        measurement: MEASUREMENT,
+        ingredientId: mongoose.Types.ObjectId | null
     }[],
     instructions: string[],
     status: STATUS,
