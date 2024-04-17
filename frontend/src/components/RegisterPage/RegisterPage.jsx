@@ -57,7 +57,7 @@ function RegisterPage() {
 
     return (
         <Page>
-            <SimpleGrid columns={2} spacing={0} w='100vw' h='90vh'>
+            <SimpleGrid columns={2} spacing={0} w='100%' h='90vh'>
                 <Box bgImage={'cookingBackground.jpeg'}
                     bgPosition='center'
                     bgSize='cover'
@@ -66,7 +66,7 @@ function RegisterPage() {
 
                 <Box h='100%' px='5vw' textAlign='left' className="column-width pt-md-5 py-3">
                     <Card py='5vh' px='10vw'>
-                        <CardBody colorScheme='white'>
+                        <CardBody>
                             <Center><h2 className='title-font'>Register</h2></Center>
                             <Center><h6>Create your account in seconds</h6></Center>
                             <FormControl py='5vh' onSubmit={formikLogin.handleSubmit}>

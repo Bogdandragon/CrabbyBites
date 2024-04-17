@@ -49,7 +49,7 @@ function LoginPage() {
 
     return (
         <Page>
-            <SimpleGrid columns={2} spacing={0} w='100vw' h='90vh'>
+            <SimpleGrid columns={2} spacing={0} w='100%' h='90vh'>
                 <Box bgImage={'cookingBackground.jpeg'}
                     bgPosition='center'
                     bgSize='cover'
@@ -58,7 +58,7 @@ function LoginPage() {
 
                 <Box h='100%' py='10vh' px='5vw' textAlign='left' className="column-width">
                     <Card py='10vh' px='10vw'>
-                        <CardBody colorScheme='white'>
+                        <CardBody>
                             <Center><h2 className='title-font'>Login</h2></Center>
                             <Center><h6>Log into your account in seconds</h6></Center>
                             <FormControl py='5vh' onSubmit={formikLogin.handleSubmit}>

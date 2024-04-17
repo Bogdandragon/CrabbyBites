@@ -9,7 +9,7 @@ function Navbar() {
     let token = window.localStorage.getItem('token');
 
     return (
-        <Flex height={"10vh"} w={"100vw"} justifyContent="space-between" alignItems="center" className='px-md-5 px-2' overflow="hidden">
+        <Flex height={"10vh"} w={"100%"} justifyContent="space-between" alignItems="center" className='px-md-5 px-2' overflow="hidden">
             <Image
                 src="crab.png"
                 alt="Logo"
