@@ -6,8 +6,10 @@ import { CardBody } from 'react-bootstrap';
 import SubmitButton from '../Buttons/SubmitButton';
 import './RegisterPage.css';
 import * as Yup from 'yup';
+import YupPassword from 'yup-password';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+YupPassword(Yup);
 
 function RegisterPage() {
     const navigate = useNavigate();
@@ -47,7 +49,7 @@ function RegisterPage() {
         validationSchema: Yup.object().shape({
             email: Yup.string().email('Invalid email').required('Email required'),
             username: Yup.string().min(6, "Minimum length is 6 characters").required('Username required'),
-            password: Yup.string().min(8, "Minimum length is 8 characters").required('Password required'),
+            password: Yup.string().min(12, "Minimum length is 12 characters").minLowercase(1, "Password must contain at least one lowercase letter").minUppercase(1, "Password must contain at least one uppercase letter").minNumbers(1, "Password must contain at least one number").minSymbols(1, "Password must contain at least one special character").required('Password required'),
             confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Confirm password required'),
             terms: Yup.boolean().oneOf([true], 'You must accept the terms and privacy policy')
         })
