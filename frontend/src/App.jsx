@@ -7,25 +7,28 @@ import Navbar from './components/Navbar/Navbar';
 import Page from './components/Page/Page';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import LoginPage from './components/LoginPage/LoginPage';
-import theme from './components/Theme/Theme';
 import HomePage from './components/HomePage/HomePage';
-import { Route, BrowserRouter, Routes, useNavigate } from 'react-router-dom';
+import AdminPage from './components/AdminPage/AdminPage';
+import theme from './components/Theme/Theme';
 
 function App() {
-	// create routes for all components
-	return (
-		<ChakraProvider theme={theme}>
-			<div className="App">
-				<BrowserRouter>
-					<Routes>
-						<Route path="/register" element={<RegisterPage />} />
-						<Route path="/login" element={<LoginPage />} />
-						<Route path="/" element={<HomePage />} />
-					</Routes>
-				</BrowserRouter>
-			</div>
-		</ChakraProvider>
-	);
+  return (
+    <ChakraProvider theme={theme}>
+      <div className="App">
+        {/* <Page>
+          <h2>Test App</h2>
+          <button onClick={
+          async () => {
+            axios.get('http://localhost:5000/api/auth/test')
+            .then(response => alert(response.data))
+            .catch(error => alert(error.message));
+          }
+          }>Click me!</button>
+        </Page> */}
+        <AdminPage/>
+      </div>
+    </ChakraProvider>
+  );
 }
 
 export default App;
