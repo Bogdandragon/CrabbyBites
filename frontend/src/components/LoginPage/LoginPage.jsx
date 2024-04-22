@@ -57,7 +57,7 @@ function LoginPage() {
                             <Center><h2 className='title-font'>Login</h2></Center>
                             <Center><h6>Log into your account in seconds</h6></Center>
                             <FormControl py='5vh' onSubmit={formikLogin.handleSubmit}>
-                                <FormLabel>Username or email</FormLabel>
+                                <FormLabel>Username</FormLabel>
                                 <Input id='username' name='username' type='text' onChange={formikLogin.handleChange} value={formikLogin.values.username}/>
                                 <FormLabel>Password</FormLabel>
                                 <Input id='password' name='password' type='password' onChange={formikLogin.handleChange} value={formikLogin.values.password}/>
