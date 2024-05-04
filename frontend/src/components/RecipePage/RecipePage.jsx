@@ -3,9 +3,7 @@ import { Text } from '@chakra-ui/react';
 import { Stack, HStack, VStack } from '@chakra-ui/react';
 import { SimpleGrid, Box, Checkbox, Card, Center, useToast } from '@chakra-ui/react'
 import '@fontsource/dm-serif-display';
-import { Flex, Image, Heading, Menu, MenuButton, MenuList, MenuItem, IconButton } from '@chakra-ui/react';
-import { Show, Hide } from '@chakra-ui/react'
-import { Spacer } from '@chakra-ui/react'
+import { Flex, Image } from '@chakra-ui/react';
 import SubmitButton from "../Buttons/SubmitButton";
 import InfoButton from "../Buttons/InfoButton";
 import './RecipePage.css';
@@ -47,15 +45,15 @@ function RecipePage() {
             alignItems="center"
           >
             {/* Background Image */}
-            <Box
-              //background={`url('cookingBackground.jpeg') fixed center / cover repeat`}
+            <Flex
+              justifyContent="flex-start"
               bgImage={'cookingBackground.jpeg'}
               bgSize='cover'
               bgRepeat='repeat'
               position="absolute"
               width="100%"
               height="100%"
-              top="5vw"
+              top="4.5vw"
             >
               {/* White Box centered within the Background Image */}
             {isLoading ? <Text>Loading...</Text> :
@@ -63,18 +61,15 @@ function RecipePage() {
                 backgroundColor="rgba(255, 255, 255, 1)" 
                 width="90%" 
                 position="absolute"
-                top="125vh"
+                top="6vh"
                 left="50%"
-                transform="translate(-50%, -50%)"
+                transform="translateX(-50%)"
                 display="flex"
                 flexDirection="column"
                 justifyContent="flex-start"
                 alignItems="center"
                 textAlign="center"
-                marginTop="30vh"
-                marginBottom="4vh"
                 borderRadius="5vh"
-                overflow="hidden"
               >
                 <Text fontSize="10vh" fontWeight="bold" mb="5vh" maxWidth="50%" maxHeight="25%">
                     {recipe.name.toUpperCase()}
@@ -115,7 +110,13 @@ function RecipePage() {
                         <Text fontSize="3vh" fontWeight="bold" color="rgba(242, 120, 30, 1)" textAlign="left">
                             INSTRUCTIONS
                         </Text>
-                        <Text textAlign="left"> {recipe.instructions} </Text>
+                        <ul>
+                            {recipe.instructions.map((instruction) => (
+                                <li>
+                                    <Text textAlign="left"> {instruction} </Text>
+                                </li>
+                            ))}
+                        </ul>
                         <InfoButton text="Share" />
                     </Box>
 
@@ -131,14 +132,20 @@ function RecipePage() {
                             <Text fontSize="3vh" fontWeight="bold" color="rgba(255, 120, 30, 1)" textAlign="left">
                                 INGREDIENTS
                             </Text>
-                            <Text textAlign="left">  </Text>
+                            <ul>
+                                {recipe.ingredients.map((ingredient) => (
+                                    <li>
+                                        <Text textAlign="left">{`${ingredient.quantity} ${ingredient.measurement} ${ingredient.name}`}</Text>
+                                    </li>
+                                ))}
+                            </ul>
                         </Box>
                     </Box>
                 </SimpleGrid>
 
               </Box>
             }
-            </Box>
+            </Flex>
           </Box>
         </Page>
       );
