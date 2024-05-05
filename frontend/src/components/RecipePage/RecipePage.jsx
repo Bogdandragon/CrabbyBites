@@ -16,10 +16,11 @@ import { TimeIcon, MoonIcon, BellIcon, StarIcon } from '@chakra-ui/icons'
 function RecipePage() {
     const navigate = useNavigate();
     const toast = useToast();
+    const recipeId = "6636385502482879b4adf223";
 
     const [recipe, setRecipe] = useState();
     const [isLoading, setIsLoading] = useState(true);
-    const apiUrl = 'http://localhost:5000/api/recipes/6636385502482879b4adf223'; // Replace with your API endpoint URL
+    const apiUrl = "http://localhost:5000/api/recipes/" + recipeId;
 
     useEffect(() => {
         async function fetchRecipe() {
@@ -28,7 +29,7 @@ function RecipePage() {
                 setRecipe(response.data);
                 setIsLoading(false);
             } catch (error) {
-                console.error('Error fetching recipe:', error);
+                console.error("Error fetching recipe:", error);
                 setIsLoading(false);
             }
         }
@@ -45,6 +46,7 @@ function RecipePage() {
             alignItems="center"
           >
             {/* Background Image */}
+            {isLoading ? <Text>Loading...</Text> :
             <Flex
               justifyContent="flex-start"
               bgImage={'cookingBackground.jpeg'}
@@ -56,7 +58,6 @@ function RecipePage() {
               top="10vh"
             >
               {/* White Box centered within the Background Image */}
-            {isLoading ? <Text>Loading...</Text> :
               <Box
                 backgroundColor="rgba(255, 255, 255, 1)" 
                 width="90%" 
@@ -144,8 +145,8 @@ function RecipePage() {
                 </SimpleGrid>
 
               </Box>
-            }
             </Flex>
+            }
           </Box>
         </Page>
       );
