@@ -9,6 +9,7 @@ import RegisterPage from './components/RegisterPage/RegisterPage';
 import LoginPage from './components/LoginPage/LoginPage';
 import theme from './components/Theme/Theme';
 import HomePage from './components/HomePage/HomePage';
+import AddRecipePage from './components/AddRecipePage/AddRecipePage';
 import { Route, BrowserRouter, Routes, useNavigate } from 'react-router-dom';
 
 function App() {
@@ -18,9 +19,11 @@ function App() {
 			<div className="App">
 				<BrowserRouter>
 					<Routes>
+						{/* <Route path="/" element={<HomePage />} /> */}
 						<Route path="/register" element={<RegisterPage />} />
 						<Route path="/login" element={<LoginPage />} />
-						<Route path="/" element={<HomePage />} />
+						{/* <Route path="/add-recipe" element={<AddRecipePage />} /> */}
+						<Route path="/" element={<AddRecipePage />} />
 					</Routes>
 				</BrowserRouter>
 			</div>
