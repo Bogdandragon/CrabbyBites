@@ -51,9 +51,9 @@ function RecipePage() {
               bgSize='cover'
               bgRepeat='repeat'
               position="absolute"
-              width="100%"
-              height="100%"
-              top="4.5vw"
+              width="100vw"
+              height="100vh"
+              top="10vh"
             >
               {/* White Box centered within the Background Image */}
             {isLoading ? <Text>Loading...</Text> :
