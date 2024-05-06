@@ -42,10 +42,27 @@ const status = joi.object({
     })
 });
 
+const review = joi.object({
+    id: joi.string().required().messages({
+        'string.empty': 'Id is required'
+    }),
+    rating: joi.number().required().precision(1).min(1).max(5).messages({
+        'number.base': 'Rating must be a number',
+        'number.empty': 'Rating is required',
+        'number.min': 'Rating must be at least 1',
+        'number.max': 'Rating must be at most 5',
+        'number.precision': 'Rating must have at most one decimal'
+    }),
+    comment: joi.string().optional().mesagges({
+        
+    })
+});
+
 const validators = {
     login,
     register,
-    status
+    status,
+    review
 }
 
 export default validators;
