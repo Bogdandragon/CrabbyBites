@@ -1,7 +1,7 @@
 import Page from "../Page/Page";
 import { Text } from '@chakra-ui/react';
 import { Stack, HStack, VStack } from '@chakra-ui/react';
-import { SimpleGrid, Box, Checkbox, Card, Center, useToast } from '@chakra-ui/react'
+import { SimpleGrid, Box, Checkbox, Card, Center, useToast, Container } from '@chakra-ui/react'
 import '@fontsource/dm-serif-display';
 import { Flex, Image } from '@chakra-ui/react';
 import SubmitButton from "../Buttons/SubmitButton";
@@ -26,6 +26,7 @@ function RecipePage() {
         async function fetchRecipe() {
             try {
                 const response = await axios.get(apiUrl);
+                response.data.picture = 'data:image/png;base64,' + response.data.picture;
                 setRecipe(response.data);
                 setIsLoading(false);
             } catch (error) {
@@ -53,7 +54,7 @@ function RecipePage() {
               bgSize='cover'
               bgRepeat='repeat'
               position="absolute"
-              width="100vw"
+              width="100%"
               height="100vh"
               top="10vh"
             >
@@ -72,42 +73,44 @@ function RecipePage() {
                 textAlign="center"
                 borderRadius="5vh"
               >
-                <Text fontSize="10vh" fontWeight="bold" mb="5vh" maxWidth="50%" maxHeight="25%">
+                <Text fontSize="5vh" fontWeight="bold" my="5vh" maxWidth="100%" maxHeight="25%">
                     {recipe.name.toUpperCase()}
                 </Text>
 
-                <Flex justifyContent="space-between" width="45%" mb="5vh">
-                    <SubmitButton text="Add to TODO List" size="lg" />
-                    <SubmitButton text="Add to Favorites" size="lg"/>
-                    <SubmitButton text="Report" size="sm"/>
+                <Flex justifyContent="center" width="45%" mb="5vh" wrap="wrap">
+                    <Container m="1vh" w="auto"><SubmitButton text="Add to TODO List" size="md" /></Container>
+                    <Container m="1vh" w="auto"><SubmitButton text="Add to Favorites" size="md"/></Container>
+                    <Container m="1vh" w="auto"><SubmitButton text="Report" size="md"/></Container>
                 </Flex>
 
-                <Flex width="50%" justifyContent="space-between" mb="0vh">
-                    <Text fontSize="2.5vh" fontWeight="bold">
+                <Flex justifyContent="center" mb="0vh" wrap="wrap" px="1vh">
+                    <Text fontSize="2vh" fontWeight="bold" mx-="1vh">
                         {recipe.category.toUpperCase()}
                     </Text>
-                    <Text fontSize="2.5vh" fontWeight="bold">
-                        <TimeIcon mr="1vh" />
+                    <Text fontSize="2vh" fontWeight="bold" mx="1vh">
+                        <TimeIcon viewBox="0 0 25 30" mr="3px" />
                         {recipe.time}
                     </Text>
-                    <Text fontSize="2.5vh" fontWeight="bold">
-                        <MoonIcon mr="1vh" />
+                    <Text fontSize="2vh" fontWeight="bold" mx="1vh">
+                        <MoonIcon viewBox="0 0 25 30" mr="3px" />
                         {recipe.difficulty.toUpperCase()}
                     </Text>
-                    <Text fontSize="2.5vh" fontWeight="bold">
-                        <BellIcon mr="1vh" />
+                    <Text fontSize="2vh" fontWeight="bold" mx="1vh">
+                        <BellIcon viewBox="0 0 25 30" mr="3px" />
                         {recipe.portions} SERVINGS
                     </Text>
-                    <Text fontSize="2.5vh" fontWeight="bold">
-                        <StarIcon mr="1vh" />
+                    <Text fontSize="2vh" fontWeight="bold" mx="1vh">
+                        <StarIcon viewBox="0 0 25 30" mr="3px" />
                         {recipe.rating}
                     </Text>
                 </Flex>
 
-                <Image src="roastedChicken.png" alt="Recipe Image" w="80vw" h="100vh" borderRadius="5vh" />
+                <Flex w="80%" overflow="hidden" p="0" borderRadius="5vh">
+                    <Image src={recipe.picture} alt="Recipe Image" minW="100%" maxW="100vw" minH="50vh"/>
+                </Flex>
 
-                <SimpleGrid columns={2} spacing={10} mt="20px" width="80%" alignContent="left">
-                    <Box>
+                <SimpleGrid columns={{base: 1, lg: 2}} spacing={10} mt="20px" width="80%" alignContent="left">
+                    <Box order={{base: 1, lg: 0}}>
                         <Text fontSize="3vh" fontWeight="bold" color="rgba(242, 120, 30, 1)" textAlign="left">
                             INSTRUCTIONS
                         </Text>
@@ -118,7 +121,6 @@ function RecipePage() {
                                 </li>
                             ))}
                         </ul>
-                        <InfoButton text="Share" />
                     </Box>
 
                     <Box backgroundColor="rgba(247, 229, 198, 1)" borderRadius="5vh" padding="3vh">
@@ -143,7 +145,9 @@ function RecipePage() {
                         </Box>
                     </Box>
                 </SimpleGrid>
-
+                <Center my="1vh">
+                    <InfoButton text="Share" />
+                </Center>
               </Box>
             </Flex>
             }
