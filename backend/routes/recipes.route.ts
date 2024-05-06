@@ -20,7 +20,7 @@ router.get("/review", adminMiddleware, async (req, res) => {
 });
 
 
-router.post("/addRecipe", async (req, res) => {
+router.post("/add", async (req, res) => {
 	let validate = validators.addRecipe.validate(req.body);
 	if (validate.error) {
 		return res.status(400).send(validate.error.message);
