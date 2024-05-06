@@ -10,6 +10,9 @@ import LoginPage from './components/LoginPage/LoginPage';
 import theme from './components/Theme/Theme';
 import HomePage from './components/HomePage/HomePage';
 import RecipePage from './components/RecipePage/RecipePage';
+import CommentAdminPage from './components/CommentAdminPage/CommentAdminPage'
+import RecipeAdminPage from './components/RecipeAdminPage/RecipeAdminPage'
+import UserAdminPage from './components/UserAdminPage/UserAdminPage'
 import { Route, BrowserRouter, Routes, useNavigate } from 'react-router-dom';
 
 function App() {
@@ -19,10 +22,17 @@ function App() {
 			<div className="App">
 				<BrowserRouter>
 					<Routes>
-						<Route path="/register" element={<RegisterPage />} />
+						{/* <Route path="/register" element={<RegisterPage />} />
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/" element={<HomePage />} />
-						<Route path="/recipes" element={<RecipePage />} />
+						<Route path="/recipes" element={<RecipePage />} /> */}
+						{/* <Route path="/" element={<CommentAdminPage />} /> */}
+						{/* <Route path="/" element={<RecipeAdminPage />} /> */}
+						<Route path="/" element={<UserAdminPage />} />
+
+
+
+
 					</Routes>
 				</BrowserRouter>
 			</div>
