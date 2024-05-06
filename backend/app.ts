@@ -18,7 +18,7 @@ mongoose.connect(constants.mongoURL)
     })
     .catch(e => console.log(e));
 
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
