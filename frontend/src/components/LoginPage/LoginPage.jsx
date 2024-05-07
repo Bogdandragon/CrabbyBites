@@ -66,7 +66,7 @@ function LoginPage() {
                                         <Checkbox colorScheme='greenBrand' defaultChecked size='md'>Keep me logged in</Checkbox>
                                     </Box>
                                     <Box textAlign='right'>
-                                        <Button colorScheme='greenBrand' variant='link'>Forgot password?</Button>
+                                        <Button colorScheme='greenBrand' variant='link' onClick={() => navigate("/forgot-password")}>Forgot password?</Button>
                                     </Box>
                                 </SimpleGrid>
 

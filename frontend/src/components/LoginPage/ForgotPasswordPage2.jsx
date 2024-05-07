@@ -9,42 +9,42 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import axios from "axios";
 
-function ForgotPasswordPage1() {
+function ForgotPasswordPage2() {
     const navigate = useNavigate();
     const toast = useToast();
 
-    const formikLogin = useFormik({
+    const formikForgotPassword = useFormik({
         initialValues: {
           email: '',
           password: '',
           confirmPassword: ''
         },
         onSubmit: (values) => {
-        //   axios.post('http://localhost:5000/api/auth/login', values)
-        //   .then(response => {
-        //     window.localStorage.setItem('token', response.data);
-        //     toast({
-        //         title: 'Login successful.',
-        //         description: 'Welcome back!',
-        //         status: 'success',
-        //         duration: 5000,
-        //         isClosable: true,
-        //     });
-        //     navigate('/');
-        //   })
-        //   .catch(error => {
-        //     toast({
-        //         title: 'An error occurred.',
-        //         description: error.response.data,
-        //         status: 'error',
-        //         duration: 5000,
-        //         isClosable: true,
-        //     });
-        //   });
+          axios.post('http://localhost:5000/api/auth/forgot-password-change-password', values)
+          .then(response => {
+            window.localStorage.setItem('token', response.data);
+            toast({
+                title: 'Password changed successfully',
+                description: 'Welcome back! Please login with your new password',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+            });
+            navigate('/login');
+          })
+          .catch(error => {
+            toast({
+                title: 'An error occurred.',
+                description: error.response.data,
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+            });
+          });
         },
         validationSchema: Yup.object().shape({
             email: Yup.string().email('Invalid email').required('Email required'),
-            password: Yup.string().min(8, "Minimum length is 8 characters").required('Password required'),
+            password: Yup.string().min(8, "Minimum length is 12 characters").required('Password required'),
             confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Confirm password required')
             
         })
@@ -52,7 +52,7 @@ function ForgotPasswordPage1() {
 
     return (
         <Page>
-            <SimpleGrid columns={2} spacing={0} w='100vw' h='90vh'>
+            <SimpleGrid columns={2} spacing={0} w='100%' h='90vh'>
                 <Box bgImage={'cookingBackground.jpeg'}
                     bgPosition='center'
                     bgSize='cover'
@@ -64,30 +64,30 @@ function ForgotPasswordPage1() {
                         <CardBody colorScheme='white'>
                             <Center><h2 className='title-font'>Forgot Password</h2></Center>
                             <Center><h6>Step 2: Choose your new password</h6></Center>
-                            <FormControl py='5vh' onSubmit={formikLogin.handleSubmit}>
-                                <FormControl isInvalid={formikLogin.errors.email && formikLogin.touched.email} onChange={formikLogin.handleChange}>
+                            <FormControl py='5vh' onSubmit={formikForgotPassword.handleSubmit}>
+                                <FormControl isInvalid={formikForgotPassword.errors.email && formikForgotPassword.touched.email} onChange={formikForgotPassword.handleChange}>
                                     <FormLabel>Email address</FormLabel>
-                                    <Input id='email' name='email' type='email' value={formikLogin.values.email}/>
+                                    <Input id='email' name='email' type='email' value={formikForgotPassword.values.email}/>
                                     <FormErrorMessage>
-                                        {formikLogin.errors.email}
+                                        {formikForgotPassword.errors.email}
                                     </FormErrorMessage>
                                 </FormControl>
-                                <FormControl isInvalid={formikLogin.errors.password && formikLogin.touched.password} onChange={formikLogin.handleChange} >
+                                <FormControl isInvalid={formikForgotPassword.errors.password && formikForgotPassword.touched.password} onChange={formikForgotPassword.handleChange} >
                                     <FormLabel>Create password</FormLabel>
-                                    <Input id='password' name='password' type='password' onChange={formikLogin.handleChange} value={formikLogin.values.password}/>
+                                    <Input id='password' name='password' type='password' onChange={formikForgotPassword.handleChange} value={formikForgotPassword.values.password}/>
                                     <FormErrorMessage>
-                                        {formikLogin.errors.password}
+                                        {formikForgotPassword.errors.password}
                                     </FormErrorMessage>
                                 </FormControl>
-                                <FormControl isInvalid={formikLogin.errors.confirmPassword && formikLogin.touched.confirmPassword} onChange={formikLogin.handleChange} >
+                                <FormControl isInvalid={formikForgotPassword.errors.confirmPassword && formikForgotPassword.touched.confirmPassword} onChange={formikForgotPassword.handleChange} >
                                     <FormLabel>Confirm password</FormLabel>
-                                    <Input id='confirmPassword' name='confirmPassword' type='password' onChange={formikLogin.handleChange} value={formikLogin.values.confirmPassword}/>
+                                    <Input id='confirmPassword' name='confirmPassword' type='password' onChange={formikForgotPassword.handleChange} value={formikForgotPassword.values.confirmPassword}/>
                                     <FormErrorMessage>
-                                        {formikLogin.errors.confirmPassword}
+                                        {formikForgotPassword.errors.confirmPassword}
                                     </FormErrorMessage>
                                 </FormControl>
-                                <FormControl pt = '5vh' isInvalid={formikLogin.errors.email && formikLogin.touched.email} onChange={formikLogin.handleChange}>
-                                    <Center><SubmitButton text="Save your new password"/></Center>
+                                <FormControl pt = '5vh' isInvalid={formikForgotPassword.errors.email && formikForgotPassword.touched.email} onChange={formikForgotPassword.handleChange}>
+                                    <Center><SubmitButton text="Save your new password" onClick={formikForgotPassword.handleSubmit}/></Center>
                                 </FormControl>
                             </FormControl>
                         </CardBody>
@@ -98,4 +98,4 @@ function ForgotPasswordPage1() {
     );
 }
 
-export default ForgotPasswordPage1;
+export default ForgotPasswordPage2;
