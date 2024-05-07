@@ -108,11 +108,20 @@ router.post("/rate", userMiddleware, async (req: any, res) => {
 			return res.status(404).send("Recipe not found!");
 
 		const userId = req.user._id;
-		let review = new Review({userId, id, rating, comment});
+		let review = new Review({userId, recipeId: id, rating, comment});
+		await review.save();
 
-		return res.send(recipe);
+		// update recipe rating
+		let sum = 0;
+		const reviews = await Review.find({ recipeId: id });
+		reviews.forEach( async function(rev) {
+			sum += rev.rating;
+		});
+		await recipe.updateOne({ rating: sum / reviews.length })
+
+		return res.send("Review registered successfully!");
 	} catch (e) {
-		return res.status(400).send("Error: " + e);
+		return res.status(401).send("Error: " + e);
 	}
 });
 

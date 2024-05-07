@@ -53,9 +53,7 @@ const review = joi.object({
         'number.max': 'Rating must be at most 5',
         'number.precision': 'Rating must have at most one decimal'
     }),
-    comment: joi.string().optional().mesagges({
-        
-    })
+    comment: joi.string().required().allow("")
 });
 
 const validators = {
