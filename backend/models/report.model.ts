@@ -5,6 +5,7 @@ type REPORTED_ENTITY_TYPE = "RECIPE" | "REVIEW" ;
 interface IReport{
     _id : mongoose.Types.ObjectId,
     userId: mongoose.Types.ObjectId,
+    reportedUserId: mongoose.Types.ObjectId,
     reportedEntityId: mongoose.Types.ObjectId,
     reportedEntityType: REPORTED_ENTITY_TYPE,
     reason: string,
@@ -20,6 +21,10 @@ interface IReportStatics extends Model<IReport, {}, IReportMethods> {
 
 const reportSchema = new mongoose.Schema<IReport, IReportStatics, IReportMethods>({
     userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
+    reportedUserId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },

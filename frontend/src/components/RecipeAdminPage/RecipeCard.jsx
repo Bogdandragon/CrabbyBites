@@ -15,6 +15,7 @@ function RecipeCard ({ imageUrl, nameRecipe, reports }){
             borderRadius='20'
             h={{base:'15vh', md:'20vh'}}
             w={{base:'15vh', md:'20vh'}}
+            objectFit='cover'
           />
         </GridItem>
 

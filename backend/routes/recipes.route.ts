@@ -16,8 +16,20 @@ const reportThreshold = 2;
 router.get("/review", adminMiddleware, async (req, res) => {
 	// send recipes with status "PENDING" or reportNo >= reportThreshold
 	const recipes = await Recipe.find({ $or: [{ status: "PENDING" }, { reportNo: { $gte: reportThreshold } }] });
+	let recipesJSON = await Promise.all(recipes.map(async (recipe) => {
+		let picture = fs.readFileSync("./images/" + recipe.picture);
+		return {
+			_id: recipe._id,
+			title: recipe.name,
+			userId: recipe.userId,
+			user: await User.findById(recipe.userId),
+			picture: picture.toString("base64"),
+			status: recipe.status,
+			reportNo: recipe.reportNo
+		};
+	}));
 	
-	return res.send(recipes);
+	return res.send(recipesJSON);
 });
 
 router.delete("/remove/:id", userMiddleware, async (req: any, res) => {
