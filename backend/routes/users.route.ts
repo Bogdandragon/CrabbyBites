@@ -10,6 +10,8 @@ import Report from "../models/report.model"
 
 const router = Router();
 
+const reportThreshold = 0;
+
 router.get("/test/:id", async (req, res) => {
 	let user = (await User.findOne())?.toJSON() as any;
 	res.send(user.test);
@@ -98,6 +100,27 @@ router.delete("/remove/:id", adminMiddleware, async (req, res) => {
 
 	await user.deleteOne();
 	return res.status(200).send("User deleted successfully");
+});
+
+router.get("/reports", adminMiddleware, async (req, res) => {
+	const users = await User.find({ reportNo: { $gte: reportThreshold }});
+	return res.send(users.map((user) => {
+		return {
+			_id: user._id,
+			username: user.username,
+			email: user.email,
+			reportNo: user.reportNo
+		};
+	}));
+});
+
+router.get("/reports/:id", adminMiddleware, async (req, res) => {
+	const { id } = req.params;
+	const user = await User.findById(id);
+	if (!user) {
+		return res.status(404).send("User not found");
+	}
+	return res.send(await Report.find({ reportedUserId: id }));
 });
 
 export default router;
