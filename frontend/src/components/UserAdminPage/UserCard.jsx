@@ -20,7 +20,7 @@ function UserCard({imageUrl, username, reports, viewReports, deleteUser}) {
             {/* <Box sx={innerBoxStyles} borderRadius='7' backdropFilter='auto' backdropContrast='30%'  style={{position:'relative', width: '100%', height: '100%' }}>
              */}
                 <Stack>
-                    <Center><Image src={imageUrl} alt='Logo' borderRadius='full' size='sm' boxSize='8vw'/></Center>
+                    <Center><Image src={imageUrl} alt='Logo' borderRadius='full' size='sm' boxSize='8vw' objectFit="cover"/></Center>
                     <Center><h4>{username}</h4></Center>
                     <Center><InfoButton text='View reports' onClick={viewReports}/></Center>
                     <Center><InfoButton text='Delete' onClick={deleteUser}/></Center>

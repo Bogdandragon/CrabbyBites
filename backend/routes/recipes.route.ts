@@ -217,5 +217,14 @@ router.post("/add", async (req, res) => {
 	return res.send(recipe);
 });
 
+router.get("/reports/:id", adminMiddleware, async (req, res) => {
+	const { id } = req.params;
+	const recipe = await Recipe.findById(id);
+	if (!recipe) {
+		return res.status(404).send("User not found");
+	}
+	return res.send(await Report.find({ reportedEntityId: id, reportedEntityType: "RECIPE" }));
+});
+
 
 export default router;

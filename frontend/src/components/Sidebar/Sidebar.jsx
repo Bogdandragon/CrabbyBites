@@ -23,11 +23,11 @@ function Sidebar({ selector }) {
                 </MenuList>
             </Menu> */}
             <Button as={Button} bg='white' width='90%' aria-label='Menu' boxShadow='md'
-                variant='outline' size='lg' _hover={{ backgroundColor: '#F5F2F6' }} onClick={() => selector(0)}>Recipes</Button>
+                variant='outline' size='lg' _hover={{ backgroundColor: '#F5F2F6' }} onClick={() => selector("recipes")}>Recipes</Button>
             <Button width='90%' variant='outline' size='lg' bg='white' boxShadow='md'
-                _hover={{ backgroundColor: '#F5F2F6' }} onClick={() => selector(1)}>Users</Button>
+                _hover={{ backgroundColor: '#F5F2F6' }} onClick={() => selector("users")}>Users</Button>
             <Button width='90%' variant='outline' size='lg' bg='white' boxShadow='md'
-                _hover={{ backgroundColor: '#F5F2F6' }} onClick={() => selector(2)}>Comments</Button>
+                _hover={{ backgroundColor: '#F5F2F6' }} onClick={() => selector("comments")}>Comments</Button>
             </Stack></Box>
   );
 }

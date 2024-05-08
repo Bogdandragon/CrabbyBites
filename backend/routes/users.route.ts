@@ -7,6 +7,7 @@ import constants from "../constants";
 import Recipe from "../models/recipe.model"
 import Review from "../models/review.model"
 import Report from "../models/report.model"
+import userMiddleware from "../middlewares/userMiddleware";
 
 const router = Router();
 
@@ -121,6 +122,10 @@ router.get("/reports/:id", adminMiddleware, async (req, res) => {
 		return res.status(404).send("User not found");
 	}
 	return res.send(await Report.find({ reportedUserId: id }));
+});
+
+router.get('/type', userMiddleware, async function (req: any, res: any, next: any) {
+	return res.send(req.user.type);
 });
 
 export default router;

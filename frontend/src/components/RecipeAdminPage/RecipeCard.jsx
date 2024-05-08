@@ -1,13 +1,18 @@
 import { Box, SimpleGrid, GridItem, Text, Stack, HStack, IconButton, Image } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import InfoButton from '../Buttons/InfoButton'
-import { useBreakpointValue } from '@chakra-ui/react';
+import { useBreakpointValue, useToast } from '@chakra-ui/react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 
-function RecipeCard ({ imageUrl, nameRecipe, reports }){
+function RecipeCard ({ recipeId, imageUrl, nameRecipe, reports, reportsOpen }){
   const stackDirection = useBreakpointValue({ base: 'column', md: 'row' });
+  const navigate = useNavigate();
+  const toast = useToast();
+
   return (
-    <Box bgColor='#F5F2F2' borderRadius='20' h={{base:'15vh', md:'20vh'}} mb='1vh' w='98%'>
-      <SimpleGrid columns={6}> 
+    <Box bgColor='#F5F2F2' borderRadius='20' minH={{base:'15vh', md:'20vh'}} mb='1vh' w='98%'>
+      <SimpleGrid columns={6}>
         <GridItem colSpan={1}>
           <Image
             src={imageUrl}
@@ -29,19 +34,68 @@ function RecipeCard ({ imageUrl, nameRecipe, reports }){
 
           {stackDirection === 'row' ? (
             <><HStack>
-                <InfoButton text='View Recipe' />
+                <InfoButton text='View Recipe' onClick={() => navigate(`/recipes/${recipeId}`)}/>
+                <InfoButton text='View Reports' onClick={() => reportsOpen(recipeId)}/>
                 <IconButton
                   isRound={true}
                   variant='solid'
                   colorScheme='greenBrand'
                   fontSize='20'
-                  icon={<CheckIcon />} />
+                  icon={<CheckIcon />} 
+                  onClick={() => axios.post("http://localhost:5000/api/recipes/status", {
+                      id: recipeId,
+                      status: "APPROVED"
+                    }, {
+                      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                    }).then(() => {
+                      toast({
+                        title: 'Recipe approved.',
+                        description: 'The recipe has been approved.',
+                        status: 'success',
+                        duration: 5000,
+                        isClosable: true,
+                      });
+                      window.location.reload();
+                    }).catch((error) => {
+                      toast({
+                        title: 'Error approving recipe.',
+                        description: error.response.data,
+                        status: 'error',
+                        duration: 5000,
+                        isClosable: true,
+                      });
+                    })}
+                  />
                 <IconButton
                   isRound={true}
                   variant='solid'
                   colorScheme='red'
                   fontSize='20'
-                  icon={<CloseIcon />} />
+                  icon={<CloseIcon />}
+                  onClick={() => axios.post("http://localhost:5000/api/recipes/status", {
+                      id: recipeId,
+                      status: "REJECTED"
+                    }, {
+                      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                    }).then(() => {
+                      toast({
+                        title: 'Recipe rejected.',
+                        description: 'The recipe has been rejected.',
+                        status: 'success',
+                        duration: 5000,
+                        isClosable: true,
+                      });
+                      window.location.reload();
+                    }).catch((error) => {
+                      toast({
+                        title: 'Error rejecting recipe.',
+                        description: error.response.data,
+                        status: 'error',
+                        duration: 5000,
+                        isClosable: true,
+                      });
+                    })}
+                  />
               </HStack><Text fontSize={{ base: 'xs', md: 'md' }}>no. of reports: {reports}</Text></>
           ) : (
            
@@ -52,15 +106,66 @@ function RecipeCard ({ imageUrl, nameRecipe, reports }){
                     variant='solid'
                     colorScheme='greenBrand'
                     fontSize='20'
-                    icon={<CheckIcon />} />
+                    icon={<CheckIcon />} 
+                    onClick={() => axios.post("http://localhost:5000/api/recipes/status", {
+                      id: recipeId,
+                      status: "APPROVED"
+                    }, {
+                      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                    }).then(() => {
+                      toast({
+                        title: 'Recipe approved.',
+                        description: 'The recipe has been approved.',
+                        status: 'success',
+                        duration: 5000,
+                        isClosable: true,
+                      });
+                      window.location.reload();
+                    }).catch((error) => {
+                      toast({
+                        title: 'Error approving recipe.',
+                        description: error.response.data,
+                        status: 'error',
+                        duration: 5000,
+                        isClosable: true,
+                      });
+                    })}
+                  />
                   <IconButton
                     isRound={true}
                     variant='solid'
                     colorScheme='red'
                     fontSize='20'
-                    icon={<CloseIcon />} />
-                </HStack><InfoButton text='View Recipe' /></>
-         
+                    icon={<CloseIcon />}
+                    onClick={() => axios.post("http://localhost:5000/api/recipes/status", {
+                      id: recipeId,
+                      status: "REJECTED"
+                    }, {
+                      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                    }).then(() => {
+                      toast({
+                        title: 'Recipe rejected.',
+                        description: 'The recipe has been rejected.',
+                        status: 'success',
+                        duration: 5000,
+                        isClosable: true,
+                      });
+                      window.location.reload();
+                    }).catch((error) => {
+                      toast({
+                        title: 'Error rejecting recipe.',
+                        description: error.response.data,
+                        status: 'error',
+                        duration: 5000,
+                        isClosable: true,
+                      });
+                    })}
+                  />
+                </HStack>
+                <HStack mb="1vh">
+                  <InfoButton size='sm' text='View Recipe' onClick={() => navigate(`/recipes/${recipeId}`)}/>
+                  <InfoButton size='sm' text='View Reports' onClick={() => reportsOpen(recipeId)}/>
+                </HStack></>
           )}
             {/* <HStack>
               <InfoButton text='View Recipe' />

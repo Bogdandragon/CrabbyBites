@@ -9,15 +9,17 @@ import SortButton from "../Buttons/SortButton"
 import "./RecipeAdminPage.css"
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, useDisclosure } from '@chakra-ui/react';
 
 function RecipeAdminPage() {
     const [recipes, setRecipes] = useState([]);
+    const [reports, setReports] = useState([]);
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     useEffect(() => {
         axios.get('http://localhost:5000/api/recipes/review', {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         }).then((response) => {
-            console.log(response.data)
             setRecipes(response.data.map((recipe) => {
                 recipe.picture = "data:image/png;base64," + recipe.picture;
                 return recipe;
@@ -26,6 +28,17 @@ function RecipeAdminPage() {
             console.log(error);
         });
     }, []);
+
+    function viewReports(id) {
+        axios.get(`http://localhost:5000/api/recipes/reports/${id}`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        }).then((response) => {
+            setReports(response.data);
+        }).catch((error) => {
+            console.log(error);
+        });
+		onOpen();
+    }
 
     return (
         <SimpleGrid columns={1} spacing={1} height='20vh' width='99%' ml={{base:'1vw',md:'2vw'}} mr={{ base: '1vw', md: '2vw' }}>
@@ -40,11 +53,32 @@ function RecipeAdminPage() {
                 <Stack>
                     <Box overflowY="auto" maxHeight="80vh" className='scrollable-box'>
                         {recipes.map((recipe) => (
-                            <RecipeCard imageUrl={recipe.picture} nameRecipe={recipe.name} reports={recipe.reportNo}/>
+                            <RecipeCard recipeId={recipe._id} imageUrl={recipe.picture} nameRecipe={recipe.title} reports={recipe.reportNo} reportsOpen={viewReports}/>
                         ))}
+                        {recipes.length == 0 && <Text textAlign='center'>No recipes found.</Text>}
                     </Box>
                 </Stack>
             </Box>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Reports</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <SimpleGrid columns={1} spacing={1}>
+                            {reports.map((report, index) => (
+                                <Text key={report._id}>{index + 1}: {report.reason}</Text>
+                            ))}
+                        </SimpleGrid>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme='blue' mr={3} onClick={onClose}>
+                            Close
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </SimpleGrid>
     );
 

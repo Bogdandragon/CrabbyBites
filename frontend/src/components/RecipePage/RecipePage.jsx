@@ -7,7 +7,7 @@ import { Flex, Image } from '@chakra-ui/react';
 import SubmitButton from "../Buttons/SubmitButton";
 import InfoButton from "../Buttons/InfoButton";
 import './RecipePage.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { TimeIcon, MoonIcon, BellIcon, StarIcon } from '@chakra-ui/icons'
@@ -16,11 +16,11 @@ import { TimeIcon, MoonIcon, BellIcon, StarIcon } from '@chakra-ui/icons'
 function RecipePage() {
     const navigate = useNavigate();
     const toast = useToast();
-    const recipeId = "6636385502482879b4adf223";
+    const { id } = useParams();
 
     const [recipe, setRecipe] = useState();
     const [isLoading, setIsLoading] = useState(true);
-    const apiUrl = "http://localhost:5000/api/recipes/" + recipeId;
+    const apiUrl = "http://localhost:5000/api/recipes/" + id;
 
     useEffect(() => {
         async function fetchRecipe() {
@@ -49,29 +49,23 @@ function RecipePage() {
             {/* Background Image */}
             {isLoading ? <Text>Loading...</Text> :
             <Flex
-              justifyContent="flex-start"
+              justifyContent="center"
               bgImage={'cookingBackground.jpeg'}
-              bgSize='cover'
               bgRepeat='repeat'
-              position="absolute"
               width="100%"
-              height="100vh"
-              top="10vh"
+              minH="100vh"
             >
               {/* White Box centered within the Background Image */}
               <Box
                 backgroundColor="rgba(255, 255, 255, 1)" 
-                width="90%" 
-                position="absolute"
-                top="6vh"
-                left="50%"
-                transform="translateX(-50%)"
+                width="90%"
                 display="flex"
                 flexDirection="column"
                 justifyContent="flex-start"
                 alignItems="center"
                 textAlign="center"
                 borderRadius="5vh"
+                mt="5vh"
               >
                 <Text fontSize="5vh" fontWeight="bold" my="5vh" maxWidth="100%" maxHeight="25%">
                     {recipe.name.toUpperCase()}
@@ -83,13 +77,13 @@ function RecipePage() {
                     <Container m="1vh" w="auto"><SubmitButton text="Report" size="md"/></Container>
                 </Flex>
 
-                <Flex justifyContent="center" mb="0vh" wrap="wrap" px="1vh">
+                <Flex justifyContent="center" mb="1vh" wrap="wrap" px="1vh">
                     <Text fontSize="2vh" fontWeight="bold" mx-="1vh">
                         {recipe.category.toUpperCase()}
                     </Text>
                     <Text fontSize="2vh" fontWeight="bold" mx="1vh">
                         <TimeIcon viewBox="0 0 25 30" mr="3px" />
-                        {recipe.time}
+                        {recipe.time} min.
                     </Text>
                     <Text fontSize="2vh" fontWeight="bold" mx="1vh">
                         <MoonIcon viewBox="0 0 25 30" mr="3px" />
@@ -105,11 +99,11 @@ function RecipePage() {
                     </Text>
                 </Flex>
 
-                <Flex w="80%" overflow="hidden" p="0" borderRadius="5vh">
-                    <Image src={recipe.picture} alt="Recipe Image" minW="100%" maxW="100vw" minH="50vh"/>
+                <Flex w="80%" overflow="hidden" p="0" borderRadius="5vh" mb="2vh">
+                    <Image src={recipe.picture} alt="Recipe Image" minW="100%" minH="50vh" maxH="75vh" objectFit="cover" />
                 </Flex>
 
-                <SimpleGrid columns={{base: 1, lg: 2}} spacing={10} mt="20px" width="80%" alignContent="left">
+                <SimpleGrid columns={{base: 1, lg: 2}} spacing={10} mt="20px" width="100%" alignContent="left" px={{base: "5%", lg: "10%"}}>
                     <Box order={{base: 1, lg: 0}}>
                         <Text fontSize="3vh" fontWeight="bold" color="rgba(242, 120, 30, 1)" textAlign="left">
                             INSTRUCTIONS
@@ -123,15 +117,15 @@ function RecipePage() {
                         </ul>
                     </Box>
 
-                    <Box backgroundColor="rgba(247, 229, 198, 1)" borderRadius="5vh" padding="3vh">
-                        <Box backgroundColor="rgba(250, 244, 235, 1)" borderRadius="5vh" padding="3vh" marginBottom="3vh">
+                    <Box backgroundColor="rgba(247, 229, 198, 1)" borderRadius="5vh" padding={{base: "2vh", lg: "3vh"}}>
+                        <Box backgroundColor="rgba(250, 244, 235, 1)" borderRadius="5vh" padding={{base: "2vh", lg: "3vh"}} marginBottom="3vh">
                             <Text fontSize="3vh" fontWeight="bold" color="rgba(255, 120, 30, 1)" textAlign="left">
                                 DESCRIPTION
                             </Text>
                             <Text textAlign="left"> {recipe.description} </Text>
                         </Box>
 
-                        <Box backgroundColor="rgba(250, 244, 235, 1)" borderRadius="5vh" padding="3vh">
+                        <Box backgroundColor="rgba(250, 244, 235, 1)" borderRadius="5vh" padding={{base: "2vh", lg: "3vh"}}>
                             <Text fontSize="3vh" fontWeight="bold" color="rgba(255, 120, 30, 1)" textAlign="left">
                                 INGREDIENTS
                             </Text>

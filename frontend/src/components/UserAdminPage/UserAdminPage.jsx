@@ -31,7 +31,6 @@ function UserAdminPage() {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         }).then((response) => {
             setReports(response.data);
-			console.log(response.data);
         }).catch((error) => {
             console.log(error);
         });
@@ -60,7 +59,7 @@ function UserAdminPage() {
 				<ModalBody>
 					<SimpleGrid columns={1} spacing={1}>
 						{reports.map((report, index) => (
-							<Text key={report._id}>{index}: {report.reason}</Text>
+							<Text key={report._id}>{index + 1}: {report.reason}</Text>
 						))}
 					</SimpleGrid>
 				</ModalBody>

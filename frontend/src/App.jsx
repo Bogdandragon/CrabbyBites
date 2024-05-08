@@ -25,9 +25,9 @@ function App() {
 					<Routes>
 						<Route path="/register" element={<RegisterPage />} />
 						<Route path="/login" element={<LoginPage />} />
-						<Route path="/" element={<HomePage />} />
-						<Route path="/recipes" element={<RecipePage />} />
-						<Route path="/admin" element={<AdminPage />} />
+						<Route path="/recipes/:id" element={<RecipePage />} />
+						<Route path="/admin/:type" element={<AdminPage />} />
+						<Route path="/*" element={<HomePage />} />
 					</Routes>
 				</BrowserRouter>
 			</div>
