@@ -7,8 +7,11 @@ import constants from "../constants";
 import Recipe from "../models/recipe.model"
 import Review from "../models/review.model"
 import Report from "../models/report.model"
+import userMiddleware from "../middlewares/userMiddleware";
 
 const router = Router();
+
+const reportThreshold = 0;
 
 router.get("/test/:id", async (req, res) => {
 	let user = (await User.findOne())?.toJSON() as any;
@@ -41,7 +44,7 @@ router.post('/register', async function (req: any, res: any, next: any) {
 
 	try {
 		const { email, username, password } = req.body;
-		let user = await User.findOne({ username: username });
+		let user = await User.findOne({ $or: [{ email: email }, { username: username }] });
 
 		if(user != null)
 			return res.status(400).send("User already exists!");
@@ -98,6 +101,31 @@ router.delete("/remove/:id", adminMiddleware, async (req, res) => {
 
 	await user.deleteOne();
 	return res.status(200).send("User deleted successfully");
+});
+
+router.get("/reports", adminMiddleware, async (req, res) => {
+	const users = await User.find({ reportNo: { $gte: reportThreshold }});
+	return res.send(users.map((user) => {
+		return {
+			_id: user._id,
+			username: user.username,
+			email: user.email,
+			reportNo: user.reportNo
+		};
+	}));
+});
+
+router.get("/reports/:id", adminMiddleware, async (req, res) => {
+	const { id } = req.params;
+	const user = await User.findById(id);
+	if (!user) {
+		return res.status(404).send("User not found");
+	}
+	return res.send(await Report.find({ reportedUserId: id }));
+});
+
+router.get('/type', userMiddleware, async function (req: any, res: any, next: any) {
+	return res.send(req.user.type);
 });
 
 export default router;

@@ -3,7 +3,7 @@ import Navbar from "../Navbar/Navbar";
 
 function Page({ children }) {
     return (
-        <Container minH="100vh" minW="100vw" p={0} m={0}>
+        <Container minH="100vh" minW="100%" p={0} m={0}>
             <Navbar/>
             {children}
         </Container>

@@ -10,9 +10,13 @@ import LoginPage from './components/LoginPage/LoginPage';
 import ForgotPasswordPage1 from './components/LoginPage/ForgotPasswordPage1';
 import ForgotPasswordPage2 from './components/LoginPage/ForgotPasswordPage2';
 import HomePage from './components/HomePage/HomePage';
-
 import theme from './components/Theme/Theme';
+import RecipePage from './components/RecipePage/RecipePage';
+import CommentAdminPage from './components/CommentAdminPage/CommentAdminPage'
+import RecipeAdminPage from './components/RecipeAdminPage/RecipeAdminPage'
+import UserAdminPage from './components/UserAdminPage/UserAdminPage'
 import { Route, BrowserRouter, Routes, useNavigate } from 'react-router-dom';
+import AdminPage from './components/AdminPage/AdminPage';
 
 function App() {
 	// create routes for all components
@@ -24,8 +28,10 @@ function App() {
 						<Route path="/register" element={<RegisterPage />} />
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/forgot-password" element={<ForgotPasswordPage1 />} />
-						<Route path="/" element={<ForgotPasswordPage2 />} />
-						{/* <Route path="/" element={<HomePage />} /> */}
+						<Route path="/forgot-password2" element={<ForgotPasswordPage2 />} />
+						<Route path="/recipes/:id" element={<RecipePage />} />
+						<Route path="/admin/:type" element={<AdminPage />} />
+						<Route path="/*" element={<HomePage />} />
 					</Routes>
 				</BrowserRouter>
 			</div>
