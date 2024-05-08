@@ -34,6 +34,7 @@ function Navbar() {
             <Menu>
                 <MenuButton as={IconButton} aria-label='Menu' icon={<HamburgerIcon />} variant='outline' size='lg' />
                 <MenuList>
+                    <MenuItem onClick={() => navigate('/')}>Home</MenuItem>
                     { token ?
                         <>
                             {userType === 'ADMIN' ? <MenuItem onClick={() => navigate('/admin/recipes')}>Admin</MenuItem> : null}

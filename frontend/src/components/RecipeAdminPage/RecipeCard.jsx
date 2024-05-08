@@ -55,7 +55,7 @@ function RecipeCard ({ recipeId, imageUrl, nameRecipe, reports, reportsOpen }){
                         duration: 5000,
                         isClosable: true,
                       });
-                      window.location.reload();
+                      setTimeout(() => window.location.reload(), 1000);
                     }).catch((error) => {
                       toast({
                         title: 'Error approving recipe.',
@@ -85,7 +85,7 @@ function RecipeCard ({ recipeId, imageUrl, nameRecipe, reports, reportsOpen }){
                         duration: 5000,
                         isClosable: true,
                       });
-                      window.location.reload();
+                      setTimeout(() => window.location.reload(), 1000);
                     }).catch((error) => {
                       toast({
                         title: 'Error rejecting recipe.',
@@ -120,7 +120,7 @@ function RecipeCard ({ recipeId, imageUrl, nameRecipe, reports, reportsOpen }){
                         duration: 5000,
                         isClosable: true,
                       });
-                      window.location.reload();
+                      setTimeout(() => window.location.reload(), 1000);
                     }).catch((error) => {
                       toast({
                         title: 'Error approving recipe.',
@@ -150,7 +150,7 @@ function RecipeCard ({ recipeId, imageUrl, nameRecipe, reports, reportsOpen }){
                         duration: 5000,
                         isClosable: true,
                       });
-                      window.location.reload();
+                      setTimeout(() => window.location.reload(), 1000);
                     }).catch((error) => {
                       toast({
                         title: 'Error rejecting recipe.',
