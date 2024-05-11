@@ -35,7 +35,7 @@ function RecipeCard ({ recipeId, imageUrl, nameRecipe, reports, reportsOpen }){
           {stackDirection === 'row' ? (
             <><HStack>
                 <InfoButton text='View Recipe' onClick={() => navigate(`/recipes/${recipeId}`)}/>
-                <InfoButton text='View Reports' onClick={() => reportsOpen(recipeId)}/>
+                {reports > 0 && <InfoButton text='View Reports' onClick={() => reportsOpen(recipeId)}/>}
                 <IconButton
                   isRound={true}
                   variant='solid'
@@ -164,7 +164,7 @@ function RecipeCard ({ recipeId, imageUrl, nameRecipe, reports, reportsOpen }){
                 </HStack>
                 <HStack mb="1vh">
                   <InfoButton size='sm' text='View Recipe' onClick={() => navigate(`/recipes/${recipeId}`)}/>
-                  <InfoButton size='sm' text='View Reports' onClick={() => reportsOpen(recipeId)}/>
+                  {reports > 0 && <InfoButton size='sm' text='View Reports' onClick={() => reportsOpen(recipeId)}/>}
                 </HStack></>
           )}
             {/* <HStack>
