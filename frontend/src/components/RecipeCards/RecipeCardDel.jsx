@@ -9,7 +9,7 @@ import { Image, Stack } from '@chakra-ui/react';
 import { CardBody } from 'react-bootstrap';
 import InfoButton from '../Buttons/InfoButton';
 
-function RecipeCardMultiple({imageUrl, titleRecipe, descriptionRecipe, timeCooking, difficulty, numberServings}) {
+function RecipeCardDel({imageUrl, titleRecipe, descriptionRecipe, timeCooking, difficulty, numberServings}) {
     const showDetails = useBreakpointValue({ base: true,  md: false, xl: true });
     const buttonSize = useBreakpointValue({ base: "sm", md: "md"});
 
@@ -37,4 +37,4 @@ function RecipeCardMultiple({imageUrl, titleRecipe, descriptionRecipe, timeCooki
     );
 }
 
-export default RecipeCardMultiple;
+export default RecipeCardDel;
