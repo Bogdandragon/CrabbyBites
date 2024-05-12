@@ -1,19 +1,23 @@
 import Page from "../Page/Page";
 import { Text } from '@chakra-ui/react';
 import { Stack, HStack, VStack } from '@chakra-ui/react';
-import { SimpleGrid, Box, Checkbox, Card, Center, useToast, Container } from '@chakra-ui/react'
+import { SimpleGrid, Box, Checkbox, Card, Center, useToast, Container, ChakraProvider } from '@chakra-ui/react'
 import '@fontsource/dm-serif-display';
 import { Flex, Image } from '@chakra-ui/react';
 import SubmitButton from "../Buttons/SubmitButton";
 import InfoButton from "../Buttons/InfoButton";
 import './RecipePage.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 import React, { useState, useEffect } from 'react';
+import RecipeCardView from '../RecipeCards/RecipeCardView';
 import axios from "axios";
 import { TimeIcon, MoonIcon, BellIcon, StarIcon } from '@chakra-ui/icons'
+import RecipeCarousel from "../RecipeCarousel/RecipeCarousel";
 
 
-function RecipePage() {
+function RecipePage({noRecipes}) {
     const navigate = useNavigate();
     const toast = useToast();
     const { id } = useParams();
@@ -21,7 +25,7 @@ function RecipePage() {
     const [recipe, setRecipe] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const apiUrl = "http://localhost:5000/api/recipes/" + id;
-
+    
     useEffect(() => {
         async function fetchRecipe() {
             try {
@@ -142,6 +146,10 @@ function RecipePage() {
                 <Center my="1vh">
                     <InfoButton text="Share" />
                 </Center>
+                
+                {/* added similar recipes */}
+                <RecipeCarousel />
+                       
               </Box>
             </Flex>
             }
