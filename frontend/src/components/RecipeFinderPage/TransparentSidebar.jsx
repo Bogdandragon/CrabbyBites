@@ -14,14 +14,13 @@ function TransparentSidebar() {
            maxHeight={{base:"40vh", md:"80vh"}} overflowY="auto" className='scrollable-box' pl='2vw' pr='3vw' pb='1vh'>
                 <SimpleGrid columns={2} spacing={4}>
                 <IngredientsCard typeIngredients="ESSENTIALS"/>
-                <IngredientsCard typeIngredients="ESSENTIALS"/>
-                <IngredientsCard typeIngredients="ESSENTIALS"/>
-                <IngredientsCard typeIngredients="ESSENTIALS"/>
-                <IngredientsCard typeIngredients="ESSENTIALS"/>
-                <IngredientsCard typeIngredients="ESSENTIALS"/>
-                <IngredientsCard typeIngredients="ESSENTIALS"/>
-
-
+                <IngredientsCard typeIngredients="VEGETABLES"/>
+                <IngredientsCard typeIngredients="FRUITS"/>
+                <IngredientsCard typeIngredients="DAIRY"/>
+                <IngredientsCard typeIngredients="MEAT"/>
+                <IngredientsCard typeIngredients="FLOUR"/>
+                <IngredientsCard typeIngredients="BREAD"/>
+                <IngredientsCard typeIngredients="SPICES"/>
                 </SimpleGrid>
            </Box>
         </Box>

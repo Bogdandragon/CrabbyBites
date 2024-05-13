@@ -17,13 +17,13 @@ function IngredientsCard({typeIngredients, numberIngredients, ingredientsList}) 
                             display: "none" // Hide scrollbar for Chrome, Safari, and Opera
                         }
                     }}>
-                        <SimpleGrid columns={{ base: 2, lg: 1 }} spacing={2}>
+                        <SimpleGrid columns={{ base: 2, lg: 2 }} spacing={10}>
                         
                         <IngredientButton text="egg"/>
                         <IngredientButton text="flour"/>
                         <IngredientButton text="sugar"/>
                         <IngredientButton text="milk"/>
-                        <IngredientButton text="butter"/>
+                        <IngredientButton text="watermelon"/>
                         <IngredientButton text="salt"/>
                         <IngredientButton text="pepper"/>
                         <IngredientButton text="water"/>
