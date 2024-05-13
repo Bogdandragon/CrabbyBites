@@ -9,6 +9,11 @@ import { Text } from '@chakra-ui/react'
 import RecipeAdminPage from "../RecipeAdminPage/RecipeAdminPage";
 import UserAdminPage from "../UserAdminPage/UserAdminPage";
 import CommentAdminPage from "../CommentAdminPage/CommentAdminPage";
+import RecipeCardRejected from "../RecipeCards/RecipeCardRejected";
+import RecipeCardDel from "../RecipeCards/RecipeCardDel";
+import RecipeCardTodoFav from "../RecipeCards/RecipeCardTodoFav";
+import RecipeCardNotPub from "../RecipeCards/RecipeCardNotPub";
+import RecipeCardView from "../RecipeCards/RecipeCardView";
 import { useSearchParams, useNavigate, useParams } from 'react-router-dom';
 
 function AdminPage() {
