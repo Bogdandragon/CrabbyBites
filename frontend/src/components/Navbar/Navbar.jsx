@@ -2,11 +2,28 @@ import { Flex, Image, Heading, Menu, MenuButton, MenuList, MenuItem, IconButton,
 import React, { useEffect } from 'react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Navbar() {
     const navigate = useNavigate();
     const toast = useToast();
-    let token = window.localStorage.getItem('token');
+    const token = window.localStorage.getItem('token');
+    const userType = window.localStorage.getItem('userType');
+
+    useEffect(() => {
+        if (token) {
+            axios.get('http://localhost:5000/api/auth/type', {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            }).then((response) => {
+                if (response.data != userType) {
+                    window.localStorage.setItem('userType', response.data);
+                    window.location.reload();
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
+    }, [userType]);
 
     return (
         <Flex height={"10vh"} w={"100%"} justifyContent="space-between" alignItems="center" className='px-md-5 px-2' overflow="hidden">
@@ -19,8 +36,10 @@ function Navbar() {
             <Menu>
                 <MenuButton as={IconButton} aria-label='Menu' icon={<HamburgerIcon />} variant='outline' size='lg' />
                 <MenuList>
+                    <MenuItem onClick={() => navigate('/')}>Home</MenuItem>
                     { token ?
                         <>
+                            {userType === 'ADMIN' ? <MenuItem onClick={() => navigate('/admin/recipes')}>Admin</MenuItem> : null}
                             <MenuItem onClick={() => {
                                 window.localStorage.removeItem('token');
                                 toast({
