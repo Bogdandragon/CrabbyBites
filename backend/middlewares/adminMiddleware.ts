@@ -15,7 +15,7 @@ const adminMiddleware = async (req: any, res: Response, next: NextFunction) => {
         const userId = (<any>decoded).id;
 
         const user = await User.findById(userId);
-        if(!user || user.type == "ADMIN") {
+        if(!user || user.type !== "ADMIN") {
             return res.status(404).send("User matching this request not found or not admin!");
         }
 
