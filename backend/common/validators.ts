@@ -125,10 +125,39 @@ const status = joi.object({
     })
 });
 
+const review = joi.object({
+    id: joi.string().required().messages({
+        'string.empty': 'Id is required'
+    }),
+    rating: joi.number().required().precision(1).min(1).max(5).messages({
+        'number.base': 'Rating must be a number',
+        'number.empty': 'Rating is required',
+        'number.min': 'Rating must be at least 1',
+        'number.max': 'Rating must be at most 5',
+        'number.precision': 'Rating must have at most one decimal'
+    }),
+    comment: joi.string().required().allow("")
+});
+
+const report = joi.object({
+    id: joi.string().required().messages({
+        'string.empty': 'Id is required'
+    }),
+    comment: joi.string().required().messages({
+        'string.empty': 'Comment is required'
+    }),
+    type: joi.string().required().valid("RECIPE", "REVIEW").messages({
+        'string.empty': 'Type is required',
+        'any.only': 'Type must be either RECIPE or REVIEW'
+    })
+});
+
 const validators = {
     login,
     register,
     status,
+    review,
+    report,
     addRecipe
 }
 

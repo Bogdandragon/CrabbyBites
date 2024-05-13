@@ -1,7 +1,7 @@
 import Page from "../Page/Page";
-import { Text } from '@chakra-ui/react';
+import { Text, Textarea } from '@chakra-ui/react';
 import { Stack, HStack, VStack } from '@chakra-ui/react';
-import { SimpleGrid, Box, Checkbox, Card, Center, useToast, Container } from '@chakra-ui/react'
+import { SimpleGrid, Box, Checkbox, Card, Center, useToast, Container, IconButton, Input } from '@chakra-ui/react'
 import '@fontsource/dm-serif-display';
 import { Flex, Image } from '@chakra-ui/react';
 import SubmitButton from "../Buttons/SubmitButton";
@@ -11,7 +11,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { TimeIcon, MoonIcon, BellIcon, StarIcon } from '@chakra-ui/icons'
-
+import CommentBox from "./CommentBox";
+import { FaSadCry } from "react-icons/fa";
+import { SlFlag } from "react-icons/sl";
+import { FaStar } from "react-icons/fa";
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, useDisclosure } from '@chakra-ui/react';
+import { Select } from '@chakra-ui/react';
+import { InputGroup } from "react-bootstrap";
 
 function RecipePage() {
     const navigate = useNavigate();
@@ -19,15 +25,26 @@ function RecipePage() {
     const { id } = useParams();
 
     const [recipe, setRecipe] = useState();
+    const [reviews, setReviews] = useState([]);
+    const [visibleReviews, setVisibleReviews] = useState([]);
+    const [limit, setLimit] = useState(5);
+    const [showLoadMore, setShowLoadMore] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
-    const apiUrl = "http://localhost:5000/api/recipes/" + id;
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [commentModal, setCommentModal] = useState(false);
+    const recipeApiUrl = "http://localhost:5000/api/recipes/" + id;
+    const reviewsApiUrl = "http://localhost:5000/api/recipes/reviews/" + id;
 
     useEffect(() => {
         async function fetchRecipe() {
             try {
-                const response = await axios.get(apiUrl);
-                response.data.picture = 'data:image/png;base64,' + response.data.picture;
-                setRecipe(response.data);
+                const response1 = await axios.get(recipeApiUrl);
+                response1.data.picture = 'data:image/png;base64,' + response1.data.picture;
+                setRecipe(response1.data);
+
+                const response2 = await axios.get(reviewsApiUrl);
+                setReviews(response2.data);
+
                 setIsLoading(false);
             } catch (error) {
                 console.error("Error fetching recipe:", error);
@@ -36,17 +53,106 @@ function RecipePage() {
         }
 
         fetchRecipe();
-    }, [apiUrl]);
+    }, [recipeApiUrl, reviewsApiUrl]);
+
+    useEffect(() => {
+        setVisibleReviews(reviews.slice(0, limit));
+        setShowLoadMore(reviews.length > limit);
+    }, [reviews, limit]);
+
+    const handleLoadMore = () => {
+        setLimit(prevLimit => prevLimit + 5);
+    };
+
+    const [selectedOption, setSelectedOption] = useState('');
+    const [customInput, setCustomInput] = useState('');
+    const [showCustomInput, setShowCustomInput] = useState(false);
+    const [rating, setRating] = useState(0);
+    const handleChange = (event) => {
+        setSelectedOption(event.target.value);
+        if (event.target.value === 'custom') {
+            setShowCustomInput(true);
+          } else {
+            setShowCustomInput(false);
+          }
+    };
+
+    const handleCustomInputChange = (event) => {
+        setCustomInput(event.target.value);
+    };
+
+    const handleSelection = () => {
+        let reportComment = selectedOption === "custom" ? customInput : selectedOption;
+
+        axios.post("http://localhost:5000/api/recipes/report", {
+            id: recipe._id,
+            comment: reportComment,
+            type: "RECIPE"
+        }, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        }).then(() => {
+            toast({
+            title: 'Report sent.',
+            description: 'Your report has been succsessfully registered.',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+            });
+            setTimeout(() => window.location.reload(), 1000);
+        }).catch((error) => {
+            toast({
+            title: 'Error registering report.',
+            description: error.response.data,
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            });
+        });
+
+        onClose();
+    };
+
+    const handleReview = () => {
+        axios.post("http://localhost:5000/api/recipes/rate", {
+            id: recipe._id,
+            rating: rating,
+            comment: customInput,
+        }, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        }).then(() => {
+            toast({
+            title: 'Review sent.',
+            description: 'Your review has been succsessfully registered.',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+            });
+            setTimeout(() => window.location.reload(), 1000);
+        }).catch((error) => {
+            toast({
+            title: 'Error registering review.',
+            description: error.response.data,
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            });
+        });
+
+        onClose();
+    };
+
+    const handleRatingChange = (value) => {
+        setRating(value);
+    };
 
     return (
         <Page navigate={navigate}>
-          {/* Centering the white box horizontally and vertically */}
           <Box
             display="flex"
             justifyContent="center"
             alignItems="center"
           >
-            {/* Background Image */}
+
             {isLoading ? <Text>Loading...</Text> :
             <Flex
               justifyContent="center"
@@ -55,7 +161,7 @@ function RecipePage() {
               width="100%"
               minH="100vh"
             >
-              {/* White Box centered within the Background Image */}
+
               <Box
                 backgroundColor="rgba(255, 255, 255, 1)" 
                 width="90%"
@@ -74,7 +180,17 @@ function RecipePage() {
                 <Flex justifyContent="center" width="45%" mb="5vh" wrap="wrap">
                     <Container m="1vh" w="auto"><SubmitButton text="Add to TODO List" size="md" /></Container>
                     <Container m="1vh" w="auto"><SubmitButton text="Add to Favorites" size="md"/></Container>
-                    <Container m="1vh" w="auto"><SubmitButton text="Report" size="md"/></Container>
+                    <Container m="1vh" w="auto"><IconButton 
+                        isRound={true}
+                        variant='solid'
+                        colorScheme='orange'
+                        fontSize='20'
+                        icon={<SlFlag />} 
+                        onClick={() => {
+                            setCommentModal(false);
+                            onOpen();
+                        }}
+                    /></Container>
                 </Flex>
 
                 <Flex justifyContent="center" mb="1vh" wrap="wrap" px="1vh">
@@ -95,7 +211,7 @@ function RecipePage() {
                     </Text>
                     <Text fontSize="2vh" fontWeight="bold" mx="1vh">
                         <StarIcon viewBox="0 0 25 30" mr="3px" />
-                        {recipe.rating}
+                        {recipe.rating.toFixed(2)}
                     </Text>
                 </Flex>
 
@@ -142,7 +258,136 @@ function RecipePage() {
                 <Center my="1vh">
                     <InfoButton text="Share" />
                 </Center>
-              </Box>
+
+                <Box 
+                    borderRadius="5vh"
+                    boxShadow="0 0 20px rgba(0, 0, 0, 0.1)" 
+                    display="flex" 
+                    flexDirection="column" 
+                    justifyContent="center" 
+                    marginTop="10vh"  
+                    marginBottom="10vh" 
+                    width="90%"
+                >
+                    <Flex justifyContent="center" wrap="wrap" width="100%" marginTop="5vh" marginBottom="5vh" alignSelf="center">
+                        <Text fontSize="4vh" fontWeight="bold" color="rgba(0, 0, 0, 1)" textAlign="left" mr="60%">
+                            COMMENTS
+                        </Text>
+
+                        <InfoButton 
+                            text="ADD COMMENT" 
+                            size="md"
+                            onClick={() => {
+                                setCommentModal(true);
+                                onOpen();
+                            }}
+                        />
+                    </Flex>
+
+                    <Flex justifyContent="center" wrap="wrap" width="100%" marginBottom="5vh" alignSelf="center">
+                        <VStack width="90%" marginTop="2vh">
+                            {visibleReviews.map((review) => (
+                                <CommentBox reviewId={review._id} imageUrl='crab.png' userId={review.userId} ratingStars={review.rating} commentText={review.comment}/>
+                            ))}
+                            {reviews.length == 0 && <Text textAlign='center'>There are no reviews yet.</Text>}
+
+                            {showLoadMore && (
+                            <Button onClick={handleLoadMore} colorScheme="green" width="95%">
+                                Load More
+                            </Button>
+                            )}
+                        </VStack>
+                    </Flex>
+
+                </Box>
+
+            </Box>
+
+                <Modal isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay />
+                    {commentModal ? 
+
+                    <ModalContent>
+                        <ModalHeader>Add a new review</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <Box w="100%" h="100%" bgColor="#FFFFFF">
+                                <HStack marginBottom="3vh">
+                                    {[...Array(5)].map((_, index) => (
+                                        <IconButton
+                                        key={index}
+                                        variant="unstyled"
+                                        icon={<FaStar size="5vh"/>}
+                                        color={index < rating ? "yellow.500" : "gray.200"}
+                                        onClick={() => handleRatingChange(index + 1)}
+                                        />
+                                    ))}
+
+                                </HStack>
+                                <Text>
+                                    Write your review here (optional):
+                                </Text>
+                                <InputGroup size="lg">
+                                    <Textarea
+                                        placeholder="Enter comment"
+                                        value={customInput}
+                                        onChange={handleCustomInputChange}
+                                        resize="vertical"
+                                        overflow="auto"
+                                        minH="50vh"
+                                        maxH="100vh"
+                                    />
+                                </InputGroup>
+                            </Box>
+                        </ModalBody>
+
+                        <ModalFooter>
+                            <Button colorScheme='green' mr={3} onClick={handleReview}>
+                                Submit review
+                            </Button>
+                        </ModalFooter>
+                    </ModalContent>
+    
+                    :
+                    <ModalContent>
+                        <ModalHeader>Please tell us why you believe this content is inappropriate</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <Box w="70%" h="60%" bgColor="#FFFFFF">
+                                <Text>
+                                    Choose one from the options below:
+                                </Text>
+
+                                <Select variant="outline" placeholder="Select option" onChange={handleChange}>
+                                    <option value="Wrong and unfelpful instructions">Wrong and unhelpful instructions</option>
+                                    <option value="Inappropriate language">Inappropriate language</option>
+                                    <option value="Inappropriate picture">Inappropriate picture</option>
+                                    <option value="Too many typos">Too many typos</option>
+                                    <option value="Other">Other</option>
+                                    <option value="custom">Add custom complaint</option>
+                                </Select>
+
+                                {showCustomInput && (
+                                    <Input
+                                    placeholder="Enter complaint:"
+                                    value={customInput}
+                                    onChange={handleCustomInputChange}
+                                    mt={2}
+                                    />
+                                )}
+                            </Box>
+                        </ModalBody>
+
+                        <ModalFooter>
+                            <Button colorScheme='green' mr={3} onClick={handleSelection}>
+                                Submit report
+                            </Button>
+                        </ModalFooter>
+                    </ModalContent>
+                    }
+                </Modal>
+
+                
             </Flex>
             }
           </Box>
