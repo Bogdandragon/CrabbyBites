@@ -1,6 +1,0 @@
-@media screen and (max-width: 600px) {
-    /* Change the max-width value to the breakpoint where you want the transformation to occur */
-    .gridContainer {
-        grid-template-columns: repeat(2, 1fr); /* Change to two columns */
-    }
-}

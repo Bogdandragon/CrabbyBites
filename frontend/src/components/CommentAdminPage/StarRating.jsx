@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Icon, Text } from "@chakra-ui/react";
+import { Flex, Icon } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa"; // Using FontAwesome for star icons
 
 // A component that displays stars based on a rating
@@ -9,16 +9,10 @@ function StarRating({ rating, totalStars = 5 }) {
   for (let i = 1; i <= totalStars; i++) {
     // If the current index is less than or equal to the rating, make it gold; otherwise, grey.
     const color = i <= rating ? "gold" : "gray.300";
-    stars.push(
-      <Icon as={FaStar} key={i} color={color} /> // FaStar from react-icons/fa
-    );
+    stars.push(<Icon as={FaStar} key={i} color={color} />);
   }
 
-  return (
-    <Flex>
-      {stars}
-    </Flex>
-  );
+  return (<Flex>{stars}</Flex>);
 }
 
 export default StarRating;

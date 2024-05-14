@@ -1,14 +1,14 @@
-import Page from "../Page/Page";
+import './RegisterPage.css';
 import { useFormik } from 'formik';
-import { Input, FormControl, FormLabel, Button, FormErrorMessage } from '@chakra-ui/react';
-import { SimpleGrid, Box, Checkbox, Card, Center, useToast } from '@chakra-ui/react'
+import { Input, FormControl, FormLabel, Button, FormErrorMessage, SimpleGrid, Box, Checkbox, Card, Center, useToast } from '@chakra-ui/react';
 import { CardBody } from 'react-bootstrap';
 import SubmitButton from '../Buttons/SubmitButton';
-import './RegisterPage.css';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+import Page from "../Page/Page";
+
 YupPassword(Yup);
 
 function RegisterPage() {
