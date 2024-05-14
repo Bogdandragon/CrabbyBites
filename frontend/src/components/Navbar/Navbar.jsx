@@ -25,11 +25,7 @@ function Navbar() {
 
     return (
         <Flex height={"10vh"} w={"100%"} justifyContent="space-between" alignItems="center" className='px-md-5 px-2' overflow="hidden">
-            <Image
-                src="crab.png"
-                alt="Logo"
-                height="80%"
-                 />
+            <Image src="crab.png" alt="Logo" height="80%"/>
             <Heading className='title-font' mb={0}>Crabby Bites</Heading>
             <Menu>
                 <MenuButton as={IconButton} aria-label='Menu' icon={<HamburgerIcon />} variant='outline' size='lg' />

@@ -1,10 +1,5 @@
-import logo from './logo.svg';
 import './App.css';
-import axios from 'axios';
-
 import { ChakraProvider } from '@chakra-ui/react'
-import Navbar from './components/Navbar/Navbar';
-import Page from './components/Page/Page';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import LoginPage from './components/LoginPage/LoginPage';
 import ForgotPasswordPage1 from './components/LoginPage/ForgotPasswordPage1';
@@ -12,10 +7,7 @@ import ForgotPasswordPage2 from './components/LoginPage/ForgotPasswordPage2';
 import HomePage from './components/HomePage/HomePage';
 import theme from './components/Theme/Theme';
 import RecipePage from './components/RecipePage/RecipePage';
-import CommentAdminPage from './components/CommentAdminPage/CommentAdminPage'
-import RecipeAdminPage from './components/RecipeAdminPage/RecipeAdminPage'
-import UserAdminPage from './components/UserAdminPage/UserAdminPage'
-import { Route, BrowserRouter, Routes, useNavigate } from 'react-router-dom';
+import { Route, BrowserRouter, Routes} from 'react-router-dom';
 import AdminPage from './components/AdminPage/AdminPage';
 
 function App() {
