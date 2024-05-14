@@ -7,21 +7,23 @@ import axios from 'axios';
 function Navbar() {
     const navigate = useNavigate();
     const toast = useToast();
-    let token = window.localStorage.getItem('token');
-    let userType = window.localStorage.getItem('userType');
+    const token = window.localStorage.getItem('token');
+    const userType = window.localStorage.getItem('userType');
 
     useEffect(() => {
         if (token) {
             axios.get('http://localhost:5000/api/auth/type', {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             }).then((response) => {
-                window.localStorage.setItem('userType', response.data);
-                userType = response.data;
+                if (response.data != userType) {
+                    window.localStorage.setItem('userType', response.data);
+                    window.location.reload();
+                }
             }).catch((error) => {
                 console.log(error);
             });
         }
-    }, []);
+    }, [userType]);
 
     return (
         <Flex height={"10vh"} w={"100%"} justifyContent="space-between" alignItems="center" className='px-md-5 px-2' overflow="hidden">
