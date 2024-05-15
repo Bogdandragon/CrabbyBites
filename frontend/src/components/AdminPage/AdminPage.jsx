@@ -5,6 +5,7 @@ import { Flex } from '@chakra-ui/react';
 import RecipeAdminPage from "../RecipeAdminPage/RecipeAdminPage";
 import UserAdminPage from "../UserAdminPage/UserAdminPage";
 import CommentAdminPage from "../CommentAdminPage/CommentAdminPage";
+import RejectedRecipeAdminPage from "../RejectedRecipeAdminPage/RejectedRecipeAdminPage";
 import RecipeCardRejected from "../RecipeCards/RecipeCardRejected";
 import RecipeCardDel from "../RecipeCards/RecipeCardDel";
 import RecipeCardTodoFav from "../RecipeCards/RecipeCardTodoFav";
@@ -20,7 +21,7 @@ function AdminPage() {
     useEffect(() => {
         if (userType !== "ADMIN") 
             navigate('/');
-        if (!type || !["recipes", "users", "comments"].includes(type)) 
+        if (!type || !["recipes", "users", "comments", "rejected"].includes(type)) 
             navigate('/');
     }, []);
 
@@ -35,6 +36,8 @@ function AdminPage() {
                 { type === "recipes" && <RecipeAdminPage /> }
                 { type === "users" && <UserAdminPage /> }
                 { type === "comments" && <CommentAdminPage /> }
+                { type === "rejected" && <RejectedRecipeAdminPage />}
+
            </Flex>
         </Page>
     );

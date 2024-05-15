@@ -34,6 +34,25 @@ router.get("/review", adminMiddleware, async (req, res) => {
 	return res.send(recipesJSON);
 });
 
+router.get("/rejected", adminMiddleware, async (req, res) => {
+	// send recipes with status "PENDING" or reportNo >= reportThreshold
+	const recipes = await Recipe.find({ status: "REJECTED"});
+	let recipesJSON = await Promise.all(recipes.map(async (recipe) => {
+		let picture = fs.readFileSync("./images/" + recipe.picture);
+		return {
+			_id: recipe._id,
+			title: recipe.name,
+			userId: recipe.userId,
+			user: await User.findById(recipe.userId),
+			picture: picture.toString("base64"),
+			status: recipe.status,
+			reportNo: recipe.reportNo
+		};
+	}));
+	
+	return res.send(recipesJSON);
+});
+
 router.delete("/remove/:id", userMiddleware, async (req: any, res) => {
 	// delete recipe with given id if it belongs to the requesting user
 	const { id } = req.params;
