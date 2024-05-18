@@ -15,18 +15,18 @@ function RecipeCarousel() {
     const [recipes, setRecipes] = useState([]);
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    useEffect(() => {
-        axios.get('http://localhost:5000/api/recipes/review', {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        }).then((response) => {
-            setRecipes(response.data.map((recipe) => {
-                recipe.picture = "data:image/png;base64," + recipe.picture;
-                return recipe;
-            }));
-        }).catch((error) => {
-            console.log(error);
-        });
-    }, []);
+    // useEffect(() => {
+    //     axios.get('http://localhost:5000/api/recipes/review', {
+    //         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    //     }).then((response) => {
+    //         setRecipes(response.data.map((recipe) => {
+    //             recipe.picture = "data:image/png;base64," + recipe.picture;
+    //             return recipe;
+    //         }));
+    //     }).catch((error) => {
+    //         console.log(error);
+    //     });
+    // }, []);
 
   return (
     <Box  w="80%" backgroundColor="rgba(247, 229, 198, 1)" borderRadius="5vh"  overflow="hidden" p="0" mb="2vh">

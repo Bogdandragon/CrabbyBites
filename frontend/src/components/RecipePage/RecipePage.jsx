@@ -17,7 +17,7 @@ import { TimeIcon, MoonIcon, BellIcon, StarIcon } from '@chakra-ui/icons'
 import RecipeCarousel from "../RecipeCarousel/RecipeCarousel";
 
 
-function RecipePage({noRecipes}) {
+function RecipePage() {
     const navigate = useNavigate();
     const toast = useToast();
     const { id } = useParams();
