@@ -1,4 +1,3 @@
-import "./Buttons.css";
 import { Button, Stack } from '@chakra-ui/react';
 
 function SubmitButton({text, onClick, size='md'}) {

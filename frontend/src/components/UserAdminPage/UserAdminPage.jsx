@@ -1,15 +1,9 @@
-import {IconButton,Box,Flex} from '@chakra-ui/react'
-import { SimpleGrid } from "@chakra-ui/react"
-import { Text } from '@chakra-ui/react'
-import UserCard from "./UserCard";
-
-import Page from "../Page/Page";
-import AdminPage from '../AdminPage/AdminPage';
-import SortButton from "../Buttons/SortButton"
-import "./UserAdminPage.css"
+import "./UserAdminPage.css";
 import { useEffect, useState } from 'react';
+import { Box, SimpleGrid, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, useDisclosure } from '@chakra-ui/react';
 import axios from 'axios';
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, useDisclosure } from '@chakra-ui/react';
+import UserCard from "./UserCard";
+import SortButton from "../Buttons/SortButton";
 
 function UserAdminPage() {
     const [users, setUsers] = useState([]);
@@ -38,42 +32,33 @@ function UserAdminPage() {
     }
 
     return (
-            <Box width="95%" ml="2vh">
-        <SimpleGrid columns={2} spacing={1}>
-          <Text pt="1vh" textAlign="left">RESULTS: {users.length}</Text>
-          <Text textAlign="right" mr="3vw">SORT BY: <SortButton /></Text>
-        </SimpleGrid>
-        
-        <Box overflowY="auto" overflowX="auto" maxHeight="80vh" className="scrollable-box">
-          <SimpleGrid columns={{ base: 2, md: 3 }} spacing={4}>
-            {users.map((user) => (
-              <UserCard imageUrl="crab.png" username={user.username} reports={user.reportNo} key={user.username} viewReports={() => viewReports(user._id)} deleteUser={() => {}}/>
-            ))}
-          </SimpleGrid>
+        <Box width="95%" ml="2vh">
+            <SimpleGrid columns={2} spacing={1}>
+                <Text pt="1vh" textAlign="left">RESULTS: {users.length}</Text>
+                <Text textAlign="right" mr="3vw">SORT BY: <SortButton /></Text>
+            </SimpleGrid>
+            <Box overflowY="auto" overflowX="auto" maxHeight="80vh" className="scrollable-box">
+                <SimpleGrid columns={{ base: 2, md: 3 }} spacing={4}>
+                    {users.map((user) => (
+                        <UserCard imageUrl="crab.png" username={user.username} reports={user.reportNo} key={user.username} viewReports={() => viewReports(user._id)} deleteUser={() => {}}/>
+                    ))}
+                </SimpleGrid>
+            </Box>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Reports</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <SimpleGrid columns={1} spacing={1}>
+                            {reports.map((report, index) => (<Text key={report._id}>{index + 1}: {report.reason}</Text>))}
+                        </SimpleGrid>
+                    </ModalBody>
+                    <ModalFooter><Button colorScheme='blue' mr={3} onClick={onClose}>Close</Button></ModalFooter>
+                </ModalContent>
+            </Modal>
         </Box>
-		<Modal isOpen={isOpen} onClose={onClose}>
-			<ModalOverlay />
-			<ModalContent>
-				<ModalHeader>Reports</ModalHeader>
-				<ModalCloseButton />
-				<ModalBody>
-					<SimpleGrid columns={1} spacing={1}>
-						{reports.map((report, index) => (
-							<Text key={report._id}>{index + 1}: {report.reason}</Text>
-						))}
-					</SimpleGrid>
-				</ModalBody>
-
-				<ModalFooter>
-					<Button colorScheme='blue' mr={3} onClick={onClose}>
-						Close
-					</Button>
-				</ModalFooter>
-			</ModalContent>
-		</Modal>
-      </Box>
     );
-
 }
 
 export default UserAdminPage;
