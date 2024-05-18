@@ -1,11 +1,7 @@
-import './CommentCard.css'
-import { SimpleGrid, Box } from '@chakra-ui/react'
-import { GridItem, Text, Stack, HStack, VStack, IconButton } from '@chakra-ui/react';
-import React, { ReactNode } from 'react'
-import { Image} from '@chakra-ui/react';
+import { SimpleGrid, Box, GridItem, Text, Stack, HStack, VStack, Image, useBreakpointValue } from '@chakra-ui/react';
+import React from 'react';
 import StarRating from './StarRating';
 import InfoButton from '../Buttons/InfoButton';
-import { useBreakpointValue } from '@chakra-ui/react';
 
 function CommentCard({imageUrl, username, reports, ratingStars,commentText}) {
     const stackDirection = useBreakpointValue({ base: 'column', md: 'row' });
@@ -19,31 +15,30 @@ function CommentCard({imageUrl, username, reports, ratingStars,commentText}) {
                             <Image src={imageUrl} alt='Recipe Image' borderRadius='full' boxSize='50px'/>
                             <Text fontWeight="semibold" fontSize={{base:'sm',md:'lg'}}>{username}</Text>
                         </HStack>
-                        <StarRating rating={ratingStars} />
+                        <StarRating rating={ratingStars}/>
                         <Box overflowY="auto" maxHeight={{base:"4vh", md:"8vh"}} maxWidth={{base:"84vw", md:"50vw"}}>
                             <Text fontSize={{ base: 'sm', md: 'lg' }} textAlign="left">{commentText}</Text>
                         </Box>
                     </Stack>
                 </GridItem>
-                
                 <GridItem pr= '1vw' pt='0.5vh' justifySelf="end">
-                        <Box justifyContent="flex-end" alignItems="center">
-                            {stackDirection === 'row' ? (
-                            <HStack justifyContent="flex-end" alignItems="center" spacing={5}>
-                                <Text fontWeight="semibold" fontSize={{ base: 'sm', md: 'lg' }}>
-                                no. of reports: {reports}
-                                </Text>
-                                <InfoButton text="DELETE COMMENT" />
-                            </HStack>
-                            ) : (
-                            <VStack spacing={2} alignItems="flex-start">
-                                <InfoButton text="DELETE COMMENT" />
-                                <Text fontWeight="semibold" fontSize={{ base: 'sm', md: 'lg' }}>
-                                no. of reports: {reports}
-                                </Text>
-                            </VStack>
-                            )}
-                        </Box> 
+                    <Box justifyContent="flex-end" alignItems="center">
+                        {stackDirection === 'row' ? (
+                        <HStack justifyContent="flex-end" alignItems="center" spacing={5}>
+                            <Text fontWeight="semibold" fontSize={{ base: 'sm', md: 'lg' }}>
+                            no. of reports: {reports}
+                            </Text>
+                            <InfoButton text="DELETE COMMENT" />
+                        </HStack>
+                        ) : (
+                        <VStack spacing={2} alignItems="flex-start">
+                            <InfoButton text="DELETE COMMENT" />
+                            <Text fontWeight="semibold" fontSize={{ base: 'sm', md: 'lg' }}>
+                            no. of reports: {reports}
+                            </Text>
+                        </VStack>
+                        )}
+                    </Box> 
                 </GridItem>   
             </SimpleGrid>
         </Box>                     

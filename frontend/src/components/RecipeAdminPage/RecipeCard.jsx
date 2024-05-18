@@ -1,9 +1,8 @@
-import { Box, SimpleGrid, GridItem, Text, Stack, HStack, IconButton, Image } from '@chakra-ui/react';
+import { Box, SimpleGrid, GridItem, Text, Stack, HStack, IconButton, Image, useBreakpointValue, useToast } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
-import InfoButton from '../Buttons/InfoButton'
-import { useBreakpointValue, useToast } from '@chakra-ui/react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import InfoButton from '../Buttons/InfoButton';
 
 function RecipeCard ({ recipeId, imageUrl, nameRecipe, reports, reportsOpen }){
   const stackDirection = useBreakpointValue({ base: 'column', md: 'row' });
@@ -14,28 +13,17 @@ function RecipeCard ({ recipeId, imageUrl, nameRecipe, reports, reportsOpen }){
     <Box bgColor='#F5F2F2' borderRadius='20' minH={{base:'15vh', md:'20vh'}} mb='1vh' w='98%'>
       <SimpleGrid columns={6}>
         <GridItem colSpan={1}>
-          <Image
-            src={imageUrl}
-            alt='Recipe Image'
-            borderRadius='20'
-            h={{base:'15vh', md:'20vh'}}
-            w={{base:'15vh', md:'20vh'}}
-            objectFit='cover'
-          />
+          <Image src={imageUrl} alt='Recipe Image' borderRadius='20' h={{base:'15vh', md:'20vh'}} w={{base:'15vh', md:'20vh'}} objectFit='cover'/>
         </GridItem>
-
         <GridItem colSpan={2}>
           <Text pt='1vh' pl='1vw'fontWeight="semibold" align='left' fontSize={{base:'xs',md:'xl'}} noOfLines='3'>{nameRecipe}</Text>
         </GridItem>
-
         <GridItem colSpan={3} pt='1vh' pr='1vh'>
-          
-          <Stack align='flex-end'> 
-
+          <Stack align='flex-end'>
           {stackDirection === 'row' ? (
             <><HStack>
                 <InfoButton text='View Recipe' onClick={() => navigate(`/recipes/${recipeId}`)}/>
-                <InfoButton text='View Reports' onClick={() => reportsOpen(recipeId)}/>
+                {reports > 0 && <InfoButton text='View Reports' onClick={() => reportsOpen(recipeId)}/>}
                 <IconButton
                   isRound={true}
                   variant='solid'
@@ -98,7 +86,6 @@ function RecipeCard ({ recipeId, imageUrl, nameRecipe, reports, reportsOpen }){
                   />
               </HStack><Text fontSize={{ base: 'xs', md: 'md' }}>no. of reports: {reports}</Text></>
           ) : (
-           
             <><HStack>
                   <Text fontSize={{ base: 'xs', md: 'md' }}>no. of reports: {reports}</Text>
                   <IconButton
@@ -164,7 +151,7 @@ function RecipeCard ({ recipeId, imageUrl, nameRecipe, reports, reportsOpen }){
                 </HStack>
                 <HStack mb="1vh">
                   <InfoButton size='sm' text='View Recipe' onClick={() => navigate(`/recipes/${recipeId}`)}/>
-                  <InfoButton size='sm' text='View Reports' onClick={() => reportsOpen(recipeId)}/>
+                  {reports > 0 && <InfoButton size='sm' text='View Reports' onClick={() => reportsOpen(recipeId)}/>}
                 </HStack></>
           )}
             {/* <HStack>
