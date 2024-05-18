@@ -4,10 +4,9 @@ import { Text, SimpleGrid, Box, Center, useToast, Container, Flex, Image } from 
 import { TimeIcon, MoonIcon, BellIcon, StarIcon } from '@chakra-ui/icons'
 import '@fontsource/dm-serif-display';
 import { useNavigate, useParams } from 'react-router-dom';
-import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import React, { useState, useEffect } from 'react';
-import RecipeCardView from '../RecipeCards/RecipeCardView';
+import RecipeCarousel from '../RecipeCarousel/RecipeCarousel';
 import axios from "axios";
 import SubmitButton from "../Buttons/SubmitButton";
 import InfoButton from "../Buttons/InfoButton";
@@ -96,6 +95,7 @@ function RecipePage() {
                                 </Box>
                             </SimpleGrid>
                             <Center my="1vh"><InfoButton text="Share" /></Center>
+                            <RecipeCarousel />
                         </Box>
                     </Flex>
                 }
