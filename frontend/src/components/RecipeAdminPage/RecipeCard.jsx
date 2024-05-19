@@ -154,23 +154,6 @@ function RecipeCard ({ recipeId, imageUrl, nameRecipe, reports, reportsOpen }){
                   {reports > 0 && <InfoButton size='sm' text='View Reports' onClick={() => reportsOpen(recipeId)}/>}
                 </HStack></>
           )}
-            {/* <HStack>
-              <InfoButton text='View Recipe' />
-              <IconButton
-                isRound={true}
-                variant='solid'
-                colorScheme='greenBrand'
-                fontSize='20'
-                icon={<CheckIcon />}
-              />
-              <IconButton
-                isRound={true}
-                variant='solid'
-                colorScheme='red'
-                fontSize='20'
-                icon={<CloseIcon />}
-              /> 
-            </HStack> */} 
           </Stack>
         </GridItem>
       </SimpleGrid>

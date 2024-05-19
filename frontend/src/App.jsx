@@ -10,6 +10,7 @@ import theme from './components/Theme/Theme';
 import RecipePage from './components/RecipePage/RecipePage';
 import { Route, BrowserRouter, Routes} from 'react-router-dom';
 import AdminPage from './components/AdminPage/AdminPage';
+import TodoRecipesPage from './components/TodoRecipesPage/TodoRecipesPage';
 
 function App() {
 	// create routes for all components
@@ -22,12 +23,13 @@ function App() {
 						<Route path="/register" element={<RegisterPage />} />
 						<Route path="/login" element={<LoginPage />} />
 						{/* <Route path="/add-recipe" element={<AddRecipePage />} /> */}
-						<Route path="/add" element={<AddRecipePage />} />
+						{/* <Route path="/add" element={<AddRecipePage />} />
 						<Route path="/forgot-password" element={<ForgotPasswordPage1 />} />
 						<Route path="/forgot-password2" element={<ForgotPasswordPage2 />} />
 						<Route path="/recipes/:id" element={<RecipePage />} />
 						<Route path="/admin/:type" element={<AdminPage />} />
-						<Route path="/*" element={<HomePage />} />
+						<Route path="/*" element={<HomePage />} /> */}
+						<Route path="/*" element={<TodoRecipesPage />} />
 					</Routes>
 				</BrowserRouter>
 			</div>
