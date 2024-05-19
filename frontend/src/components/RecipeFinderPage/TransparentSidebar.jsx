@@ -1,4 +1,3 @@
-import {useDisclosure, Button} from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { Text } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
@@ -17,9 +16,7 @@ function TransparentSidebar() {
                         "&::-webkit-scrollbar": {
                             display: "none" // Hide scrollbar for Chrome, Safari, and Opera
                         }
-                    }}
-           
-           >
+                    }}  >
                 <SimpleGrid columns={2} spacing={4}>
                 <IngredientsCard typeIngredients="ESSENTIALS"/>
                 <IngredientsCard typeIngredients="VEGETABLES"/>

@@ -14,6 +14,7 @@ import RecipeAdminPage from './components/RecipeAdminPage/RecipeAdminPage'
 import UserAdminPage from './components/UserAdminPage/UserAdminPage'
 import RecipeFinderPage from './components/RecipeFinderPage/RecipeFinderPage';
 import AdminPage from './components/AdminPage/AdminPage';
+import MyFridgePage from './components/MyFridgePage/MyFridgePage';
 
 function App() {
 	// create routes for all components
@@ -33,7 +34,8 @@ function App() {
 						<Route path="/recipes/:id" element={<RecipePage />} />
 						<Route path="/admin/:type" element={<AdminPage />} />
 						<Route path="/*" element={<HomePage />} /> */}
-						<Route path="/*" element={<RecipeFinderPage />} />
+						{/* <Route path="/*" element={<RecipeFinderPage />} /> */}
+						<Route path="/*" element={<MyFridgePage />} />
 					</Routes>
 				</BrowserRouter>
 			</div>
