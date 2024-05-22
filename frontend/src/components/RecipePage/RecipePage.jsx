@@ -178,8 +178,54 @@ function RecipePage() {
                 </Text>
 
                 <Flex justifyContent="center" width="45%" mb="5vh" wrap="wrap">
-                    <Container m="1vh" w="auto"><SubmitButton text="Add to TODO List" size="md" /></Container>
-                    <Container m="1vh" w="auto"><SubmitButton text="Add to Favorites" size="md"/></Container>
+                    <Container m="1vh" w="auto"><SubmitButton text="Add to TODO List" size="md" onClick={() => {
+                        axios.post("http://localhost:5000/api/recipes/addTODO", {
+                            id: recipe._id,
+                        }, {
+                            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                        }).then(() => {
+                            toast({
+                            title: 'TODO recipe saved.',
+                            description: 'This recipe has been succsessfully added to your TODO list.',
+                            status: 'success',
+                            duration: 5000,
+                            isClosable: true,
+                            });
+                            setTimeout(() => window.location.reload(), 1000);
+                        }).catch((error) => {
+                            toast({
+                            title: 'Error registering TODO recipe.',
+                            description: error.response.data,
+                            status: 'error',
+                            duration: 5000,
+                            isClosable: true,
+                            });
+                        });
+                    }} /></Container>
+                    <Container m="1vh" w="auto"><SubmitButton text="Add to Favorites" size="md" onClick={() => {
+                        axios.post("http://localhost:5000/api/recipes/addFavorite", {
+                            id: recipe._id,
+                        }, {
+                            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                        }).then(() => {
+                            toast({
+                            title: 'Favorite saved.',
+                            description: 'This recipe has been succsessfully added to your favorites.',
+                            status: 'success',
+                            duration: 5000,
+                            isClosable: true,
+                            });
+                            setTimeout(() => window.location.reload(), 1000);
+                        }).catch((error) => {
+                            toast({
+                            title: 'Error registering favorite.',
+                            description: error.response.data,
+                            status: 'error',
+                            duration: 5000,
+                            isClosable: true,
+                            });
+                        });
+                    }}/></Container>
                     <Container m="1vh" w="auto"><IconButton 
                         isRound={true}
                         variant='solid'

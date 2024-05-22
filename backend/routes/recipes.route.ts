@@ -301,5 +301,51 @@ router.post("/report", userMiddleware, async(req: any, res) => {
 	}
 });
 
+router.post("/addFavorite", userMiddleware, async(req: any, res) => {
+	const { error } = validators.recipe.validate(req.body);
+	if (error) return res.status(400).send(error.details.map((e: any) => e.message));
+
+	try {
+		const { id } = req.body;
+		const recipe = await Recipe.findById(id);
+		if (!recipe) {
+			return res.status(404).send("Recipe not found");
+		}
+
+		await User.findByIdAndUpdate(req.user._id, {
+			$push: {
+				favoriteRecipes: id
+			}
+		});
+
+		res.send("Favorite added successfully!");
+	} catch (e) {
+		return res.status(401).send("Error: " + e);
+	}
+});
+
+router.post("/addTODO", userMiddleware, async(req: any, res) => {
+	const { error } = validators.recipe.validate(req.body);
+	if (error) return res.status(400).send(error.details.map((e: any) => e.message));
+
+	try {
+		const { id } = req.body;
+		const recipe = await Recipe.findById(id);
+		if (!recipe) {
+			return res.status(404).send("Recipe not found");
+		}
+
+		await User.findByIdAndUpdate(req.user._id, {
+			$push: {
+				todoRecipes: id
+			}
+		});
+
+		res.send("Favorite added successfully!");
+	} catch (e) {
+		return res.status(401).send("Error: " + e);
+	}
+});
+
 
 export default router;

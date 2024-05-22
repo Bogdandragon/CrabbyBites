@@ -152,13 +152,20 @@ const report = joi.object({
     })
 });
 
+const recipe = joi.object({
+    id: joi.string().required().messages({
+        'string.empty': 'Id is required'
+    })
+});
+
 const validators = {
     login,
     register,
     status,
     review,
     report,
-    addRecipe
+    addRecipe,
+    recipe
 }
 
 export default validators;
