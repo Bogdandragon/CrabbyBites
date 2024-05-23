@@ -9,6 +9,7 @@ import './AddRecipePage.css';
 import { Form, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import * as Yup from 'yup';
+import Ingredients from './AddIngredients/Ingredients';
 
 function AddRecipePage() {
     const navigate = useNavigate();
@@ -92,6 +93,7 @@ function AddRecipePage() {
                             </FormControl>
                             {/* TODO popup for ingredients*/}
                             <Center py='3vh'><InfoButton text='Add ingredients and quantities' /></Center>
+                            <Ingredients />
                             {/* TODO group of form controls for instructions*/}
                             <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.instructions && formikAddRecipe.touched.instructions} onChange={formikAddRecipe.handleChange} >
                                 <FormLabel>Write the instructions for your recipe</FormLabel>

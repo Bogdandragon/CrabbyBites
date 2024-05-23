@@ -35,7 +35,7 @@ function App() {
 						<Route path="/forgot-password2" element={<ForgotPasswordPage2 />} />
 						<Route path="/recipes/:id" element={<RecipePage />} />
 						<Route path="/admin/:type" element={<AdminPage />} />
-						<Route path="/*" element={<HomePage />} />
+						<Route path="/*" element={<AddRecipePage />} />
 					</Routes>
 				</BrowserRouter>
 			</div>
