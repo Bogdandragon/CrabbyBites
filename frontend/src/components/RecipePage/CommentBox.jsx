@@ -88,7 +88,7 @@ function CommentBox({reviewId, imageUrl, userId, ratingStars, commentText}) {
             <Stack alignItems='start' justifyItems='start'>
                 <Flex width="100%" wrap="wrap" justifyContent="flex-start">
                     <Image src={imageUrl} alt='Recipe Image' borderRadius='full' boxSize='50px' mr="2vh"/>
-                    <Text fontWeight="semibold" fontSize={{base:'sm',md:'lg'}} mr="80%">{username}</Text>
+                    <Text fontWeight="semibold" fontSize={{base:'sm',md:'lg'}} mr="5vh">{username}</Text>
                     <IconButton 
                         isRound={true}
                         variant='solid'
@@ -100,7 +100,7 @@ function CommentBox({reviewId, imageUrl, userId, ratingStars, commentText}) {
                     />
                 </Flex>
                 <StarRating rating={ratingStars} />
-                <Box overflowY="auto" maxHeight={{base:"4vh", md:"30vh"}} w="90%" marginBottom="2vh">
+                <Box overflowY="auto" maxHeight={{base:"100px", md:"300px"}} w="90%" marginBottom="2vh">
                     <Text fontSize="md" textAlign="left" padding="2vh">{commentText}</Text>
                 </Box>
 
