@@ -250,9 +250,101 @@ router.get("/reports/:id", adminMiddleware, async (req, res) => {
 	const { id } = req.params;
 	const recipe = await Recipe.findById(id);
 	if (!recipe) {
-		return res.status(404).send("User not found");
+		return res.status(404).send("Recipe not found");
 	}
 	return res.send(await Report.find({ reportedEntityId: id, reportedEntityType: "RECIPE" }));
+});
+
+router.get("/reviews/:id", async (req, res) => {
+	const { id } = req.params;
+	const recipe = await Recipe.findById(id);
+	if (!recipe) {
+		return res.status(404).send("Recipe not found");
+	}
+	return res.send(await Review.find({ recipeId: id }).sort({ _id: -1 }));
+});
+
+router.post("/report", userMiddleware, async(req: any, res) => {
+	const { error } = validators.report.validate(req.body);
+	if (error) return res.status(400).send(error.details.map((e: any) => e.message));
+
+	try {
+		const { id, comment, type} = req.body;
+		
+		let userId;
+		switch(type) {
+			case "RECIPE":
+				const recipe = await Recipe.findById(id);
+				if (!recipe) {
+					return res.status(404).send("Recipe not found");
+				}
+				await recipe.updateOne({ $inc: { reportNo: 1 } });
+				userId = recipe.userId;
+				break;
+			case "REVIEW":
+				const review = await Review.findById(id);
+				if (!review) {
+					return res.status(404).send("Review not found");
+				}
+				await review.updateOne({ $inc: { reportNo: 1 } });
+				userId = review.userId;
+		}
+
+		await User.findByIdAndUpdate(userId, { $inc: { reportNo: 1 } });
+
+		let report = new Report({ userId: req.user._id, reportedUserId: userId, reportedEntityId: id, reportedEntityType: type, reason: comment });
+		await report.save();
+
+		return res.send("Report registered successfully!");
+	} catch (e) {
+		return res.status(401).send("Error: " + e);
+	}
+});
+
+router.post("/addFavorite", userMiddleware, async(req: any, res) => {
+	const { error } = validators.recipe.validate(req.body);
+	if (error) return res.status(400).send(error.details.map((e: any) => e.message));
+
+	try {
+		const { id } = req.body;
+		const recipe = await Recipe.findById(id);
+		if (!recipe) {
+			return res.status(404).send("Recipe not found");
+		}
+
+		await User.findByIdAndUpdate(req.user._id, {
+			$push: {
+				favoriteRecipes: id
+			}
+		});
+
+		res.send("Favorite added successfully!");
+	} catch (e) {
+		return res.status(401).send("Error: " + e);
+	}
+});
+
+router.post("/addTODO", userMiddleware, async(req: any, res) => {
+	const { error } = validators.recipe.validate(req.body);
+	if (error) return res.status(400).send(error.details.map((e: any) => e.message));
+
+	try {
+		const { id } = req.body;
+		const recipe = await Recipe.findById(id);
+		if (!recipe) {
+			return res.status(404).send("Recipe not found");
+		}
+
+		await User.findByIdAndUpdate(req.user._id, {
+			$push: {
+				todoRecipes: id
+			}
+		});
+
+		res.send("Favorite added successfully!");
+	} catch (e) {
+		return res.status(401).send("Error: " + e);
+	}
 });
 
 
