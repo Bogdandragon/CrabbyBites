@@ -4,7 +4,9 @@ import { Text, SimpleGrid, Box, Center, useToast, Container, Flex, Image } from 
 import { TimeIcon, MoonIcon, BellIcon, StarIcon } from '@chakra-ui/icons'
 import '@fontsource/dm-serif-display';
 import { useNavigate, useParams } from 'react-router-dom';
+import 'react-multi-carousel/lib/styles.css';
 import React, { useState, useEffect } from 'react';
+import RecipeCarousel from '../RecipeCarousel/RecipeCarousel';
 import axios from "axios";
 import SubmitButton from "../Buttons/SubmitButton";
 import InfoButton from "../Buttons/InfoButton";
@@ -16,7 +18,7 @@ function RecipePage() {
     const [recipe, setRecipe] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const apiUrl = "http://localhost:5000/api/recipes/" + id;
-
+    
     useEffect(() => {
         async function fetchRecipe() {
             try {
@@ -93,6 +95,7 @@ function RecipePage() {
                                 </Box>
                             </SimpleGrid>
                             <Center my="1vh"><InfoButton text="Share" /></Center>
+                            <RecipeCarousel />
                         </Box>
                     </Flex>
                 }
