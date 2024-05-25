@@ -36,6 +36,8 @@ function Navbar() {
                     { token ?
                         <>
                             {userType === 'ADMIN' ? <MenuItem onClick={() => navigate('/admin/recipes')}>Admin</MenuItem> : null}
+                            <MenuItem onClick={() => navigate('/recipe-finder')}>Find recipes</MenuItem>
+                            <MenuItem onClick={() => navigate('/my-fridge')}>My fridge</MenuItem>
                             <MenuItem onClick={() => {
                                 window.localStorage.removeItem('token');
                                 toast({

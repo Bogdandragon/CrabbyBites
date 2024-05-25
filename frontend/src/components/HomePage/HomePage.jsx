@@ -19,14 +19,14 @@ function HomePage() {
                                     <Text fontSize='5vh' fontWeight='semibold' fontFamily='dm-serif-display' mb="0">WELCOME TO</Text>
                                     <Text fontSize='5vh' fontWeight='semibold' fontFamily='dm-serif-display' mb="3vh">CRABBY BITES!</Text>
                                     <Text fontSize='2.5vh' fontWeight='semibold' fontFamily='dm-serif-display' mb="4vh" mx="2vw">Welcome to our cooking recipes social platform, where culinary enthusiasts come together to share, discover and create delicious dishes from around the world.</Text>
-                                    <Center><SubmitButton text="Let's Get Started!" size="lg"/></Center>   
+                                    <Center><SubmitButton text="Let's Get Started!" size="lg"  onClick={() => navigate('/recipe-finder')}/></Center>   
                                 </Stack>
                             </Center>
                         </Center>
                         <Show breakpoint='(min-width: 769px)' w="50%">
                             <Flex alignItems='baseline' pt="5vh">
-                                    <Image src="salad.jpeg" borderRadius="20" border='1px' boxShadow='xl' w="23vw" h="70vh" transform='translate(35%, 15%)' objectFit={'cover'}/>
-                                    <Image src="food.jpeg" border='1px' borderRadius="20" w="21vw" height="70vh" objectFit={'cover'}/>    
+                                <Image src="salad.jpeg" borderRadius="20" border='1px' boxShadow='xl' w="23vw" h="70vh" transform='translate(35%, 15%)' objectFit={'cover'}/>
+                                <Image src="food.jpeg" border='1px' borderRadius="20" w="21vw" height="70vh" objectFit={'cover'}/>    
                             </Flex>
                         </Show>
                     </Flex>
