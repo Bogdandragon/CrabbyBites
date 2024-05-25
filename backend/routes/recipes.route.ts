@@ -139,25 +139,25 @@ router.post("/rate", userMiddleware, async (req: any, res) => {
 	}
 });
 
-router.get("/view/:id", userMiddleware, async (req, res) => {
+router.get("/view/:userId", userMiddleware, async (req, res) => {
 	try {
-		const { id } = req.params;
-		const user = await User.findById(id);
+		const { userId } = req.params;
+		const user = await User.findById(userId);
 		if (!user) {
 			return res.status(404).send("User not found");
 		}
 
-		const recipes = await Recipe.find({ userId: id});
+		const recipes = await Recipe.find({ userId: userId});
 		return res.status(200).send(recipes);
 	} catch (e) {
 		return res.status(400).send("Error: " + e);
 	}
 });
 
-router.get("/favorites/:id", userMiddleware, async (req, res) => {
+router.get("/favorites/:userId", userMiddleware, async (req, res) => {
 	try {
-		const { id } = req.params;
-		let user = await User.findById(id);
+		const { userId } = req.params;
+		let user = await User.findById(userId);
 		if (!user) {
 			return res.status(404).send("User not found");
 		}
@@ -169,10 +169,10 @@ router.get("/favorites/:id", userMiddleware, async (req, res) => {
 	}
 });
 
-router.get("/todo/:id", userMiddleware, async (req, res) => {
+router.get("/todo/:userId", userMiddleware, async (req, res) => {
 	try {
-		const { id } = req.params;
-		let user = await User.findById(id);
+		const { userId } = req.params;
+		let user = await User.findById(userId);
 		if (!user) {
 			return res.status(404).send("User not found");
 		}

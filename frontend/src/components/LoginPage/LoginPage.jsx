@@ -1,13 +1,12 @@
+import './LoginPage.css';
 import Page from "../Page/Page";
 import { useFormik } from 'formik';
-import { Input, FormControl, FormLabel, FormErrorMessage, Button } from '@chakra-ui/react';
-import { SimpleGrid, Box, Checkbox, Card, Center, useToast } from '@chakra-ui/react'
+import { Input, FormControl, FormLabel, FormErrorMessage, Button, SimpleGrid, Box, Checkbox, Card, Center, useToast } from '@chakra-ui/react';
 import { CardBody } from 'react-bootstrap';
-import SubmitButton from '../Buttons/SubmitButton'
-import './LoginPage.css';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import * as Yup from 'yup';
+import SubmitButton from '../Buttons/SubmitButton'
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -50,12 +49,7 @@ function LoginPage() {
     return (
         <Page>
             <SimpleGrid columns={2} spacing={0} w='100%' h='90vh'>
-                <Box bgImage={'cookingBackground.jpeg'}
-                    bgPosition='center'
-                    bgSize='cover'
-                    bgRepeat='no-repeat'
-                    w='100%' h='100%' className="hide-on-mobile"/>
-
+                <Box bgImage={'cookingBackground.jpeg'} bgPosition='center' bgSize='cover' bgRepeat='no-repeat' w='100%' h='100%' className="hide-on-mobile"/>
                 <Box h='100%' py='10vh' px='5vw' textAlign='left' className="column-width">
                     <Card py='10vh' px='10vw'>
                         <CardBody>

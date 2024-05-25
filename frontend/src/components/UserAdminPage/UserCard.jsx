@@ -1,12 +1,7 @@
-import './UserCard.css'
-import { Input, FormControl, FormLabel, Button, FormErrorMessage } from '@chakra-ui/react';
-import { SimpleGrid, Box, Checkbox, Card, Center, useToast } from '@chakra-ui/react'
-import React, { ReactNode } from 'react'
-
-import { Image, Stack } from '@chakra-ui/react';
+import { Card, Center, Image, Stack } from '@chakra-ui/react';
+import React from 'react';
 import { CardBody } from 'react-bootstrap';
 import InfoButton from '../Buttons/InfoButton';
-import Theme from '../Theme/Theme';
 
 function UserCard({imageUrl, username, reports, viewReports, deleteUser}) {
     // const innerBoxStyles = {

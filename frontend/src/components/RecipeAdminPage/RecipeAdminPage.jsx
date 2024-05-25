@@ -1,15 +1,9 @@
-import {IconButton,Box,Flex} from '@chakra-ui/react'
-import { SimpleGrid } from "@chakra-ui/react"
-import { Text } from '@chakra-ui/react'
-import RecipeCard from "./RecipeCard";
-import {Stack} from '@chakra-ui/react';
-import AdminPage from '../AdminPage/AdminPage';
-import SortButton from "../Buttons/SortButton"
-
-import "./RecipeAdminPage.css"
+import "./RecipeAdminPage.css";
 import { useEffect, useState } from 'react';
+import { Box, SimpleGrid, Text, Stack, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, useDisclosure } from '@chakra-ui/react';
 import axios from 'axios';
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, useDisclosure } from '@chakra-ui/react';
+import SortButton from "../Buttons/SortButton";
+import RecipeCard from "./RecipeCard";
 
 function RecipeAdminPage() {
     const [recipes, setRecipes] = useState([]);
@@ -47,7 +41,6 @@ function RecipeAdminPage() {
                     <Text pt={{base:'1.2vh', md:'2vh'}} textAlign="left"> RESULTS: {recipes.length} </Text>
                     <Text textAlign="right" mr='3vw'> SORT BY: <SortButton/></Text>
                 </SimpleGrid>
-                
             </Box>
             <Box>
                 <Stack>
@@ -66,22 +59,14 @@ function RecipeAdminPage() {
                     <ModalCloseButton />
                     <ModalBody>
                         <SimpleGrid columns={1} spacing={1}>
-                            {reports.map((report, index) => (
-                                <Text key={report._id}>{index + 1}: {report.reason}</Text>
-                            ))}
+                            {reports.map((report, index) => (<Text key={report._id}>{index + 1}: {report.reason}</Text>))}
                         </SimpleGrid>
                     </ModalBody>
-
-                    <ModalFooter>
-                        <Button colorScheme='blue' mr={3} onClick={onClose}>
-                            Close
-                        </Button>
-                    </ModalFooter>
+                    <ModalFooter><Button colorScheme='blue' mr={3} onClick={onClose}>Close</Button></ModalFooter>
                 </ModalContent>
             </Modal>
         </SimpleGrid>
     );
-
 }
 
 export default RecipeAdminPage;
