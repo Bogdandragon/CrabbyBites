@@ -1,5 +1,4 @@
-import { Button, Stack } from '@chakra-ui/react';
-import { useBreakpointValue } from '@chakra-ui/react';
+import { Button, Stack, useBreakpointValue } from '@chakra-ui/react';
 
 function IngredientButton({text, onClick}) {
     const buttonSize = useBreakpointValue({ base: 'sm', lg: 'xs' });

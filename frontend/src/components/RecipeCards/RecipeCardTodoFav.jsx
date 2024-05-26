@@ -1,21 +1,20 @@
 import './RecipeCard.css'
-import { SimpleGrid, Box, Checkbox, Card, useBreakpointValue } from '@chakra-ui/react'
-import React, { ReactNode } from 'react'
+import { Box, Card, useBreakpointValue } from '@chakra-ui/react'
+import React from 'react'
 import { Text } from '@chakra-ui/react';
 import {HStack} from '@chakra-ui/react';
 import {IconButton} from '@chakra-ui/react';
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import { FaHeart } from 'react-icons/fa';
 import { Spacer } from '@chakra-ui/react';
-import { Image, Stack } from '@chakra-ui/react';
+import { Image } from '@chakra-ui/react';
 import { CardBody } from 'react-bootstrap';
 import InfoButton from '../Buttons/InfoButton';
-
-import Theme from '../Theme/Theme';
 
 function RecipeCardTodoFav({imageUrl, titleRecipe, descriptionRecipe, timeCooking, difficulty, numberServings}) {
     const buttonSize = useBreakpointValue({ base: "sm", md: "md"});
     const stackSpacing = useBreakpointValue({base: 12, md: 0.4, xl: 12 });
+    
     return (    
         <Card borderRadius="5vh" w={{base:'90vw', md:'44vw', lg:'30vw'}} h={{base:'55vh',  md:'55vh'}} bgColor='#FFFBF2' >
             <CardBody backgroundColor='FFFBF2'>
@@ -28,7 +27,6 @@ function RecipeCardTodoFav({imageUrl, titleRecipe, descriptionRecipe, timeCookin
                     <Spacer/>
                     <IconButton icon={<PlusSquareIcon />} bgColor='#FFFBF2' size={buttonSize} onClick={() => {}}/>
                     <IconButton as={ FaHeart } color="red.500" variant="ghost" boxSize="1em" aria-label="Like"  size={buttonSize} onClick={() => {}}/>
-
                 </HStack>
             </CardBody>      
         </Card>                       
