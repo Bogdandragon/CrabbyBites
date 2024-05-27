@@ -25,12 +25,13 @@ router.get("/reported", adminMiddleware, async (req, res) => {
 });
 
 router.delete("/remove/:id", async (req, res) => {
+    const { id } = req.params;
     try {
-        let review = await Review.findById(req.params.id);
+        let review = await Review.findById(id);
         if (!review) {
             return res.status(404).send("Review not found");
         }
-        await Review.findByIdAndDelete(req.params.id);
+        await review.deleteOne();
         res.send("Review removed");
     } catch (e) {
         return res.status(400).send("An error occured: " + e);
