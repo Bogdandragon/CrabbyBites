@@ -3,8 +3,9 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, Modal
 import React from 'react';
 import StarRating from './StarRating';
 import InfoButton from '../Buttons/InfoButton';
+import axios from 'axios';
 
-function CommentCard({imageUrl, username, reports, ratingStars,commentText}) {
+function CommentCard({imageUrl, username, reports, ratingStars,commentText, commentId}) {
     const stackDirection = useBreakpointValue({ base: 'column', md: 'row' });
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
 
@@ -54,7 +55,14 @@ function CommentCard({imageUrl, username, reports, ratingStars,commentText}) {
                     <ModalFooter>
                     <Button colorScheme="red" mr={3} onClick={() => {
                         // Add your deletion logic here
-                        
+                        axios.delete(`http://localhost:5000/api/reviews/${commentId}`, {
+                            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                        }).then((response) => {
+                            console.log(response);
+                        }
+                        ).catch((error) => {
+                            console.log(error);
+                        });
                         onDeleteClose();
                     }}>Delete</Button>
                     <Button variant="ghost" onClick={onDeleteClose}>Cancel</Button>
