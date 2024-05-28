@@ -5,7 +5,7 @@ import constants from "./constants";
 
 import usersRouter from "./routes/users.route";
 import recipesRouter from "./routes/recipes.route";
-import reviewRouter from "./routes/review.route";
+import reviewsRouter from "./routes/review.route";
 import cors from "cors";
 
 const app = express();
@@ -25,7 +25,7 @@ app.use(cors());
 
 app.use('/api/auth', usersRouter);
 app.use('/api/recipes', recipesRouter);
-app.use('/api/reviews', reviewRouter);
+app.use('/api/reviews', reviewsRouter);
 
 server.listen(PORT, () => {
   console.log(`listening on *:${PORT}`);

@@ -32,7 +32,7 @@ router.delete("/remove/:id", async (req, res) => {
             return res.status(404).send("Review not found");
         }
         await review.deleteOne();
-        res.send("Review removed");
+        return res.status(200).send("Review deleted successfully");
     } catch (e) {
         return res.status(400).send("An error occured: " + e);
     }

@@ -45,7 +45,7 @@ function CommentAdminPage({noResults}) {
                 return (
                     <CommentCard 
                         imageUrl='crab.png' 
-                        username={user ? user.name : ''} 
+                        username={user ? user.username : ''} 
                         reports={review.reportNo} 
                         ratingStars={review.rating} 
                         commentText={review.comment}
