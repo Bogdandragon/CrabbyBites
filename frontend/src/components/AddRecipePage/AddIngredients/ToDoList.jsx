@@ -37,7 +37,7 @@ function TodoList({ todos, deleteTodo, editTodo }) {
                     { todos.map((todo) => (
                         <HStack spacing="24px" w="320px">
                             <Flex p={6} w="300px" h="50px" justifyContent="space-between">
-                                <Text>{todo.ingredient} {todo.quantity}</Text>
+                                <Text>{todo.quantity} {todo.ingredient}</Text>
                                 <Flex w="10px" >
                                     <DeleteIcon color="red.500" mr="2" onClick={()=>deleteTodo(todo.id)}/>
                                     <EditIcon onClick={()=>handleEditClick(todo)} />

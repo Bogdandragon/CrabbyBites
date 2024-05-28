@@ -3,11 +3,11 @@ import { VStack } from '@chakra-ui/react';
 import AddTodo from './AddToDo';
 import TodoList from './ToDoList';
 
-function AddList() {
+function AddList({ingredients}) {
     const todosList = [
         { id: 1, ingredient: 'milk', quantity: '500ml'},
         { id: 2, ingredient: 'eggs', quantity: '3'},
-        { id: 3, ingredient: 'lemon juice', quantity: '100 ml'}
+        { id: 3, ingredient: 'lemon juice', quantity: '100ml'}
     ];
     const [todos, setTodos] = useState(todosList);
     
@@ -18,7 +18,8 @@ function AddList() {
     }
         
     function addTodo(newTodo) {
-        setTodos([...todos,newTodo])
+        setTodos([...todos, newTodo])
+        ingredients.push(newTodo)
     }
     
     function editTodo(id,updatedTodo) {

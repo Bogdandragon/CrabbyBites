@@ -1,7 +1,6 @@
-import { Stack, Input,Button,useToast } from '@chakra-ui/react'
+import { Stack, Input, Text, Button, Center, useToast } from '@chakra-ui/react'
 import React, {useState} from 'react'
 import { nanoid } from 'nanoid';
-
 
 function AddTodo({ addTodo }) {
     const toast = useToast()
@@ -27,10 +26,12 @@ function AddTodo({ addTodo }) {
     
     return (
         <form onSubmit={handleSubmit}>
-            <Stack spacing={5}>
-                <Input mt={5} value={ingredient} variant="outline" type="text" placeholder="Enter your ingredient..." onChange={(e)=>setIngredient(e.target.value)} />
-                <Input value={quantity} variant="outline" type="text" placeholder="Enter the quantity..." onChange={(e)=>setQuantity(e.target.value)} />
-                <Button colorScheme="neutral" type="submit">Add ingredient </Button>
+            <Stack spacing={0}>
+                <Center><Text mt={5}>Enter your ingredient:</Text></Center>
+                <Input mt={0} value={ingredient} variant="outline" type="text" placeholder="Ex.: milk, eggs, garlic, ..." onChange={(e)=>setIngredient(e.target.value)} />
+                <Center><Text mt={2}>Enter the quantity for your ingredient:</Text></Center>
+                <Input value={quantity} variant="outline" type="text" placeholder="Ex.: 500ml, 5, 5 cloves, ...)" onChange={(e)=>setQuantity(e.target.value)} />
+                <Button mt={2} colorScheme="neutral" type="submit">Add ingredient</Button>
             </Stack>
         </form>
     );
