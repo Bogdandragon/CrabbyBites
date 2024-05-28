@@ -74,9 +74,6 @@ function LoginPage() {
                                     <Box>
                                         <Checkbox colorScheme='greenBrand' defaultChecked size='md'>Keep me logged in</Checkbox>
                                     </Box>
-                                    <Box textAlign='right'>
-                                        <Button colorScheme='greenBrand' variant='link' onClick={() => navigate("/forgot-password")}>Forgot password?</Button>
-                                    </Box>
                                 </SimpleGrid>
 
                                 <Center><SubmitButton text="Login" onClick={formikLogin.handleSubmit}/></Center>

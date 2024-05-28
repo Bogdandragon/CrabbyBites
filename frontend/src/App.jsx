@@ -2,8 +2,6 @@ import './App.css';
 import { ChakraProvider } from '@chakra-ui/react'
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import LoginPage from './components/LoginPage/LoginPage';
-import ForgotPasswordPage1 from './components/LoginPage/ForgotPasswordPage1';
-import ForgotPasswordPage2 from './components/LoginPage/ForgotPasswordPage2';
 import HomePage from './components/HomePage/HomePage';
 import AddRecipePage from './components/AddRecipePage/AddRecipePage';
 import theme from './components/Theme/Theme';
@@ -25,8 +23,6 @@ function App() {
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/admin/:type" element={<AdminPage />} />
 						<Route path="/add-recipe" element={<AddRecipePage />} />
-						<Route path="/forgot-password" element={<ForgotPasswordPage1 />} />
-						<Route path="/forgot-password2" element={<ForgotPasswordPage2 />} />
 						<Route path="/recipes/:id" element={<RecipePage />} />
 						<Route path="/recipe-finder" element={<RecipeFinderPage />} />
 						<Route path="/my-fridge" element={<MyFridgePage />} />
