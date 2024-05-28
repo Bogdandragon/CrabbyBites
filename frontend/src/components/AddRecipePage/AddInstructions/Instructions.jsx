@@ -3,7 +3,7 @@ import { VStack } from '@chakra-ui/react';
 import AddTodo from './AddToDo';
 import TodoList from './ToDoList';
 
-function AddList({ingredients, onChange}) {
+function AddList({instructions}) {
     const todosList = [];
     const [todos, setTodos] = useState(todosList);
     
@@ -15,7 +15,7 @@ function AddList({ingredients, onChange}) {
         
     function addTodo(newTodo) {
         setTodos([...todos, newTodo])
-        ingredients.push(newTodo)
+        instructions.push(newTodo)
     }
     
     function editTodo(id,updatedTodo) {
@@ -26,7 +26,7 @@ function AddList({ingredients, onChange}) {
     return (
         <VStack p={5}>
             <TodoList todos={todos} deleteTodo={deleteTodo} editTodo={editTodo}/>
-            <AddTodo addTodo={addTodo} onChange={onChange}/>
+            <AddTodo addTodo={addTodo}/>
         </VStack>
     );
 }

@@ -1,7 +1,6 @@
 import Page from "../Page/Page";
 import { useFormik } from 'formik';
-import { Input, FormControl, FormLabel, FormErrorMessage, Button, Text } from '@chakra-ui/react';
-import { Checkbox, Card, Center, useToast, Select } from '@chakra-ui/react'
+import { Input, FormControl, FormLabel, FormErrorMessage, Button, Text, Checkbox, Card, Center, useToast, Select } from '@chakra-ui/react';
 import { CardBody} from 'react-bootstrap';
 import SubmitButton from '../Buttons/SubmitButton'
 import './AddRecipePage.css';
@@ -9,6 +8,7 @@ import { Form, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import * as Yup from 'yup';
 import Ingredients from './AddIngredients/Ingredients';
+import Instructions from './AddInstructions/Instructions';
 
 function AddRecipePage() {
     const navigate = useNavigate();
@@ -25,7 +25,7 @@ function AddRecipePage() {
           category: '',
           description: '',
           ingredients: [],
-          instructions: '',
+          instructions: [],
           terms: false
         },
         onSubmit: (values) => {
@@ -36,7 +36,8 @@ function AddRecipePage() {
             time: Yup.number().positive('A positive number is required for this field').integer().required('Required field'),
             portions: Yup.number().positive().integer().required('Required field'),
             description: Yup.string().min(30, "Minimum length is 30 characters").required('Required field'),
-            instructions: Yup.string().min(100, "Minimum length is 100 characters").required('Required field'),
+            ingredients: Yup.array().required('There are no recipes without ingredients'),
+            instructions: Yup.array().required('There are no recipes without instructions'),
             terms: Yup.boolean().oneOf([true], 'You must accept the terms and conditions')
         })
     })
@@ -92,15 +93,16 @@ function AddRecipePage() {
                                 <Input id='description' name='description' type='description' onChange={formikAddRecipe.handleChange} value={formikAddRecipe.values.description}/>
                                 <FormErrorMessage>{formikAddRecipe.errors.description}</FormErrorMessage>
                             </FormControl>
-                            {/* TODO salvare ingrediente in dictionar de ingrediente */}
-                            <FormControl pb='2vh' onChange={formikAddRecipe.handleChange}>
+                            {/* TODO validation*/}
+                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.ingredients} onChange={formikAddRecipe.handleChange}>
                                 <FormLabel>Add ingredients and quantities</FormLabel>
                                 <Ingredients ingredients={formikAddRecipe.values.ingredients}/>
+                                <FormErrorMessage>{formikAddRecipe.errors.ingredients}</FormErrorMessage>
                             </FormControl>
-                            {/* TODO group of form controls for instructions*/}
-                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.instructions && formikAddRecipe.touched.instructions} onChange={formikAddRecipe.handleChange} >
-                                <FormLabel>Write the instructions for your recipe</FormLabel>
-                                <Input id='instructions' name='instructions' type='instructions' onChange={formikAddRecipe.handleChange} value={formikAddRecipe.values.instructions}/>
+                            {/* TODO validation*/}
+                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.instructions} onChange={formikAddRecipe.handleChange}>
+                                <FormLabel>Add instructions</FormLabel>
+                                <Instructions instructions={formikAddRecipe.values.instructions}/>
                                 <FormErrorMessage>{formikAddRecipe.errors.instructions}</FormErrorMessage>
                             </FormControl>
 
