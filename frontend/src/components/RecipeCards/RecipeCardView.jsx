@@ -24,7 +24,6 @@ function RecipeCardView({recipeId, imageUrl, titleRecipe, descriptionRecipe, tim
                 <HStack spacing={stackSpacing}>
                     <Text as='b' pl='1vw' fontSize="xs">{timeCooking} MIN - {difficulty} PREP - {numberServings} SERVES</Text>
                     <InfoButton text='View Recipe' size={buttonSize} onClick={() => {
-                        // window.scrollTo(0, 0);
                         navigate(`/recipes/${recipeId}`);
                         window.location.reload()}}/>
                 </HStack>
