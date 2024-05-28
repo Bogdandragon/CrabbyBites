@@ -167,7 +167,10 @@ router.get("/view/:userId", userMiddleware, async (req, res) => {
 		}
 
 		const recipes = await Recipe.find({ userId: userId});
-		return res.status(200).send(recipes);
+		return res.status(200).send(recipes.map((rec) => {
+			rec.picture = fs.readFileSync("./images/" + rec.picture).toString("base64");
+			return rec;
+		}));
 	} catch (e) {
 		return res.status(400).send("Error: " + e);
 	}
@@ -182,7 +185,10 @@ router.get("/favorites/:userId", userMiddleware, async (req, res) => {
 		}
 
 		const recipes = await Recipe.find({ _id: { $in: user.favoriteRecipes } });
-		return res.status(200).send(recipes);
+		return res.status(200).send(recipes.map((rec) => {
+			rec.picture = fs.readFileSync("./images/" + rec.picture).toString("base64");
+			return rec;
+		}));
 	} catch (e) {
 		return res.status(400).send("Error: " + e);
 	}
@@ -197,7 +203,10 @@ router.get("/todo/:userId", userMiddleware, async (req, res) => {
 		}
 
 		const recipes = await Recipe.find({ _id: { $in: user.todoRecipes } });
-		return res.status(200).send(recipes);
+		return res.status(200).send(recipes.map((rec) => {
+			rec.picture = fs.readFileSync("./images/" + rec.picture).toString("base64");
+			return rec;
+		}));
 	} catch (e) {
 		return res.status(400).send("Error: " + e);
 	}
@@ -400,7 +409,10 @@ router.get("/similar/:id", async (req, res) => {
 				chosen.push(index);
 			}
 
-			res.status(200).send(chosen.map((idx) => similar[idx]));
+			res.status(200).send(chosen.map((idx) => similar[idx]).map((rec) => {
+				rec.picture = fs.readFileSync("./images/" + rec.picture).toString("base64");
+				return rec;
+			}));
 		}
 
 	} catch (e) {

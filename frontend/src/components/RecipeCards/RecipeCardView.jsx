@@ -7,10 +7,12 @@ import { Image } from '@chakra-ui/react';
 import { CardBody } from 'react-bootstrap';
 import InfoButton from '../Buttons/InfoButton';
 import { useBreakpointValue } from "@chakra-ui/react";
+import { useNavigate } from 'react-router-dom';
 
 function RecipeCardView({recipeId, imageUrl, titleRecipe, descriptionRecipe, timeCooking, difficulty, numberServings}) {
     const showDetails = useBreakpointValue({ base: true,  md: false, xl: true });
     const buttonSize = useBreakpointValue({ base: "sm", md: "md"});
+    const navigate = useNavigate();
 
     const stackSpacing = useBreakpointValue({base: 20, md: 0.2, xl: 20 });
     return (    
@@ -21,7 +23,10 @@ function RecipeCardView({recipeId, imageUrl, titleRecipe, descriptionRecipe, tim
                 <Text textAlign='left' pl='1vw' fontSize="md" noOfLines='2'>{descriptionRecipe}</Text>
                 <HStack spacing={stackSpacing}>
                     <Text as='b' pl='1vw' fontSize="xs">{timeCooking} MIN - {difficulty} PREP - {numberServings} SERVES</Text>
-                    <InfoButton text='View Recipe' size={buttonSize} onClick={() => {}}/>
+                    <InfoButton text='View Recipe' size={buttonSize} onClick={() => {
+                        // window.scrollTo(0, 0);
+                        navigate(`/recipes/${recipeId}`);
+                        window.location.reload()}}/>
                 </HStack>
             </CardBody>
         </Card>              

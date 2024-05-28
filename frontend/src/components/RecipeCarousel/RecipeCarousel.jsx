@@ -16,11 +16,13 @@ function RecipeCarousel({recipeId}) {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        console.log("in effect\n");
         axios.get('http://localhost:5000/api/recipes/similar/' + recipeId, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         }).then((response) => {
-            console.log("got response\n");
+            setRecipes(response.data.map((recipe) => {
+                recipe.picture = "data:image/png;base64," + recipe.picture;
+                return recipe;
+            }));
             setRecipes(response.data);
             setIsLoading(false);
         }).catch((error) => {
@@ -30,7 +32,7 @@ function RecipeCarousel({recipeId}) {
     }, []);
 
   return (
-    <Box  w="80%" backgroundColor="rgba(247, 229, 198, 1)" borderRadius="5vh"  overflow="hidden" p="0" mb="2vh">
+    <Box  w="80%" backgroundColor="rgba(247, 229, 198, 1)" borderRadius="5vh"  overflow="hidden" p="3vh" mb="2vh">
                 
                     <Text fontSize="4vh" fontWeight="bold" textAlign="left" pl={{base: '3vw', lg: '2vw'}} >SIMILAR RECIPES</Text>
                     {isLoading ? <Text>Loading...</Text> :
