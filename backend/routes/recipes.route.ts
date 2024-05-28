@@ -167,7 +167,10 @@ router.get("/view/:userId", userMiddleware, async (req, res) => {
 		}
 
 		const recipes = await Recipe.find({ userId: userId});
-		return res.status(200).send(recipes);
+		return res.status(200).send(recipes.map((rec) => {
+			rec.picture = fs.readFileSync("./images/" + rec.picture).toString("base64");
+			return rec;
+		}));
 	} catch (e) {
 		return res.status(400).send("Error: " + e);
 	}
@@ -182,7 +185,10 @@ router.get("/favorites/:userId", userMiddleware, async (req, res) => {
 		}
 
 		const recipes = await Recipe.find({ _id: { $in: user.favoriteRecipes } });
-		return res.status(200).send(recipes);
+		return res.status(200).send(recipes.map((rec) => {
+			rec.picture = fs.readFileSync("./images/" + rec.picture).toString("base64");
+			return rec;
+		}));
 	} catch (e) {
 		return res.status(400).send("Error: " + e);
 	}
@@ -197,7 +203,10 @@ router.get("/todo/:userId", userMiddleware, async (req, res) => {
 		}
 
 		const recipes = await Recipe.find({ _id: { $in: user.todoRecipes } });
-		return res.status(200).send(recipes);
+		return res.status(200).send(recipes.map((rec) => {
+			rec.picture = fs.readFileSync("./images/" + rec.picture).toString("base64");
+			return rec;
+		}));
 	} catch (e) {
 		return res.status(400).send("Error: " + e);
 	}
@@ -361,6 +370,51 @@ router.post("/addTODO", userMiddleware, async(req: any, res) => {
 		});
 
 		res.send("Favorite added successfully!");
+	} catch (e) {
+		return res.status(401).send("Error: " + e);
+	}
+});
+
+router.get("/similar/:id", async (req, res) => {
+	try {
+		const { id } = req.params;
+		const recipe = await Recipe.findById(id);
+		if (!recipe) {
+			return res.status(404).send("Recipe not found");
+		}
+
+		let sameCategory = await Recipe.find({ category: recipe.category });
+		const ingrs = recipe.ingredients.map((ingredient) => ingredient.name );
+
+		const similar = sameCategory.filter((r) => {
+			let commonCount = 0;
+			r.ingredients.forEach((ing) => {
+				if (ingrs.includes(ing.name)) {
+					commonCount++;
+				}
+			});
+
+			return commonCount >= 3 && r.name != recipe.name;
+		});
+
+		if (similar.length <= 4) {
+			res.status(200).send(similar);
+		} else {
+			const chosen: number[] = [];
+			for (let i = 0; i < 4; i++) {
+				let index = Math.floor(Math.random() * (similar.length - 1));
+				while (chosen.includes(index)) {
+					index = Math.floor(Math.random() * (similar.length - 1));
+				}
+				chosen.push(index);
+			}
+
+			res.status(200).send(chosen.map((idx) => similar[idx]).map((rec) => {
+				rec.picture = fs.readFileSync("./images/" + rec.picture).toString("base64");
+				return rec;
+			}));
+		}
+
 	} catch (e) {
 		return res.status(401).send("Error: " + e);
 	}
