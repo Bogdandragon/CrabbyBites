@@ -385,7 +385,7 @@ router.get("/similar/:id", async (req, res) => {
 				}
 			});
 
-			return commonCount >= 3;
+			return commonCount >= 3 && r.name != recipe.name;
 		});
 
 		if (similar.length <= 4) {
@@ -393,10 +393,11 @@ router.get("/similar/:id", async (req, res) => {
 		} else {
 			const chosen: number[] = [];
 			for (let i = 0; i < 4; i++) {
-				let index = Math.floor(Math.random() * similar.length - 1);
-				if (!chosen.includes(index)) {
-					chosen.push(index);
+				let index = Math.floor(Math.random() * (similar.length - 1));
+				while (chosen.includes(index)) {
+					index = Math.floor(Math.random() * (similar.length - 1));
 				}
+				chosen.push(index);
 			}
 
 			res.status(200).send(chosen.map((idx) => similar[idx]));

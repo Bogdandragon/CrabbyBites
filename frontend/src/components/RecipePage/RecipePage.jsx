@@ -253,6 +253,7 @@ function RecipePage() {
                             </Box>
                         </SimpleGrid>
                         <Center my="1vh"><InfoButton text="Share" /></Center>
+                        <Center><RecipeCarousel recipeId={recipe._id}/></Center>
                         <Box borderRadius="5vh" boxShadow="0 0 20px rgba(0, 0, 0, 0.1)" display="flex" flexDirection="column" justifyContent="center" marginTop="10vh" marginBottom="10vh" width="90%">
                             <Flex justifyContent="center" wrap="wrap" width="100%" marginTop="5vh" marginBottom="5vh" alignSelf="center">
                                 <Text fontSize="4vh" fontWeight="bold" color="rgba(0, 0, 0, 1)" textAlign="left" mr="60%"> COMMENTS </Text>
@@ -274,7 +275,6 @@ function RecipePage() {
                                     )}
                                 </VStack>
                             </Flex>
-                            <Center><RecipeCarousel /></Center>
                         </Box>
                     </Box>
                         <Modal isOpen={isOpen} onClose={onClose}>

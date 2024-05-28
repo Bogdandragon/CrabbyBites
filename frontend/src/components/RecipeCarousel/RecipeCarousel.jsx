@@ -10,29 +10,30 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,
 
 
 
-function RecipeCarousel() {
+function RecipeCarousel({recipeId}) {
 
     const [recipes, setRecipes] = useState([]);
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [isLoading, setIsLoading] = useState(true);
 
-    // useEffect(() => {
-    //     axios.get('http://localhost:5000/api/recipes/review', {
-    //         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    //     }).then((response) => {
-    //         setRecipes(response.data.map((recipe) => {
-    //             recipe.picture = "data:image/png;base64," + recipe.picture;
-    //             return recipe;
-    //         }));
-    //     }).catch((error) => {
-    //         console.log(error);
-    //     });
-    // }, []);
+    useEffect(() => {
+        console.log("in effect\n");
+        axios.get('http://localhost:5000/api/recipes/similar/' + recipeId, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        }).then((response) => {
+            console.log("got response\n");
+            setRecipes(response.data);
+            setIsLoading(false);
+        }).catch((error) => {
+            console.log(error);
+            setIsLoading(false);
+        });
+    }, []);
 
   return (
     <Box  w="80%" backgroundColor="rgba(247, 229, 198, 1)" borderRadius="5vh"  overflow="hidden" p="0" mb="2vh">
                 
                     <Text fontSize="4vh" fontWeight="bold" textAlign="left" pl={{base: '3vw', lg: '2vw'}} >SIMILAR RECIPES</Text>
-
+                    {isLoading ? <Text>Loading...</Text> :
                     <Carousel
                         additionalTransfrom={0}
                         arrows
@@ -78,22 +79,15 @@ function RecipeCarousel() {
                         slidesToSlide={1}
                         swipeable
                         >
-                            {/* modifica aici */}
-                            {/* {recipes.map((recipe) => (
-                            <RecipeCardView recipeId={recipe._id} imageUrl={recipe.picture} titleRecipe={recipe.title} descriptionRecipe={recipe.descriptionRecipe} timeCooking={recipe.time} difficulty={recipe.difficulty} numberServings={recipe.portions}/>
-                        ))}
-                        {recipes.length == 0 && <Text textAlign='center'>No recipes found.</Text>}
-                             */}
+            
+                            {recipes.map((recipe) => (
+                                <RecipeCardView recipeId={recipe._id} imageUrl={recipe.picture} titleRecipe={recipe.name} descriptionRecipe={recipe.description} timeCooking={recipe.time} difficulty={recipe.difficulty} numberServings={recipe.portions}/>
+                            ))}
+                            {recipes.length == 0 && <Text textAlign='center'>No recipes found.</Text>}
                             
-                            
-                            <RecipeCardView imageUrl="fruitTart.jpeg" titleRecipe="Tart" descriptionRecipe="Aceasta este o tarta foarte delicioasa, buna pentru zilele toride de vara." timeCooking='2' difficulty='EASY' numberServings='4'/>
-                            <RecipeCardView imageUrl="fruitTart.jpeg" titleRecipe="Tart" descriptionRecipe="Aceasta este o tarta foarte delicioasa, buna pentru zilele toride de vara." timeCooking='2' difficulty='EASY' numberServings='4'/>
-                            <RecipeCardView imageUrl="fruitTart.jpeg" titleRecipe="Tart" descriptionRecipe="Aceasta este o tarta foarte delicioasa, buna pentru zilele toride de vara." timeCooking='2' difficulty='EASY' numberServings='4'/>
-
-
-                            
-                        </Carousel>
-
+                    
+                    </Carousel>
+                    }
                 </Box>
   );
 }
