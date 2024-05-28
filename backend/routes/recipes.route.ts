@@ -366,5 +366,46 @@ router.post("/addTODO", userMiddleware, async(req: any, res) => {
 	}
 });
 
+router.get("/similar/:id", async (req, res) => {
+	try {
+		const { id } = req.params;
+		const recipe = await Recipe.findById(id);
+		if (!recipe) {
+			return res.status(404).send("Recipe not found");
+		}
+
+		let sameCategory = await Recipe.find({ category: recipe.category });
+		const ingrs = recipe.ingredients.map((ingredient) => ingredient.name );
+
+		const similar = sameCategory.filter((r) => {
+			let commonCount = 0;
+			r.ingredients.forEach((ing) => {
+				if (ingrs.includes(ing.name)) {
+					commonCount++;
+				}
+			});
+
+			return commonCount >= 3;
+		});
+
+		if (similar.length <= 4) {
+			res.status(200).send(similar);
+		} else {
+			const chosen: number[] = [];
+			for (let i = 0; i < 4; i++) {
+				let index = Math.floor(Math.random() * similar.length - 1);
+				if (!chosen.includes(index)) {
+					chosen.push(index);
+				}
+			}
+
+			res.status(200).send(chosen.map((idx) => similar[idx]));
+		}
+
+	} catch (e) {
+		return res.status(401).send("Error: " + e);
+	}
+});
+
 
 export default router;
