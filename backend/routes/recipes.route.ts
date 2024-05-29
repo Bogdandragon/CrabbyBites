@@ -100,7 +100,7 @@ router.get("/search", async (req, res) => {
 			return res.status(400).send("Invalid query");
 		}
 		const ingredients = (req.query.ingredients as string).split(",");
-		const recipes = await Recipe.find({ ingredients: { $elemMatch: { name: { $in: ingredients } } } });
+		const recipes = await Recipe.find({ ingredients: { $elemMatch: { name: { $in: ingredients } } }, status: "APPROVED"});
 		recipes.sort((a, b) => {
 			let aCount = 0;
 			let bCount = 0;

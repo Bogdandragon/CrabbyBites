@@ -69,7 +69,6 @@ function AddRecipePage() {
                 instructions: sendValues.instructions
             }
             console.log(sendValues);
-            alert(JSON.stringify(values));
             axios.post('http://localhost:5000/api/recipes/add', sendValues, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             }).then((response) => {
