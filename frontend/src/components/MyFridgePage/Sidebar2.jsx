@@ -2,27 +2,36 @@ import React from 'react';
 import { Text, Box, SimpleGrid, IconButton, useDisclosure, FormControl, FormLabel, Input, Center } from '@chakra-ui/react';
 import { NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useToast } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
-import SubmitButton from '../Buttons/SubmitButton'
+import { AddIcon, InfoIcon } from '@chakra-ui/icons';
+import SubmitButton from '../Buttons/SubmitButton';
 import { useFormik } from 'formik';
-import * as Yup from 'yup'
+import * as Yup from 'yup';
 import IngredientsCard2 from './IngredientsCard2';
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import InfoButton from "../Buttons/InfoButton";
 
 function TransparentSidebar2() {
     const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-    const {ingredients , setIngredients} = useState([]);
+    const [ingredients, setIngredients] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    axios.get(`http://localhost:5000/api/auth/ingredients`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    }).then((response) => {
-        setIngredients(response.data);
-    }).catch((error) => {
-        console.log(error);
-    })
+    useEffect(() => {
+        axios.get('http://localhost:5000/api/auth/ingredients', {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        })
+        .then((response) => {
+            setIngredients(response.data.map((ingredient) => ingredient.name));
+            setIsLoading(false);
+        }).catch((error) => {
+            console.log(error.message);
+            setIsLoading(false);
+        });
+    }, []);
+
+
+
     const formikAddIngredient = useFormik({
         initialValues: {ingredient: ''},
         onSubmit: (values) => {
@@ -64,21 +73,15 @@ function TransparentSidebar2() {
                             display: "none" // Hide scrollbar for Chrome, Safari, and Opera
                         }
                     }}>
-                <SimpleGrid columns={{base:2, lg:3}} spacing={4}>
-                    {/* ingredient card with every letter */}
-                    {
-                        letters.map((letter) => {
-                        if (!ingredients || ingredients.length === 0) return null;
-                        const ingredientsLetter = ingredients.filter((ingredient) => ingredient.name.toLowerCase().startsWith(letter));
-
-                        if (ingredientsLetter.length > 0) {
-                            return <IngredientsCard2 typeIngredients={letter.toUpperCase()} ingredientsList={ingredientsLetter}/>
-                        } else {
-                            return null;
-                        }
-                     })}
-
+                {isLoading ? <Text>Loading...</Text> :
+                <SimpleGrid columns={2} spacing={4}>
+                    {ingredients.map((ing) => (
+                        <Box width="40vh" height="10vh" backgroundColor="white" borderRadius="5vh">
+                            <Text fontSize="3vh" fontWeight="bold">{ing}</Text>
+                        </Box>
+                    ))}
                 </SimpleGrid>
+                }
             </Box>
             <IconButton mt='1vh' aria-label='Add ingredient' isRound={false} variant='solid' colorScheme='red' boxSize='12' fontSize='30' icon={<AddIcon />} onClick={onOpen}/>
             <Modal isOpen={isOpen} onClose={onClose}>

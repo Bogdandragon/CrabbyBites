@@ -1,30 +1,39 @@
-import { Box, SimpleGrid } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid } from "@chakra-ui/react";
 import IngredientButton2 from "./IngredientButton2";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-function IngredientsCard2({typeIngredients, ingredientsList}) {
+function IngredientsCard2({ typeIngredients, loadedIngredients }) {
+    const [ingredients, setIngredients] = useState([]);
+    const [update, setUpdate] = useState(false);
+    const [recipes, setRecipes] = useState([]);
+
+    useEffect(() => {
+        fixIngredients();
+    }, [ingredients]);
+
+    async function fixIngredients() {
+        if (ingredients.length === 0) {
+            setIngredients(await loadedIngredients);
+        }
+    }
+
     return (
         <Box bgColor='white' borderRadius="5vh" h="18vh">
-            <h6 style={{ fontWeight: 750 }}>{typeIngredients}</h6>
-            <Box  bg='rgba(0, 0, 0, 0)' maxHeight="13vh" overflowY="auto" className='scrollable-box'
-                pl={{base:'5vw',md:'4vw', lg:'1vw'}} pr={{base:'1vw', md:'4vw', lg:'1vw'}} pb={{base:'2vh', md:'1vw', lg:'1vh'}}
+            <Heading size="md" style={{ fontWeight: 750 }} pt="1vh">{typeIngredients}</Heading>
+            <Box bg='rgba(0, 0, 0, 0)' maxHeight="13vh" overflowY="auto" className='scrollable-box'
+                pl={{base:'5vw',md:'4vw', lg:'1vw'}} pr={{base:'5vw', md:'4vw', lg:'1vw'}} pb={{base:'2vh', md:'1vh', lg:'1vh'}}
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }} // Hide scrollbar for Firefox and IE
                 sx={{
                     "&::-webkit-scrollbar": {
                         display: "none" // Hide scrollbar for Chrome, Safari, and Opera
                     }
                 }}>
-                    <SimpleGrid columns={2} spacingX={{base:'2', lg:'4'}} spacingY={2}>
-                        <IngredientButton2 text="egg" quantity='2'/>
-                        <IngredientButton2 text="flour" quantity={3}/>
-                        <IngredientButton2 text="sugar" quantity={1}/>
-                        <IngredientButton2 text="milk" quantity={3}/>
-                        <IngredientButton2 text="water" quantity="3l"/>
-                        <IngredientButton2 text="salt" quantity={1}/>
-                        <IngredientButton2 text="pepper" quantity={1}/>
-                        <IngredientButton2 text="water" quantity={1}/>
-                        <IngredientButton2 text="oil" quantity={1}/>
-                        <IngredientButton2 text="yeast" quantity={1}/>
-                    </SimpleGrid>
+                <SimpleGrid spacingX={{base:'2', lg:'4'}} spacingY={2} >
+                    {ingredients.map((ingredient) => (
+                        <IngredientButton2 text={ingredient.name} />
+                    ))}
+                </SimpleGrid>
            </Box>
         </Box>
     );
