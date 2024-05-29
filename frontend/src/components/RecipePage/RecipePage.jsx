@@ -44,7 +44,13 @@ function RecipePage() {
 
                 setIsLoading(false);
             } catch (error) {
-                console.error("Error fetching recipe:", error);
+                toast({
+                    title: 'Error fetching data.',
+                    description: error.response.data,
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                });
                 setIsLoading(false);
             }
         }
@@ -94,6 +100,10 @@ function RecipePage() {
                 duration: 5000,
                 isClosable: true,
             });
+
+            setCustomInput("");
+            setSelectedOption("Select option");
+            setShowCustomInput(false);
         }).catch((error) => {
             toast({
             title: 'Error registering report.',
@@ -120,6 +130,22 @@ function RecipePage() {
                 status: 'success',
                 duration: 5000,
                 isClosable: true,
+            });
+
+            setRating(0);
+            setCustomInput("");
+            axios.get(reviewsApiUrl)
+            .then(response => {
+                setReviews(response.data); 
+            })
+            .catch((error) => {
+                toast({
+                    title: 'Error updating reviews.',
+                    description: error.response.data,
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                });
             });
         }).catch((error) => {
             toast({
