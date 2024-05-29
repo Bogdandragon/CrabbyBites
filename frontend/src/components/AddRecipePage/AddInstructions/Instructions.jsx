@@ -10,7 +10,7 @@ function AddList({instructions}) {
     function deleteTodo(id) {
         const newTodos = todos.filter((item)=> { return item.id !== id })
         setTodos(newTodos)
-        console.log(newTodos)
+        instructions = instructions.filter((item)=> { return item.id !== id })
     }
         
     function addTodo(newTodo) {

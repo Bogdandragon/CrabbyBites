@@ -87,13 +87,8 @@ const addRecipe = joi.object({
     status : joi.forbidden(),
     // rejection reaseon only if status is REJECTED
     rejectionReason : joi.forbidden(),
-
     rating : joi.forbidden(),
     reportNo : joi.forbidden(),
-
-    userId : joi.string().required().messages({ 
-        'string.empty': 'User Id is required'
-    })
 });
 
 const register = joi.object({

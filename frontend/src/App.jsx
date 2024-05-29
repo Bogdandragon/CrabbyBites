@@ -22,11 +22,11 @@ function App() {
 						<Route path="/register" element={<RegisterPage />} />
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/admin/:type" element={<AdminPage />} />
+						<Route path="/*" element={<HomePage />} />
 						<Route path="/add-recipe" element={<AddRecipePage />} />
 						<Route path="/recipes/:id" element={<RecipePage />} />
 						<Route path="/recipe-finder" element={<RecipeFinderPage />} />
 						<Route path="/my-fridge" element={<MyFridgePage />} />
-						<Route path="/*" element={<AddRecipePage />} />
 					</Routes>
 				</BrowserRouter>
 			</div>

@@ -27,7 +27,7 @@ function AddTodo({ addTodo }) {
             <Stack spacing={0}>
                 <Center><Text mt={2}>Enter your instruction:</Text></Center>
                 <Textarea mt={0} w={{base:'50vw', md:'25vw'}} value={instruction} variant="outline" type="text" placeholder="Ex.: Cut your onion..." onChange={(e)=>setInstruction(e.target.value)} /> 
-                <Button mt={2} colorScheme="neutral" type="submit">Add instruction</Button>
+                <Button mt={2} colorScheme="neutral" onClick={handleSubmit}>Add instruction</Button>
             </Stack>
         </form>
     );

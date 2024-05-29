@@ -55,7 +55,7 @@ function TodoList({ todos, deleteTodo, editTodo }) {
                                             </ModalBody>
                                             <ModalFooter>
                                                 <Button colorScheme="greenBrand" mr={3} onClick={onClose}>Close</Button>
-                                                <Button type="submit" colorScheme="greenBrand" mr={3}>Update</Button>
+                                                <Button onClick={handleEditSubmit} colorScheme="greenBrand" mr={3}>Update</Button>
                                             </ModalFooter>
                                         </form>
                                     </ModalContent>
