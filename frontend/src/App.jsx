@@ -26,6 +26,7 @@ function App() {
 						<Route path="/recipes/:id" element={<RecipePage />} />
 						<Route path="/recipe-finder" element={<RecipeFinderPage />} />
 						<Route path="/my-fridge" element={<MyFridgePage />} />
+						<Route path="/*" element={<AddRecipePage />} />
 					</Routes>
 				</BrowserRouter>
 			</div>

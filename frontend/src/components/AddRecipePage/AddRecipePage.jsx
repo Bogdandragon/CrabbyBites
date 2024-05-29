@@ -1,14 +1,14 @@
 import Page from "../Page/Page";
-import { Field, useFormik } from 'formik';
-import { Input, FormControl, FormLabel, FormErrorMessage, Button } from '@chakra-ui/react';
-import { SimpleGrid, Box, Checkbox, Card, Center, useToast, Select } from '@chakra-ui/react'
-import { CardBody, Container } from 'react-bootstrap';
+import { useFormik } from 'formik';
+import { Input, FormControl, FormLabel, FormErrorMessage, Button, Text, Checkbox, Card, Center, useToast, Select } from '@chakra-ui/react';
+import { CardBody} from 'react-bootstrap';
 import SubmitButton from '../Buttons/SubmitButton'
-import InfoButton from '../Buttons/InfoButton'
 import './AddRecipePage.css';
 import { Form, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import * as Yup from 'yup';
+import Ingredients from './AddIngredients/Ingredients';
+import Instructions from './AddInstructions/Instructions';
 
 function AddRecipePage() {
     const navigate = useNavigate();
@@ -16,24 +16,28 @@ function AddRecipePage() {
 
     const formikAddRecipe = useFormik({
         initialValues: {
-          recipeName: '',
-          finishTime: 0,
+          name: '',
+          time: 0,
           difficulty: '',
-          noPortions: 0,
-          cover: '',
+          portions: 0,
+          picture: '',
+          encoding: '',
           category: '',
           description: '',
-          ingredients: '',
-          instructions: '',
+          ingredients: [],
+          instructions: [],
           terms: false
         },
-        onSubmit: (values) => {},
+        onSubmit: (values) => {
+            console.log(values)
+        },
         validationSchema: Yup.object().shape({
-            recipeName: Yup.string().required('Required field'),
-            finishTime: Yup.number().positive('A positive number is required for this field').integer().required('Required field'),
-            noPortions: Yup.number().positive().integer().required('Required field'),
+            name: Yup.string().required('Required field'),
+            time: Yup.number().positive('A positive number is required for this field').integer().required('Required field'),
+            portions: Yup.number().positive().integer().required('Required field'),
             description: Yup.string().min(30, "Minimum length is 30 characters").required('Required field'),
-            instructions: Yup.string().min(100, "Minimum length is 100 characters").required('Required field'),
+            ingredients: Yup.array().required('There are no recipes without ingredients'),
+            instructions: Yup.array().required('There are no recipes without instructions'),
             terms: Yup.boolean().oneOf([true], 'You must accept the terms and conditions')
         })
     })
@@ -46,15 +50,15 @@ function AddRecipePage() {
                         <Center><h2 className='title-font'>Add your recipe</h2></Center>
                         <Center><h6>Complete this form with recipe's instructions</h6></Center>
                         <FormControl py='5vh' onSubmit={formikAddRecipe.handleSubmit}>
-                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.recipeName && formikAddRecipe.touched.recipeName} onChange={formikAddRecipe.handleChange} >
+                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.name && formikAddRecipe.touched.name} onChange={formikAddRecipe.handleChange} >
                                 <FormLabel>Recipe Name (choose an appropriate name for your recipe)</FormLabel>
-                                <Input id='recipeName' name='recipeName' type='text' onChange={formikAddRecipe.handleChange} value={formikAddRecipe.values.recipeName}/>
-                                <FormErrorMessage>{formikAddRecipe.errors.recipeName}</FormErrorMessage>
+                                <Input id='name' name='name' type='text' onChange={formikAddRecipe.handleChange} value={formikAddRecipe.values.name}/>
+                                <FormErrorMessage>{formikAddRecipe.errors.name}</FormErrorMessage>
                             </FormControl>
-                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.finishTime && formikAddRecipe.touched.finishTime} onChange={formikAddRecipe.handleChange} >
+                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.time && formikAddRecipe.touched.time} onChange={formikAddRecipe.handleChange} >
                                 <FormLabel>Estimated finish time for recipe in minutes</FormLabel>
-                                <Input id='finishTime' name='finishTime' type='number' onChange={formikAddRecipe.handleChange} value={formikAddRecipe.values.finishTime}/>
-                                <FormErrorMessage>{formikAddRecipe.errors.finishTime}</FormErrorMessage>
+                                <Input id='time' name='time' type='number' onChange={formikAddRecipe.handleChange} value={formikAddRecipe.values.time}/>
+                                <FormErrorMessage>{formikAddRecipe.errors.time}</FormErrorMessage>
                             </FormControl>
                             <FormControl pb='2vh'>
                                 <FormLabel>Is it difficult to cook?</FormLabel>
@@ -64,16 +68,15 @@ function AddRecipePage() {
                                     <option value='hard'>hard</option>
                                 </Select>
                             </FormControl>
-                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.noPortions && formikAddRecipe.touched.noPortions} onChange={formikAddRecipe.handleChange} >
+                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.portions && formikAddRecipe.touched.portions} onChange={formikAddRecipe.handleChange} >
                                 <FormLabel>Number of portions</FormLabel>
-                                <Input id='noPortions' name='noPortions' type='number' onChange={formikAddRecipe.handleChange} value={formikAddRecipe.values.noPortions}/>
-                                <FormErrorMessage>{formikAddRecipe.errors.noPortions}</FormErrorMessage>
+                                <Input id='portions' name='portions' type='number' onChange={formikAddRecipe.handleChange} value={formikAddRecipe.values.portions}/>
+                                <FormErrorMessage>{formikAddRecipe.errors.portions}</FormErrorMessage>
                             </FormControl>
-                            {/* TODO special field to select a picture from files*/}
-                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.cover && formikAddRecipe.touched.cover} onChange={formikAddRecipe.handleChange} >
-                                <FormLabel>Cover picture (choose .jpg or .jpeg file)</FormLabel>
-                                <Input id='cover' name='cover' type='file' onChange={formikAddRecipe.handleChange} value={formikAddRecipe.values.cover}/>
-                                <FormErrorMessage>{formikAddRecipe.errors.cover}</FormErrorMessage>
+                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.picture && formikAddRecipe.touched.picture} onChange={formikAddRecipe.handleChange} >
+                                <FormLabel>picture picture (choose .jpg or .jpeg file)</FormLabel>
+                                <Input id='picture' name='picture' type='file' onChange={formikAddRecipe.handleChange} value={formikAddRecipe.values.picture}/>
+                                <FormErrorMessage>{formikAddRecipe.errors.picture}</FormErrorMessage>
                             </FormControl>
                             <FormControl pb='2vh'>
                                 <FormLabel>Category of product</FormLabel>
@@ -90,12 +93,16 @@ function AddRecipePage() {
                                 <Input id='description' name='description' type='description' onChange={formikAddRecipe.handleChange} value={formikAddRecipe.values.description}/>
                                 <FormErrorMessage>{formikAddRecipe.errors.description}</FormErrorMessage>
                             </FormControl>
-                            {/* TODO popup for ingredients*/}
-                            <Center py='3vh'><InfoButton text='Add ingredients and quantities' /></Center>
-                            {/* TODO group of form controls for instructions*/}
-                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.instructions && formikAddRecipe.touched.instructions} onChange={formikAddRecipe.handleChange} >
-                                <FormLabel>Write the instructions for your recipe</FormLabel>
-                                <Input id='instructions' name='instructions' type='instructions' onChange={formikAddRecipe.handleChange} value={formikAddRecipe.values.instructions}/>
+                            {/* TODO validation*/}
+                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.ingredients} onChange={formikAddRecipe.handleChange}>
+                                <FormLabel>Add ingredients and quantities</FormLabel>
+                                <Ingredients ingredients={formikAddRecipe.values.ingredients}/>
+                                <FormErrorMessage>{formikAddRecipe.errors.ingredients}</FormErrorMessage>
+                            </FormControl>
+                            {/* TODO validation*/}
+                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.instructions} onChange={formikAddRecipe.handleChange}>
+                                <FormLabel>Add instructions</FormLabel>
+                                <Instructions instructions={formikAddRecipe.values.instructions}/>
                                 <FormErrorMessage>{formikAddRecipe.errors.instructions}</FormErrorMessage>
                             </FormControl>
 
