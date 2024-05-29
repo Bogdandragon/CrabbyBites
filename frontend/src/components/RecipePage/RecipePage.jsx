@@ -44,7 +44,13 @@ function RecipePage() {
 
                 setIsLoading(false);
             } catch (error) {
-                console.error("Error fetching recipe:", error);
+                toast({
+                    title: 'Error fetching data.',
+                    description: error.response.data,
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                });
                 setIsLoading(false);
             }
         }
@@ -94,7 +100,10 @@ function RecipePage() {
                 duration: 5000,
                 isClosable: true,
             });
-            setTimeout(() => window.location.reload(), 1000);
+
+            setCustomInput("");
+            setSelectedOption("Select option");
+            setShowCustomInput(false);
         }).catch((error) => {
             toast({
             title: 'Error registering report.',
@@ -122,7 +131,22 @@ function RecipePage() {
                 duration: 5000,
                 isClosable: true,
             });
-            setTimeout(() => window.location.reload(), 1000);
+
+            setRating(0);
+            setCustomInput("");
+            axios.get(reviewsApiUrl)
+            .then(response => {
+                setReviews(response.data); 
+            })
+            .catch((error) => {
+                toast({
+                    title: 'Error updating reviews.',
+                    description: error.response.data,
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                });
+            });
         }).catch((error) => {
             toast({
                 title: 'Error registering review.',
@@ -161,7 +185,6 @@ function RecipePage() {
                                         duration: 5000,
                                         isClosable: true,
                                     });
-                                    setTimeout(() => window.location.reload(), 1000);
                                 }).catch((error) => {
                                     toast({
                                         title: 'Error registering TODO recipe.',
@@ -185,7 +208,6 @@ function RecipePage() {
                                     duration: 5000,
                                     isClosable: true,
                                     });
-                                    setTimeout(() => window.location.reload(), 1000);
                                 }).catch((error) => {
                                     toast({
                                     title: 'Error registering favorite.',
@@ -252,7 +274,26 @@ function RecipePage() {
                                 </Box>
                             </Box>
                         </SimpleGrid>
-                        <Center my="1vh"><InfoButton text="Share" /></Center>
+                        <Center my="1vh"><InfoButton text="Share" onClick={() => {
+                            navigator.clipboard.writeText(window.location.href)
+                            .then(
+                                toast({
+                                    title: 'Link copied successfully!',
+                                    description: 'The link to this recipe has been copied to your clipboard.',
+                                    status: 'success',
+                                    duration: 5000,
+                                    isClosable: true,
+                                    })
+                            ).catch((error) => {
+                                toast({
+                                title: 'Error copying link to clipboard.',
+                                description: error.response.data,
+                                status: 'error',
+                                duration: 5000,
+                                isClosable: true,
+                                });
+                            });
+                        }} /></Center>
                         <Center><RecipeCarousel recipeId={recipe._id}/></Center>
                         <Box borderRadius="5vh" boxShadow="0 0 20px rgba(0, 0, 0, 0.1)" display="flex" flexDirection="column" justifyContent="center" marginTop="10vh" marginBottom="10vh" width="90%">
                             <Flex justifyContent="center" wrap="wrap" width="100%" marginTop="5vh" marginBottom="5vh" alignSelf="center">

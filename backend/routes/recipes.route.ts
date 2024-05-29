@@ -382,7 +382,7 @@ router.post("/addFavorite", userMiddleware, async(req: any, res) => {
 		}
 
 		await User.findByIdAndUpdate(req.user._id, {
-			$push: {
+			$addToSet: {
 				favoriteRecipes: id
 			}
 		});
@@ -405,7 +405,7 @@ router.post("/addTODO", userMiddleware, async(req: any, res) => {
 		}
 
 		await User.findByIdAndUpdate(req.user._id, {
-			$push: {
+			$addToSet: {
 				todoRecipes: id
 			}
 		});
