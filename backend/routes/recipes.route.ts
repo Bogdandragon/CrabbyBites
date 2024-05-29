@@ -85,6 +85,47 @@ router.delete("/remove/:id", userMiddleware, async (req: any, res) => {
 	}
 });
 
+router.get("/ingredients", async (req, res) => {
+	try {
+		const ingredients = await Ingredient.find();
+		return res.status(200).send(ingredients);
+	} catch (e) {
+		return res.status(400).send("Error: " + e);
+	}
+});
+
+router.get("/search", async (req, res) => {
+	try {
+		if (!req.query.ingredients) {
+			return res.status(400).send("Invalid query");
+		}
+		const ingredients = (req.query.ingredients as string).split(",");
+		const recipes = await Recipe.find({ ingredients: { $elemMatch: { name: { $in: ingredients } } } });
+		recipes.sort((a, b) => {
+			let aCount = 0;
+			let bCount = 0;
+			a.ingredients.forEach((ing) => {
+				if (ingredients.includes(ing.name)) {
+					aCount++;
+				}
+			});
+			b.ingredients.forEach((ing) => {
+				if (ingredients.includes(ing.name)) {
+					bCount++;
+				}
+			});
+
+			return bCount - aCount;
+		});
+		return res.status(200).send(recipes.map((rec) => {
+			rec.picture = fs.readFileSync("./images/" + rec.picture).toString("base64");
+			return rec;
+		}));
+	} catch (e) {
+		return res.status(400).send("Error: " + e);
+	}
+});
+
 router.get("/:id", async (req, res) => {
 	try {
 		let recipe = await Recipe.findById(req.params.id);
@@ -212,23 +253,19 @@ router.get("/todo/:userId", userMiddleware, async (req, res) => {
 	}
 });
 
-router.post("/add", async (req, res) => {
+router.post("/add", userMiddleware, async (req: any, res: any, next: any) => {
 	let validate = validators.addRecipe.validate(req.body);
 	if (validate.error) {
 		return res.status(400).send(validate.error.message);
 	}
 
 	// check if user exists
-	const user = await User.findById(req
-		.body.userId);
-	if (!user) {
-		return res.status(404).send("User not found");
-	}
+	const user = req.user;
 
-	const { name, time, difficulty, portions, picture, encoding, category, description, ingredients, instructions, userId } = req.body
+	const { name, time, difficulty, portions, picture, encoding, category, description, ingredients, instructions } = req.body
 
 	const recipe = new Recipe({
-		name, time, difficulty, portions, picture, category, description, ingredients, instructions, userId
+		name, time, difficulty, portions, picture, category, description, ingredients, instructions, userId: user._id
 	});
 
 	// search for new or existing ingredients
@@ -341,7 +378,7 @@ router.post("/addFavorite", userMiddleware, async(req: any, res) => {
 		}
 
 		await User.findByIdAndUpdate(req.user._id, {
-			$push: {
+			$addToSet: {
 				favoriteRecipes: id
 			}
 		});
@@ -364,7 +401,7 @@ router.post("/addTODO", userMiddleware, async(req: any, res) => {
 		}
 
 		await User.findByIdAndUpdate(req.user._id, {
-			$push: {
+			$addToSet: {
 				todoRecipes: id
 			}
 		});
@@ -419,6 +456,5 @@ router.get("/similar/:id", async (req, res) => {
 		return res.status(401).send("Error: " + e);
 	}
 });
-
 
 export default router;

@@ -7,7 +7,7 @@ import constants from "../constants";
 import Recipe from "../models/recipe.model"
 import Review from "../models/review.model"
 import Report from "../models/report.model"
-import Ingredient from "../models/ingredient.model"
+import Ingredient from "../models/ingredient.model";
 import userMiddleware from "../middlewares/userMiddleware";
 
 const router = Router();
@@ -166,6 +166,25 @@ router.post("/addIngredient", userMiddleware, async (req: any, res) => {
 		}
 
 		return res.status(200).send("Ingredient added successfully.");
+    } catch (e) {
+		return res.status(400).send("An error occured: " + e);
+	}
+});
+router.get("/shopping-list", userMiddleware, async (req: any, res) => {
+	try {
+		const recipes = await Recipe.find({ _id: { $in: req.user.todoRecipes } });
+		const ingredients = req.user.ingredients;
+
+		const shoppingList: String[] = [];
+		recipes.forEach((recipe) => {
+			recipe.ingredients.forEach((ing) => {
+				if (!shoppingList.includes(ing.name) && !ingredients.includes(ing)) {
+					shoppingList.push(ing.name);
+				}
+			});
+		});
+
+		return res.status(200).send(shoppingList);
 	} catch (e) {
 		return res.status(400).send("An error occured: " + e);
 	}

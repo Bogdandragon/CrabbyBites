@@ -1,15 +1,16 @@
-import { Button, Stack, useBreakpointValue } from '@chakra-ui/react';
+import { Button, Center, Stack, useBreakpointValue, Text } from '@chakra-ui/react';
 
-function IngredientButton({text, onClick}) {
-    const buttonSize = useBreakpointValue({ base: 'sm', lg: 'xs' });
-    const fontSize = useBreakpointValue({ base: 'sm', lg: 'sm' });
+function IngredientButton({text, onClick, selected=false}) {
+    const buttonSize = useBreakpointValue({ base: 'sm', lg: 'sm' });
+    const fontSize = useBreakpointValue({ base: 'sm', lg: 'md' });
+    const colorScheme = selected ? "greenBrand" : "gray";
 
     return (
-        <Stack direction='row' align='center'>
-            <Button type="Submit" bgColor='#D9D9D9' variant='solid' minW="80%"  size={buttonSize} fontSize={fontSize} onClick={onClick}>
-                {text}
+        <Center>
+            <Button type="Submit" colorScheme={colorScheme} variant='solid' minH="3vh" minW="80%" maxW="10vh" size={buttonSize} fontSize={fontSize} onClick={onClick}>
+                <Text isTruncated mb="0" h="80%">{text}</Text>
             </Button>
-        </Stack>
+        </Center>
     );
 }
 
