@@ -160,7 +160,7 @@ const recipe = joi.object({
 });
 
 const ingredient = joi.object({
-    Ingredient: joi.string().required().messages({
+    ingredient: joi.string().required().messages({
         'string.empty': 'Ingredient name is required'
     })
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, Box, SimpleGrid, IconButton, useDisclosure, FormControl, FormLabel, Input, Center } from '@chakra-ui/react';
 import { NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useToast } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import SubmitButton from '../Buttons/SubmitButton'
 import { useFormik } from 'formik';
@@ -11,6 +11,7 @@ import axios from 'axios';
 import { useState } from 'react';
 
 function TransparentSidebar2() {
+    const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
     const {ingredients , setIngredients} = useState([]);
@@ -23,14 +24,27 @@ function TransparentSidebar2() {
         console.log(error);
     })
     const formikAddIngredient = useFormik({
-        initialValues: {ingredient: '', quantity: 0},
+        initialValues: {ingredient: ''},
         onSubmit: (values) => {
             axios.post(`http://localhost:5000/api/auth/addIngredient`, values, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-            }).then((response) => {
-                console.log(response);
+            }).then(() => {
+                toast({
+                    title: 'Ingredient added successfully.',
+                    description: 'Ingredient added to your fridge page.',
+                    status: 'success',
+                    duration: 5000,
+                    isClosable: true,
+                });
+            
             }).catch((error) => {
-                console.log(error);
+                toast({
+                    title: 'Error adding ingredient.',
+                    description: error.response.data,
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                });
             })
 
             onClose();
@@ -38,7 +52,6 @@ function TransparentSidebar2() {
         },
         validationSchema: Yup.object().shape({
             ingredient: Yup.string().required('Required field'),
-            quantity: Yup.number().positive().integer().required('Required field')
         })
     })
     return (
@@ -77,17 +90,9 @@ function TransparentSidebar2() {
                         <FormControl onSubmit={formikAddIngredient.handleSubmit}>  
                             <FormControl isRequired>
                                 <FormLabel>Ingredient name</FormLabel>
-                                <Input placeholder='Ingredient name' />
+                                <Input id='ingredient' name='ingredient' type='ingredient' onChange={formikAddIngredient.handleChange} value={formikAddIngredient.values.ingredient}/>
                             </FormControl>
                             <FormControl>
-                                <FormLabel>Quantity</FormLabel>
-                                <NumberInput min={0}>
-                                    <NumberInputField />
-                                    <NumberInputStepper>
-                                        <NumberIncrementStepper />
-                                        <NumberDecrementStepper />
-                                    </NumberInputStepper>
-                                </NumberInput>
                             </FormControl>
                             <Center pt='3vh'><SubmitButton text="Add your ingredient" onClick={formikAddIngredient.handleSubmit}/></Center>
                         </FormControl>

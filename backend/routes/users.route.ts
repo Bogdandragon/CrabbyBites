@@ -138,33 +138,7 @@ router.get('/ingredients', userMiddleware, async function (req: any, res: any, n
 	return res.send(req.user.ingredients);
 });
 
-router.post('/ingredient', userMiddleware, async function (req: any, res: any, next: any) {
-	const { ingredient } = req.body;
-	const user = req.user;
-
-	let ingredientId = null;
-	let existingIngredient = user.ingredients.find((i: any) => i.name == ingredient.name);
-	if (existingIngredient) {
-		existingIngredient.quantity += ingredient.quantity;
-	} else {
-		// check if ingredient exists in the database
-		let dbIngredient = await Ingredient.findOne({ name: ingredient.name });
-		if (!dbIngredient) {
-			dbIngredient = new Ingredient({ name: ingredient.name });
-			await dbIngredient.save();
-			ingredientId = dbIngredient._id;
-		} else {
-			ingredientId = dbIngredient._id;
-			dbIngredient.appearanceNo += 1;
-		}
-	}
-
-	user.ingredients.push({ name: ingredient.name, quantity: ingredient.amount, ingredientId: ingredientId });
-	return res.send("Ingredients updated successfully!");
-});
-
 router.post("/addIngredient", userMiddleware, async (req: any, res) => {
-	console.log("here\n");
 	const { error } = validators.ingredient.validate(req.body);
 	if(error) return res.status(400).send(error.details.map((e: any) => e.message));
 
@@ -181,10 +155,7 @@ router.post("/addIngredient", userMiddleware, async (req: any, res) => {
 			ingId = newIngredient._id;
 		}
 
-		if (!req.user.ingredients.includes( {
-			"name": ingredient.toLowerCase(),
-			"ingredientId": ingId
-		})) {
+		if (!req.user.ingredients.map((ing: typeof Ingredient) => ing.name).includes(ingredient.toLowerCase())) {
 			req.user.ingredients.push(
 				{
 					"name": ingredient.toLowerCase(),
@@ -193,6 +164,8 @@ router.post("/addIngredient", userMiddleware, async (req: any, res) => {
 			);
 			await req.user.save();
 		}
+
+		return res.status(200).send("Ingredient added successfully.");
 	} catch (e) {
 		return res.status(400).send("An error occured: " + e);
 	}
