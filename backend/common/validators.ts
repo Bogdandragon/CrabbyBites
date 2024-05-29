@@ -134,12 +134,33 @@ const review = joi.object({
     comment: joi.string().required().allow("")
 });
 
+const report = joi.object({
+    id: joi.string().required().messages({
+        'string.empty': 'Id is required'
+    }),
+    comment: joi.string().required().messages({
+        'string.empty': 'Comment is required'
+    }),
+    type: joi.string().required().valid("RECIPE", "REVIEW").messages({
+        'string.empty': 'Type is required',
+        'any.only': 'Type must be either RECIPE or REVIEW'
+    })
+});
+
+const recipe = joi.object({
+    id: joi.string().required().messages({
+        'string.empty': 'Id is required'
+    })
+});
+
 const validators = {
     login,
     register,
     status,
     review,
-    addRecipe
+    report,
+    addRecipe,
+    recipe
 }
 
 export default validators;

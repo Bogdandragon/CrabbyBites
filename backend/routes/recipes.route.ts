@@ -34,6 +34,25 @@ router.get("/review", adminMiddleware, async (req, res) => {
 	return res.send(recipesJSON);
 });
 
+router.get("/rejected", adminMiddleware, async (req, res) => {
+	// send recipes with status "PENDING" or reportNo >= reportThreshold
+	const recipes = await Recipe.find({ status: "REJECTED"});
+	let recipesJSON = await Promise.all(recipes.map(async (recipe) => {
+		let picture = fs.readFileSync("./images/" + recipe.picture);
+		return {
+			_id: recipe._id,
+			title: recipe.name,
+			userId: recipe.userId,
+			user: await User.findById(recipe.userId),
+			picture: picture.toString("base64"),
+			status: recipe.status,
+			reportNo: recipe.reportNo
+		};
+	}));
+	
+	return res.send(recipesJSON);
+});
+
 router.delete("/remove/:id", userMiddleware, async (req: any, res) => {
 	// delete recipe with given id if it belongs to the requesting user
 	const { id } = req.params;
@@ -63,6 +82,47 @@ router.delete("/remove/:id", userMiddleware, async (req: any, res) => {
 		return res.status(200).send("Recipe deleted successfully");
 	} catch (e) {
 		return res.status(400).send("An error occured: " + e);
+	}
+});
+
+router.get("/ingredients", async (req, res) => {
+	try {
+		const ingredients = await Ingredient.find();
+		return res.status(200).send(ingredients);
+	} catch (e) {
+		return res.status(400).send("Error: " + e);
+	}
+});
+
+router.get("/search", async (req, res) => {
+	try {
+		if (!req.query.ingredients) {
+			return res.status(400).send("Invalid query");
+		}
+		const ingredients = (req.query.ingredients as string).split(",");
+		const recipes = await Recipe.find({ ingredients: { $elemMatch: { name: { $in: ingredients } } } });
+		recipes.sort((a, b) => {
+			let aCount = 0;
+			let bCount = 0;
+			a.ingredients.forEach((ing) => {
+				if (ingredients.includes(ing.name)) {
+					aCount++;
+				}
+			});
+			b.ingredients.forEach((ing) => {
+				if (ingredients.includes(ing.name)) {
+					bCount++;
+				}
+			});
+
+			return bCount - aCount;
+		});
+		return res.status(200).send(recipes.map((rec) => {
+			rec.picture = fs.readFileSync("./images/" + rec.picture).toString("base64");
+			return rec;
+		}));
+	} catch (e) {
+		return res.status(400).send("Error: " + e);
 	}
 });
 
@@ -148,7 +208,10 @@ router.get("/view/:userId", userMiddleware, async (req, res) => {
 		}
 
 		const recipes = await Recipe.find({ userId: userId});
-		return res.status(200).send(recipes);
+		return res.status(200).send(recipes.map((rec) => {
+			rec.picture = fs.readFileSync("./images/" + rec.picture).toString("base64");
+			return rec;
+		}));
 	} catch (e) {
 		return res.status(400).send("Error: " + e);
 	}
@@ -163,7 +226,10 @@ router.get("/favorites/:userId", userMiddleware, async (req, res) => {
 		}
 
 		const recipes = await Recipe.find({ _id: { $in: user.favoriteRecipes } });
-		return res.status(200).send(recipes);
+		return res.status(200).send(recipes.map((rec) => {
+			rec.picture = fs.readFileSync("./images/" + rec.picture).toString("base64");
+			return rec;
+		}));
 	} catch (e) {
 		return res.status(400).send("Error: " + e);
 	}
@@ -178,7 +244,10 @@ router.get("/todo/:userId", userMiddleware, async (req, res) => {
 		}
 
 		const recipes = await Recipe.find({ _id: { $in: user.todoRecipes } });
-		return res.status(200).send(recipes);
+		return res.status(200).send(recipes.map((rec) => {
+			rec.picture = fs.readFileSync("./images/" + rec.picture).toString("base64");
+			return rec;
+		}));
 	} catch (e) {
 		return res.status(400).send("Error: " + e);
 	}
@@ -246,10 +315,146 @@ router.get("/reports/:id", adminMiddleware, async (req, res) => {
 	const { id } = req.params;
 	const recipe = await Recipe.findById(id);
 	if (!recipe) {
-		return res.status(404).send("User not found");
+		return res.status(404).send("Recipe not found");
 	}
 	return res.send(await Report.find({ reportedEntityId: id, reportedEntityType: "RECIPE" }));
 });
 
+router.get("/reviews/:id", async (req, res) => {
+	const { id } = req.params;
+	const recipe = await Recipe.findById(id);
+	if (!recipe) {
+		return res.status(404).send("Recipe not found");
+	}
+	return res.send(await Review.find({ recipeId: id }).sort({ _id: -1 }));
+});
+
+router.post("/report", userMiddleware, async(req: any, res) => {
+	const { error } = validators.report.validate(req.body);
+	if (error) return res.status(400).send(error.details.map((e: any) => e.message));
+
+	try {
+		const { id, comment, type} = req.body;
+		
+		let userId;
+		switch(type) {
+			case "RECIPE":
+				const recipe = await Recipe.findById(id);
+				if (!recipe) {
+					return res.status(404).send("Recipe not found");
+				}
+				await recipe.updateOne({ $inc: { reportNo: 1 } });
+				userId = recipe.userId;
+				break;
+			case "REVIEW":
+				const review = await Review.findById(id);
+				if (!review) {
+					return res.status(404).send("Review not found");
+				}
+				await review.updateOne({ $inc: { reportNo: 1 } });
+				userId = review.userId;
+		}
+
+		await User.findByIdAndUpdate(userId, { $inc: { reportNo: 1 } });
+
+		let report = new Report({ userId: req.user._id, reportedUserId: userId, reportedEntityId: id, reportedEntityType: type, reason: comment });
+		await report.save();
+
+		return res.send("Report registered successfully!");
+	} catch (e) {
+		return res.status(401).send("Error: " + e);
+	}
+});
+
+router.post("/addFavorite", userMiddleware, async(req: any, res) => {
+	const { error } = validators.recipe.validate(req.body);
+	if (error) return res.status(400).send(error.details.map((e: any) => e.message));
+
+	try {
+		const { id } = req.body;
+		const recipe = await Recipe.findById(id);
+		if (!recipe) {
+			return res.status(404).send("Recipe not found");
+		}
+
+		await User.findByIdAndUpdate(req.user._id, {
+			$addToSet: {
+				favoriteRecipes: id
+			}
+		});
+
+		res.send("Favorite added successfully!");
+	} catch (e) {
+		return res.status(401).send("Error: " + e);
+	}
+});
+
+router.post("/addTODO", userMiddleware, async(req: any, res) => {
+	const { error } = validators.recipe.validate(req.body);
+	if (error) return res.status(400).send(error.details.map((e: any) => e.message));
+
+	try {
+		const { id } = req.body;
+		const recipe = await Recipe.findById(id);
+		if (!recipe) {
+			return res.status(404).send("Recipe not found");
+		}
+
+		await User.findByIdAndUpdate(req.user._id, {
+			$addToSet: {
+				todoRecipes: id
+			}
+		});
+
+		res.send("Favorite added successfully!");
+	} catch (e) {
+		return res.status(401).send("Error: " + e);
+	}
+});
+
+router.get("/similar/:id", async (req, res) => {
+	try {
+		const { id } = req.params;
+		const recipe = await Recipe.findById(id);
+		if (!recipe) {
+			return res.status(404).send("Recipe not found");
+		}
+
+		let sameCategory = await Recipe.find({ category: recipe.category });
+		const ingrs = recipe.ingredients.map((ingredient) => ingredient.name );
+
+		const similar = sameCategory.filter((r) => {
+			let commonCount = 0;
+			r.ingredients.forEach((ing) => {
+				if (ingrs.includes(ing.name)) {
+					commonCount++;
+				}
+			});
+
+			return commonCount >= 3 && r.name != recipe.name;
+		});
+
+		if (similar.length <= 4) {
+			res.status(200).send(similar);
+		} else {
+			const chosen: number[] = [];
+			for (let i = 0; i < 4; i++) {
+				let index = Math.floor(Math.random() * (similar.length - 1));
+				while (chosen.includes(index)) {
+					index = Math.floor(Math.random() * (similar.length - 1));
+				}
+				chosen.push(index);
+			}
+
+			res.status(200).send(chosen.map((idx) => similar[idx]).map((rec) => {
+				rec.picture = fs.readFileSync("./images/" + rec.picture).toString("base64");
+				return rec;
+			}));
+		}
+
+	} catch (e) {
+		return res.status(401).send("Error: " + e);
+	}
+});
 
 export default router;

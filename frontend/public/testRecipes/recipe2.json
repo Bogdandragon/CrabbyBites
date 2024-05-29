@@ -1,0 +1,61 @@
+{
+    "_id": {
+        "$oid": "6655b2d19ffa2ef7bad3ca77"
+    },
+
+    "name": "Basic Crepes",
+    "time": 60,
+    "difficulty": "EASY",
+    "portions": 8,
+    "picture": "crepes.png",
+    "category": "Dessert",
+    "description": "Great basic crepes recipe, easy for anyone wanting to get into cooking.",
+    "ingredients": [
+        {
+            "name": "egg",
+            "quantity": 2,
+            "measurement": "large"
+        },
+        {
+            "name": "milk",
+            "quantity": 1,
+            "measurement": "l"
+        },
+        {
+            "name": "flour",
+            "quantity": 120,
+            "measurement": "g"
+        },
+        {
+            "name": "sugar",
+            "quantity": 4,
+            "measurement": "tbsp"
+        },
+        {
+            "name": "butter",
+            "quantity": 3,
+            "measurement": "tbsp"
+        },
+        {
+            "name": "salt",
+            "quantity": 2,
+            "measurement": "tsp"
+        }
+    ],
+    "instructions": [
+        "In a blender, blend eggs, milk, flour, granulated sugar, salt, and 3 tablespoons melted butter until smooth, about 1 minute. Cover and refrigerate at least 1 hour or up to 2 days.",
+        "Preheat a 9 nonstick skillet over medium heat. Melt 1/2 teaspoon cold butter in preheated pan. Reduce heat to medium-low. Briefly whisk batter, then pour 1/4 cup into center of pan, lifting pan off heat and slightly tilting in a circular motion to help batter spread into an even circle.",
+        "Cook until top is set and bottom is golden brown, about 45 seconds. Flip and cook on second side until cooked through, about 45 seconds more.",
+        "Using a spatula, fold crêpe into quarters. Transfer to plate. Repeat with remaining batter for a total of 8 crêpes.",
+        "Serve with berries and powdered sugar, if desired.",
+        "Make Ahead: Crêpes can be made 3 days ahead. Let cool, then stack between sheets of parchment, store in an airtight container, and refrigerate, or freeze up to 1 month."
+    ],
+    "status": "APPROVED",
+    "rejectionReason": "",
+    "rating": 4,
+    "reportNo": 0,
+    "userId": {
+        "$oid": "6609753f120f5be65edec777"
+    }
+
+}
