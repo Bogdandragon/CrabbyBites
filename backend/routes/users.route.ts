@@ -18,6 +18,10 @@ router.get("/test/:id", async (req, res) => {
 	res.send(user.test);
 });
 
+router.get('/user', userMiddleware, async function (req: any, res: any, next: any) {
+	return res.send(req.user);
+});
+
 router.post("/login", async (req, res) => {
 	const { error } = validators.login.validate(req.body);
 	if(error) return res.status(400).send(error.details.map((e: any) => e.message));
