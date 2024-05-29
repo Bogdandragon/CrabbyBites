@@ -128,4 +128,9 @@ router.get('/type', userMiddleware, async function (req: any, res: any, next: an
 	return res.send(req.user.type);
 });
 
+router.get("/username/:id", async (req, res) => {
+	const { id }= req.params;
+	return res.send((await User.findById(id))?.username);
+});
+
 export default router;
