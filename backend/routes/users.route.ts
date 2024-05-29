@@ -134,6 +134,42 @@ router.get("/username/:id", async (req, res) => {
 	return res.send((await User.findById(id))?.username);
 });
 
+router.get('/ingredients', userMiddleware, async function (req: any, res: any, next: any) {
+	return res.send(req.user.ingredients);
+});
+
+router.post("/addIngredient", userMiddleware, async (req: any, res) => {
+	const { error } = validators.ingredient.validate(req.body);
+	if(error) return res.status(400).send(error.details.map((e: any) => e.message));
+
+	try {
+		const { ingredient } = req.body;
+		let ingId = null;
+
+		const existingIngredient = await Ingredient.findOne({ name: ingredient.toLowerCase() });
+		if (existingIngredient) {
+			ingId = existingIngredient._id;
+		} else {
+			const newIngredient = new Ingredient({ name: ingredient.toLowerCase()});
+			await newIngredient.save();
+			ingId = newIngredient._id;
+		}
+
+		if (!req.user.ingredients.map((ing: typeof Ingredient) => ing.name).includes(ingredient.toLowerCase())) {
+			req.user.ingredients.push(
+				{
+					"name": ingredient.toLowerCase(),
+					"ingredientId": ingId
+				}
+			);
+			await req.user.save();
+		}
+
+		return res.status(200).send("Ingredient added successfully.");
+    } catch (e) {
+		return res.status(400).send("An error occured: " + e);
+	}
+});
 router.get("/shopping-list", userMiddleware, async (req: any, res) => {
 	try {
 		const recipes = await Recipe.find({ _id: { $in: req.user.todoRecipes } });
