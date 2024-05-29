@@ -4,7 +4,11 @@ import React,{useState} from 'react'
 
 function TodoList({ todos, deleteTodo, editTodo }) {
     const [todo, setTodo] = useState(""); 
-    const [modalValue, setModalValue] = useState({})
+    const [modalValue, setModalValue] = useState({
+        name: "",
+        quantity: "",
+        measurement: "mg"
+    })
     const [isOpen,setIsOpen] = useState(false)   
 
     function onClose() {
@@ -37,7 +41,7 @@ function TodoList({ todos, deleteTodo, editTodo }) {
                     { todos.map((todo) => (
                         <HStack spacing="24px" w="320px">
                             <Flex p={6} w="300px" h="50px" justifyContent="space-between">
-                                <Text>{todo.quantity}{todo.measurement} {todo.ingredient}</Text>
+                                <Text>{todo.quantity}{todo.measurement} {todo.name}</Text>
                                 <Flex w="10px" >
                                     <DeleteIcon color="red.500" mr="2" onClick={()=>deleteTodo(todo.id)}/>
                                     <EditIcon onClick={()=>handleEditClick(todo)} />
@@ -55,7 +59,7 @@ function TodoList({ todos, deleteTodo, editTodo }) {
                                                 <Input value={modalValue.quantity} key={modalValue.id} variant="outline" type="text"
                                                     placeholder="Update your quantity" onChange={handleEditInputChange} />
                                                 <Select value={modalValue.measurement} key={modalValue.id} onChange={handleEditInputChange}>
-                                                    <option value='mg'>mg   </option>
+                                                    <option value='mg'>mg</option>
                                                     <option value='g'>g</option>
                                                     <option value='kg'>kg</option>
                                                     <option value='ml'>ml</option>
@@ -67,7 +71,7 @@ function TodoList({ todos, deleteTodo, editTodo }) {
                                             </ModalBody>
                                             <ModalFooter>
                                                 <Button colorScheme="greenBrand" mr={3} onClick={onClose}>Close</Button>
-                                                <Button type="submit" colorScheme="greenBrand" mr={3}>Update</Button>
+                                                <Button onClick={handleEditSubmit} colorScheme="greenBrand" mr={3}>Update</Button>
                                             </ModalFooter>
                                         </form>
                                     </ModalContent>

@@ -9,36 +9,98 @@ import axios from "axios";
 import * as Yup from 'yup';
 import Ingredients from './AddIngredients/Ingredients';
 import Instructions from './AddInstructions/Instructions';
+import { useState } from 'react';
 
 function AddRecipePage() {
     const navigate = useNavigate();
     const toast = useToast();
+    const [file, setFile] = useState(null);
+    const [fileRead, setFileRead] = useState(null);
+
+    function handleFileChange(e) {
+        setFile(e.target.files[0]);
+        const fileReader = new FileReader();
+        fileReader.onload = () => {
+            if (fileReader.readyState === 2) {
+                setFileRead(fileReader.result);
+            }
+        };
+        fileReader.readAsDataURL(e.target.files[0]);
+    }
 
     const formikAddRecipe = useFormik({
         initialValues: {
           name: '',
           time: 0,
-          difficulty: '',
+          difficulty: 'EASY',
           portions: 0,
           picture: '',
           encoding: '',
-          category: '',
+          category: 'BREAKFAST',
           description: '',
           ingredients: [],
           instructions: [],
           terms: false
         },
-        onSubmit: (values) => {
-            console.log(values)
+        onSubmit: async (values) => {
+            let sendValues = {...values};
+            sendValues.picture = fileRead;
+            sendValues.encoding = "png";
+            sendValues.ingredients = values.ingredients.map((ingredient) => {
+                return {
+                    name: ingredient.name,
+                    quantity: ingredient.quantity,
+                    measurement: ingredient.measurement
+                };
+            });
+            sendValues.instructions = values.instructions.map((instruction) => {
+                return instruction ? instruction.instruction : "asfavbs";
+            });
+            sendValues = {
+                name: sendValues.name,
+                time: sendValues.time,
+                difficulty: sendValues.difficulty,
+                portions: sendValues.portions,
+                picture: sendValues.picture,
+                encoding: sendValues.encoding,
+                category: sendValues.category,
+                description: sendValues.description,
+                ingredients: sendValues.ingredients,
+                instructions: sendValues.instructions
+            }
+            console.log(sendValues);
+            alert(JSON.stringify(values));
+            axios.post('http://localhost:5000/api/recipes/add', sendValues, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            }).then((response) => {
+                toast({
+                    title: 'Recipe added successfully.',
+                    description: 'Your recipe is now available for everyone.',
+                    status: 'success',
+                    duration: 5000,
+                    isClosable: true,
+                });
+                navigate('/');
+            }).catch((error) => {
+                console.log(error);
+                toast({
+                    title: 'Error.',
+                    description: 'An error occurred while adding the recipe.',
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                });
+            });
         },
         validationSchema: Yup.object().shape({
             name: Yup.string().required('Required field'),
             time: Yup.number().positive('A positive number is required for this field').integer().required('Required field'),
             portions: Yup.number().positive().integer().required('Required field'),
             description: Yup.string().min(30, "Minimum length is 30 characters").required('Required field'),
-            ingredients: Yup.array().required('There are no recipes without ingredients'),
-            instructions: Yup.array().required('There are no recipes without instructions'),
-            terms: Yup.boolean().oneOf([true], 'You must accept the terms and conditions')
+            ingredients: Yup.array().min(1, "Add at least an ingredient").required('There are no recipes without ingredients'),
+            instructions: Yup.array().min(1, "Add at least an instruction").required('There are no recipes without instructions'),
+            terms: Yup.boolean().oneOf([true], 'You must accept the terms and conditions'),
+            picture: Yup.mixed().required('Picture is required')
         })
     })
 
@@ -63,9 +125,9 @@ function AddRecipePage() {
                             <FormControl pb='2vh'>
                                 <FormLabel>Is it difficult to cook?</FormLabel>
                                 <Select id='difficulty' name='difficulty' type='text' onChange={formikAddRecipe.handleChange} value={formikAddRecipe.values.difficulty}>
-                                    <option value='easy'>easy</option>
-                                    <option value='medium'>medium</option>
-                                    <option value='hard'>hard</option>
+                                    <option value='EASY'>easy</option>
+                                    <option value='MEDIUM'>medium</option>
+                                    <option value='HARD'>hard</option>
                                 </Select>
                             </FormControl>
                             <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.portions && formikAddRecipe.touched.portions} onChange={formikAddRecipe.handleChange} >
@@ -74,8 +136,8 @@ function AddRecipePage() {
                                 <FormErrorMessage>{formikAddRecipe.errors.portions}</FormErrorMessage>
                             </FormControl>
                             <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.picture && formikAddRecipe.touched.picture} onChange={formikAddRecipe.handleChange} >
-                                <FormLabel>picture picture (choose .jpg or .jpeg file)</FormLabel>
-                                <Input id='picture' name='picture' type='file' onChange={formikAddRecipe.handleChange} value={formikAddRecipe.values.picture}/>
+                                <FormLabel>Picture (choose .png file)</FormLabel>
+                                <Input id='picture' name='picture' type='file' onChange={(e) => {handleFileChange(e); formikAddRecipe.handleChange(e); }} value={formikAddRecipe.values.picture}/>
                                 <FormErrorMessage>{formikAddRecipe.errors.picture}</FormErrorMessage>
                             </FormControl>
                             <FormControl pb='2vh'>
@@ -94,13 +156,13 @@ function AddRecipePage() {
                                 <FormErrorMessage>{formikAddRecipe.errors.description}</FormErrorMessage>
                             </FormControl>
                             {/* TODO validation*/}
-                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.ingredients} onChange={formikAddRecipe.handleChange}>
+                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.ingredients && formikAddRecipe.touched.ingredients} onChange={formikAddRecipe.handleChange}>
                                 <FormLabel>Add ingredients and quantities</FormLabel>
                                 <Ingredients ingredients={formikAddRecipe.values.ingredients}/>
                                 <FormErrorMessage>{formikAddRecipe.errors.ingredients}</FormErrorMessage>
                             </FormControl>
                             {/* TODO validation*/}
-                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.instructions} onChange={formikAddRecipe.handleChange}>
+                            <FormControl pb='2vh' isInvalid={formikAddRecipe.errors.instructions && formikAddRecipe.touched.instructions} onChange={formikAddRecipe.handleChange}>
                                 <FormLabel>Add instructions</FormLabel>
                                 <Instructions instructions={formikAddRecipe.values.instructions}/>
                                 <FormErrorMessage>{formikAddRecipe.errors.instructions}</FormErrorMessage>

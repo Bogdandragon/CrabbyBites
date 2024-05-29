@@ -4,13 +4,13 @@ import { nanoid } from 'nanoid';
 
 function AddTodo({ addTodo }) {
     const toast = useToast()
-    const [ingredient, setIngredient] = useState("")
+    const [name, setName] = useState("")
     const [quantity, setQuantity] = useState("")
-    const [measurement, setMeasurement] = useState("")
+    const [measurement, setMeasurement] = useState("mg")
 
     function handleSubmit(e) {
         e.preventDefault();
-        if(ingredient === '') {
+        if(name === '') {
             toast({
                 title: "Please enter the text.",
                 status: "warning",
@@ -19,18 +19,18 @@ function AddTodo({ addTodo }) {
             })
             return;
         }
-        const todo = { id: nanoid(), ingredient: ingredient, quantity: quantity, measurement: measurement}
+        const todo = { id: nanoid(), name: name, quantity: quantity, measurement: measurement}
         addTodo(todo)
-        setIngredient('')
+        setName('')
         setQuantity('')
-        setMeasurement('')
+        setMeasurement('mg')
     }
     
     return (
         <form onSubmit={handleSubmit}>
             <Stack spacing={0}>
                 <Center><Text mt={5}>Enter your ingredient:</Text></Center>
-                <Input mt={0} value={ingredient} variant="outline" type="text" placeholder="Ex.: milk, eggs, garlic, ..." onChange={(e)=>setIngredient(e.target.value)} />
+                <Input mt={0} value={name} variant="outline" type="text" placeholder="Ex.: milk, eggs, garlic, ..." onChange={(e)=>setName(e.target.value)} />
                 <Center><Text mt={2}>Enter the quantity for your ingredient:</Text></Center>
                 <Input value={quantity} variant="outline" type="text" placeholder="Ex.: 500ml, 5, 5 cloves, ...)" onChange={(e)=>setQuantity(e.target.value)} />
                 <Center><Text mt={5}>Select your type of measurement:</Text></Center>
@@ -44,7 +44,7 @@ function AddTodo({ addTodo }) {
                     <option value='tbsp'>tbsp</option>
                     <option value='cup'>cup</option>
                 </Select>
-                <Button mt={2} colorScheme="neutral" type="submit">Add ingredient</Button>
+                <Button mt={2} colorScheme="neutral" onClick={handleSubmit}>Add ingredient</Button>
             </Stack>
         </form>
     );

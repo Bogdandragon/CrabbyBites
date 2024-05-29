@@ -10,7 +10,12 @@ function AddList({ingredients, onChange}) {
     function deleteTodo(id) {
         const newTodos = todos.filter((item)=> { return item.id !== id })
         setTodos(newTodos)
-        console.log(newTodos)
+        for (var i = 0; i < ingredients.length; i++) {
+            if (ingredients[i] === id) {
+                ingredients.splice(i, 1);
+                break;
+            }
+        }
     }
         
     function addTodo(newTodo) {

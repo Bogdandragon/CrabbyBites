@@ -184,23 +184,19 @@ router.get("/todo/:userId", userMiddleware, async (req, res) => {
 	}
 });
 
-router.post("/add", async (req, res) => {
+router.post("/add", userMiddleware, async (req: any, res: any, next: any) => {
 	let validate = validators.addRecipe.validate(req.body);
 	if (validate.error) {
 		return res.status(400).send(validate.error.message);
 	}
 
 	// check if user exists
-	const user = await User.findById(req
-		.body.userId);
-	if (!user) {
-		return res.status(404).send("User not found");
-	}
+	const user = req.user;
 
-	const { name, time, difficulty, portions, picture, encoding, category, description, ingredients, instructions, userId } = req.body
+	const { name, time, difficulty, portions, picture, encoding, category, description, ingredients, instructions } = req.body
 
 	const recipe = new Recipe({
-		name, time, difficulty, portions, picture, category, description, ingredients, instructions, userId
+		name, time, difficulty, portions, picture, category, description, ingredients, instructions, userId: user._id
 	});
 
 	// search for new or existing ingredients
