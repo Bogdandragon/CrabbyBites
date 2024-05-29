@@ -57,6 +57,7 @@ function TransparentSidebar2() {
             })
 
             onClose();
+            window.location.reload();
             
         },
         validationSchema: Yup.object().shape({
