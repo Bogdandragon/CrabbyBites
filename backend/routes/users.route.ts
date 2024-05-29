@@ -163,4 +163,39 @@ router.post('/ingredient', userMiddleware, async function (req: any, res: any, n
 	return res.send("Ingredients updated successfully!");
 });
 
+router.post("/addIngredient", userMiddleware, async (req: any, res) => {
+	console.log("here\n");
+	const { error } = validators.ingredient.validate(req.body);
+	if(error) return res.status(400).send(error.details.map((e: any) => e.message));
+
+	try {
+		const { ingredient } = req.body;
+		let ingId = null;
+
+		const existingIngredient = await Ingredient.findOne({ name: ingredient.toLowerCase() });
+		if (existingIngredient) {
+			ingId = existingIngredient._id;
+		} else {
+			const newIngredient = new Ingredient({ name: ingredient.toLowerCase()});
+			await newIngredient.save();
+			ingId = newIngredient._id;
+		}
+
+		if (!req.user.ingredients.includes( {
+			"name": ingredient.toLowerCase(),
+			"ingredientId": ingId
+		})) {
+			req.user.ingredients.push(
+				{
+					"name": ingredient.toLowerCase(),
+					"ingredientId": ingId
+				}
+			);
+			await req.user.save();
+		}
+	} catch (e) {
+		return res.status(400).send("An error occured: " + e);
+	}
+});
+
 export default router;

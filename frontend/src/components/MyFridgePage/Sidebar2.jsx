@@ -25,10 +25,7 @@ function TransparentSidebar2() {
     const formikAddIngredient = useFormik({
         initialValues: {ingredient: '', quantity: 0},
         onSubmit: (values) => {
-            axios.post(`http://localhost:5000/api/auth/ingredient`, {
-                name: values.ingredient,
-                quantity: values.quantity
-            }, {
+            axios.post(`http://localhost:5000/api/auth/addIngredient`, values, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             }).then((response) => {
                 console.log(response);

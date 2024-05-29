@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import joidate from '@joi/date';
+import Ingredient from '../models/ingredient.model';
 
 const joi = Joi.extend(joidate);
 
@@ -158,6 +159,12 @@ const recipe = joi.object({
     })
 });
 
+const ingredient = joi.object({
+    Ingredient: joi.string().required().messages({
+        'string.empty': 'Ingredient name is required'
+    })
+});
+
 const validators = {
     login,
     register,
@@ -165,7 +172,8 @@ const validators = {
     review,
     report,
     addRecipe,
-    recipe
+    recipe,
+    ingredient
 }
 
 export default validators;
