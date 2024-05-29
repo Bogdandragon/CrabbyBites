@@ -7,6 +7,7 @@ import constants from "../constants";
 import Recipe from "../models/recipe.model"
 import Review from "../models/review.model"
 import Report from "../models/report.model"
+import Ingredient from "../models/ingredient.model"
 import userMiddleware from "../middlewares/userMiddleware";
 
 const router = Router();
@@ -131,6 +132,35 @@ router.get('/type', userMiddleware, async function (req: any, res: any, next: an
 router.get("/username/:id", async (req, res) => {
 	const { id }= req.params;
 	return res.send((await User.findById(id))?.username);
+});
+
+router.get('/ingredients', userMiddleware, async function (req: any, res: any, next: any) {
+	return res.send(req.user.ingredients);
+});
+
+router.post('/ingredient', userMiddleware, async function (req: any, res: any, next: any) {
+	const { ingredient } = req.body;
+	const user = req.user;
+
+	let ingredientId = null;
+	let existingIngredient = user.ingredients.find((i: any) => i.name == ingredient.name);
+	if (existingIngredient) {
+		existingIngredient.quantity += ingredient.quantity;
+	} else {
+		// check if ingredient exists in the database
+		let dbIngredient = await Ingredient.findOne({ name: ingredient.name });
+		if (!dbIngredient) {
+			dbIngredient = new Ingredient({ name: ingredient.name });
+			await dbIngredient.save();
+			ingredientId = dbIngredient._id;
+		} else {
+			ingredientId = dbIngredient._id;
+			dbIngredient.appearanceNo += 1;
+		}
+	}
+
+	user.ingredients.push({ name: ingredient.name, quantity: ingredient.amount, ingredientId: ingredientId });
+	return res.send("Ingredients updated successfully!");
 });
 
 export default router;

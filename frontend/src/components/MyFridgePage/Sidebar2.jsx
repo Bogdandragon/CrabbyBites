@@ -7,12 +7,38 @@ import SubmitButton from '../Buttons/SubmitButton'
 import { useFormik } from 'formik';
 import * as Yup from 'yup'
 import IngredientsCard2 from './IngredientsCard2';
+import axios from 'axios';
+import { useState } from 'react';
 
 function TransparentSidebar2() {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    const {ingredients , setIngredients} = useState([]);
+
+    axios.get(`http://localhost:5000/api/auth/ingredients`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    }).then((response) => {
+        setIngredients(response.data);
+    }).catch((error) => {
+        console.log(error);
+    })
     const formikAddIngredient = useFormik({
         initialValues: {ingredient: '', quantity: 0},
-        onSubmit: (values) => {},
+        onSubmit: (values) => {
+            axios.post(`http://localhost:5000/api/auth/ingredient`, {
+                name: values.ingredient,
+                quantity: values.quantity
+            }, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            }).then((response) => {
+                console.log(response);
+            }).catch((error) => {
+                console.log(error);
+            })
+
+            onClose();
+            
+        },
         validationSchema: Yup.object().shape({
             ingredient: Yup.string().required('Required field'),
             quantity: Yup.number().positive().integer().required('Required field')
@@ -29,14 +55,19 @@ function TransparentSidebar2() {
                         }
                     }}>
                 <SimpleGrid columns={{base:2, lg:3}} spacing={4}>
-                    <IngredientsCard2 typeIngredients="ESSENTIALS"/>
-                    <IngredientsCard2 typeIngredients="VEGETABLES"/>
-                    <IngredientsCard2 typeIngredients="FRUITS"/>
-                    <IngredientsCard2 typeIngredients="DAIRY"/>
-                    <IngredientsCard2 typeIngredients="MEAT"/>
-                    <IngredientsCard2 typeIngredients="FLOUR"/>
-                    <IngredientsCard2 typeIngredients="BREAD"/>
-                    <IngredientsCard2 typeIngredients="SPICES"/>
+                    {/* ingredient card with every letter */}
+                    {
+                        letters.map((letter) => {
+                        if (!ingredients || ingredients.length === 0) return null;
+                        const ingredientsLetter = ingredients.filter((ingredient) => ingredient.name.toLowerCase().startsWith(letter));
+
+                        if (ingredientsLetter.length > 0) {
+                            return <IngredientsCard2 typeIngredients={letter.toUpperCase()} ingredientsList={ingredientsLetter}/>
+                        } else {
+                            return null;
+                        }
+                     })}
+
                 </SimpleGrid>
             </Box>
             <IconButton mt='1vh' aria-label='Add ingredient' isRound={false} variant='solid' colorScheme='red' boxSize='12' fontSize='30' icon={<AddIcon />} onClick={onOpen}/>
