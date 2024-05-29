@@ -1,7 +1,30 @@
-import { Box, Heading, SimpleGrid} from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid } from "@chakra-ui/react";
 import IngredientButton from "./IngredientButton";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-function IngredientsCard({ typeIngredients }) {
+function IngredientsCard({ typeIngredients, search, loadedIngredients }) {
+    const [ingredients, setIngredients] = useState([]);
+    const [update, setUpdate] = useState(false);
+    const [recipes, setRecipes] = useState([]);
+
+    useEffect(() => {
+        fixIngredients();
+    }, [ingredients]);
+
+    async function fixIngredients() {
+        if (ingredients.length === 0) {
+            setIngredients(await loadedIngredients);
+        }
+    }
+    
+    const handleIngredientClick = (ingredient) => {
+        ingredient.selected = !ingredient.selected;
+        setUpdate(!update);
+        const selectedIngredients = ingredients.filter((ingredient) => ingredient.selected).map((ingredient) => ingredient.name);
+        search(typeIngredients, selectedIngredients);
+    }
+
     return (
         <Box bgColor='white' borderRadius="5vh" h="18vh">
             <Heading size="md" style={{ fontWeight: 750 }} pt="1vh">{typeIngredients}</Heading>
@@ -14,16 +37,9 @@ function IngredientsCard({ typeIngredients }) {
                     }
                 }}>
                 <SimpleGrid spacingX={{base:'2', lg:'4'}} spacingY={2} >
-                    <IngredientButton text="egggggggggggggggggggggggggggg"/>
-                    <IngredientButton text="flour"/>
-                    <IngredientButton text="sugar"/>
-                    <IngredientButton text="milk"/>
-                    <IngredientButton text="water"/>
-                    <IngredientButton text="salt"/>
-                    <IngredientButton text="pepper"/>
-                    <IngredientButton text="water"/>
-                    <IngredientButton text="oil"/>
-                    <IngredientButton text="yeast"/>
+                    {ingredients.map((ingredient) => (
+                        <IngredientButton text={ingredient.name} selected={ingredient.selected} onClick={() => handleIngredientClick(ingredient)}/>
+                    ))}
                 </SimpleGrid>
            </Box>
         </Box>
