@@ -10,25 +10,27 @@ import { Spacer } from '@chakra-ui/react';
 import { Image } from '@chakra-ui/react';
 import { CardBody } from 'react-bootstrap';
 import InfoButton from '../Buttons/InfoButton';
+import { useNavigate } from 'react-router-dom';
 
-function RecipeCardTodoFav({imageUrl, titleRecipe, descriptionRecipe, timeCooking, difficulty, numberServings}) {
+function RecipeCardTodoFav({recipeId, imageUrl, titleRecipe, descriptionRecipe, timeCooking, difficulty, numberServings}) {
     const buttonSize = useBreakpointValue({ base: "sm", md: "md"});
     const stackSpacing = useBreakpointValue({base: 12, md: 0.4, xl: 12 });
+    const navigate = useNavigate();
     
     return (    
-        <Card borderRadius="5vh" w={{base:'90vw', md:'44vw', lg:'30vw'}} h={{base:'55vh',  md:'55vh'}} bgColor='#FFFBF2' >
+        <Card borderRadius="5vh" w={{base:'90vw', md:'44vw', lg:'30vw'}} h={{base:'45vh',  md:'45vh'}} bgColor='#FFFBF2' >
             <CardBody backgroundColor='FFFBF2'>
                 <Box w={{base:'90vw', md:'44vw', lg:'30vw'}} h={{base:'27.5vh', md:'27.5vh'}}><Image src={imageUrl} alt='Logo' borderTopRadius="5vh" objectFit="cover" size='md' w='100%' h='100%'/></Box>
                 <Text textAlign='left' pl='1vw' fontSize="2xl" fontWeight="bold" noOfLines='1'>{titleRecipe}</Text>
                 <Text textAlign='left' pl='1vw' fontSize="md" noOfLines='2'>{descriptionRecipe}</Text>
-                <Text  pl='1vw' as="b" fontSize="xs">{timeCooking} MIN - {difficulty} PREP - {numberServings} SERVES</Text>
-                <HStack  pl='1vw'>
-                    <InfoButton text='View Recipe' size={buttonSize} onClick={() => {}}/>
-                    <Spacer/>
-                    <IconButton icon={<PlusSquareIcon />} bgColor='#FFFBF2' size={buttonSize} onClick={() => {}}/>
-                    <IconButton as={ FaHeart } color="red.500" variant="ghost" boxSize="1em" aria-label="Like"  size={buttonSize} onClick={() => {}}/>
+                <HStack pr='1vw' justify="end">
+                    <Text  pl='1vw' as="b" fontSize="xs">{timeCooking} MIN - {difficulty} PREP - {numberServings} SERVES</Text>
+                    <Spacer />
+                    <InfoButton text='View Recipe' size={buttonSize} onClick={() => {
+                        navigate(`/recipes/${recipeId}`);
+                        window.location.reload()}}/>
                 </HStack>
-            </CardBody>      
+            </CardBody>
         </Card>                       
     );
 }

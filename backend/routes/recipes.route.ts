@@ -85,6 +85,47 @@ router.delete("/remove/:id", userMiddleware, async (req: any, res) => {
 	}
 });
 
+router.get("/ingredients", async (req, res) => {
+	try {
+		const ingredients = await Ingredient.find();
+		return res.status(200).send(ingredients);
+	} catch (e) {
+		return res.status(400).send("Error: " + e);
+	}
+});
+
+router.get("/search", async (req, res) => {
+	try {
+		if (!req.query.ingredients) {
+			return res.status(400).send("Invalid query");
+		}
+		const ingredients = (req.query.ingredients as string).split(",");
+		const recipes = await Recipe.find({ ingredients: { $elemMatch: { name: { $in: ingredients } } } });
+		recipes.sort((a, b) => {
+			let aCount = 0;
+			let bCount = 0;
+			a.ingredients.forEach((ing) => {
+				if (ingredients.includes(ing.name)) {
+					aCount++;
+				}
+			});
+			b.ingredients.forEach((ing) => {
+				if (ingredients.includes(ing.name)) {
+					bCount++;
+				}
+			});
+
+			return bCount - aCount;
+		});
+		return res.status(200).send(recipes.map((rec) => {
+			rec.picture = fs.readFileSync("./images/" + rec.picture).toString("base64");
+			return rec;
+		}));
+	} catch (e) {
+		return res.status(400).send("Error: " + e);
+	}
+});
+
 router.get("/:id", async (req, res) => {
 	try {
 		let recipe = await Recipe.findById(req.params.id);
@@ -419,6 +460,5 @@ router.get("/similar/:id", async (req, res) => {
 		return res.status(401).send("Error: " + e);
 	}
 });
-
 
 export default router;
